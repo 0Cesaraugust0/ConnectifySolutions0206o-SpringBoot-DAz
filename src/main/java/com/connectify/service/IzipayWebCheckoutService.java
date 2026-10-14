@@ -15,7 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -61,11 +60,8 @@ public class IzipayWebCheckoutService {
         List<IzipayWebAttempt> pending = attempts.findByBuyerEmailIgnoreCaseAndStatusOrderByCreatedAtDesc(email, "PENDING");
         if (!pending.isEmpty()) {
             IzipayWebAttempt previous = pending.get(0);
-            if (!fingerprint.equals(previous.getFingerprint()))
-                throw new PendingPaymentException(previous.getOrderNumber(), "Ya tienes un pago pendiente. Verifica su estado antes de modificar o volver a pagar el carrito.");
-            if (Duration.between(previous.getCreatedAt(), Instant.now()).toMinutes() >= 14)
-                throw new PendingPaymentException(previous.getOrderNumber(), "La sesión de IZIPay venció y la orden sigue pendiente de confirmación. Consulta su estado antes de intentar otro pago.");
-            return checkoutConfig(previous);
+            previous.setStatus("ABANDONED");
+            previous.setReviewReason("Orden reemplazada por el cliente al retomar el formulario de pago.");
         }
         if (!attempts.findByBuyerEmailIgnoreCaseAndStatusOrderByCreatedAtDesc(email, "REVIEW").isEmpty())
             throw new IllegalStateException("Tienes un pago confirmado pendiente de revisión. Contacta a soporte antes de volver a pagar.");
@@ -133,6 +129,16 @@ public class IzipayWebCheckoutService {
         boolean paid = validator.approved(verified.data(), attempt);
         // Lock + purchase relation keep both browser/IPN retries atomic and idempotent.
         if ("COMPLETED".equals(attempt.getStatus()) || "REVIEW".equals(attempt.getStatus())) return response(attempt);
+        if ("ABANDONED".equals(attempt.getStatus())) {
+            if (paid) {
+                attempt.setStatus("REVIEW");
+                attempt.setVerifiedAt(Instant.now());
+                attempt.setSignedPayloadHash(verified.hash());
+                attempt.setGatewayReference(validator.reference(verified.data()));
+                attempt.setReviewReason("IZIPay confirmó una orden que el cliente había reemplazado. Revisar antes de emitir o reembolsar.");
+            }
+            return response(attempt);
+        }
         if (!paid) {
             if (validator.definitivelyDeclined(verified.data())) attempt.setStatus("FAILED");
             attempt.setSignedPayloadHash(verified.hash());
@@ -277,6 +283,7 @@ public class IzipayWebCheckoutService {
         else if ("REVIEW".equals(attempt.getStatus()))
             response.put("message", "El pago fue confirmado y necesita revisión de disponibilidad. No vuelvas a pagar; contacta a soporte con la orden " + attempt.getOrderNumber() + ".");
         else if ("FAILED".equals(attempt.getStatus())) response.put("message", "IZIPay no aprobó el pago. Puedes volver a intentarlo.");
+        else if ("ABANDONED".equals(attempt.getStatus())) response.put("message", "Esta orden fue reemplazada por un nuevo intento de pago.");
         else response.put("message", "El pago está pendiente de confirmación de IZIPay.");
         return response;
     }
@@ -304,9 +311,4 @@ public class IzipayWebCheckoutService {
         catch (Exception exception) { throw new IllegalStateException("No se pudo recuperar el comprador."); }
     }
 
-    public static class PendingPaymentException extends IllegalStateException {
-        private final String orderNumber;
-        public PendingPaymentException(String orderNumber, String message) { super(message); this.orderNumber = orderNumber; }
-        public String getOrderNumber() { return orderNumber; }
-    }
 }

@@ -64,7 +64,7 @@
         }
         const data = await response.json();
         if (!response.ok) {
-            if (data.orderNumber) { rememberOrder(data.orderNumber); check.hidden = false; }
+            if (data.orderNumber) { rememberOrder(data.orderNumber); check.hidden = true; }
             throw new Error(data.message || 'No pudimos preparar el pago. Inténtalo nuevamente.');
         }
         return data;
@@ -98,9 +98,17 @@
             reopen.hidden = true;
             setBusy(true, 'Pago en revisión');
             show('Recibimos el pago y estamos revisando la emisión de tus entradas. Conserva el número de orden y contacta a soporte.', true);
+        } else if (data.status === 'ABANDONED') {
+            stopPolling();
+            activeSession = null;
+            rememberOrder(null);
+            check.hidden = true;
+            reopen.hidden = true;
+            setBusy(false, 'Proceder al pago');
+            show('El intento anterior fue reemplazado. Puedes abrir nuevamente el formulario de pago.');
         } else {
-            show('El pago sigue pendiente de confirmación. Si ya pagaste, consulta su estado antes de volver a intentarlo.');
-            check.hidden = false;
+            show('El formulario anterior quedó pendiente. Pulsa “Retomar pago” para abrir nuevamente el Pop-In.');
+            check.hidden = true;
             reopen.hidden = !activeSession;
             if (!activeSession) setBusy(false, 'Retomar pago');
         }
@@ -138,8 +146,8 @@
         stopPolling();
         // A close/error event is not evidence of either a charge or a successful payment.
         if (!result || typeof result.payloadHttp !== 'string' || typeof result.signature !== 'string') {
-            show('El formulario se cerró sin una confirmación de pago. Consulta el estado de tu orden si llegaste a pagar.');
-            check.hidden = false;
+            show('El formulario de pago se cerró. Puedes abrirlo nuevamente para continuar.');
+            check.hidden = true;
             reopen.hidden = false;
             return;
         }
@@ -158,8 +166,10 @@
             });
             applyStatus(data);
         } catch (error) {
-            show(error.message + ' Conserva esta orden y consulta su estado.', true);
-            check.hidden = false;
+            show('Aún no recibimos la confirmación. Seguiremos comprobando el pago automáticamente.', true);
+            check.hidden = true;
+            polling = true;
+            poll();
         } finally {
             verifying = false;
         }
@@ -213,8 +223,8 @@
     window.addEventListener('pagehide', stopPolling);
     if (orderNumber) {
         reference.textContent = 'Orden: ' + orderNumber;
-        check.hidden = false;
-        show('Consultando el estado de tu último intento de pago…');
-        checkStatus();
+        check.hidden = true;
+        setBusy(false, 'Retomar pago');
+        show('Pulsa “Retomar pago” para abrir nuevamente el formulario de IZIPay.');
     }
 })();

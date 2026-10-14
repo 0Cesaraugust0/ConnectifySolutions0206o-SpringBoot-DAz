@@ -53,14 +53,14 @@ test('unsigned success/cancel never creates tickets or calls verification', asyn
     await app.callback({code:'00'});
     assert.equal(app.calls.length,1);
     assert.equal(app.redirects.length,0);
-    assert.equal(app.nodes['izipay-check-status'].hidden,false);
+    assert.equal(app.nodes['izipay-check-status'].hidden,true);
 });
 test('network loss during signed callback retains order for status recovery', async () => {
     const app=setup([session,new Error('Network unavailable')]);
     await app.submit();
     await app.callback({payloadHttp:'signed fixture',signature:'signature fixture'});
     assert.equal(app.redirects.length,0);
-    assert.equal(app.nodes['izipay-check-status'].hidden,false);
+    assert.equal(app.nodes['izipay-check-status'].hidden,true);
     assert.match(app.nodes['izipay-order-reference'].textContent,/ABC123/);
 });
 test('no credentials means no outgoing payment request', async () => {

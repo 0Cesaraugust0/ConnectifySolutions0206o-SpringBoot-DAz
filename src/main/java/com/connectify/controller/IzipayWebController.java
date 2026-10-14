@@ -59,12 +59,6 @@ public class IzipayWebController {
         return noStore(Map.of("received", true));
     }
 
-    @ExceptionHandler(IzipayWebCheckoutService.PendingPaymentException.class)
-    public ResponseEntity<Map<String, Object>> pending(IzipayWebCheckoutService.PendingPaymentException exception) {
-        return ResponseEntity.status(HttpStatus.CONFLICT).header("Cache-Control", "no-store")
-                .body(Map.of("message", exception.getMessage(), "orderNumber", exception.getOrderNumber(), "status", "PENDING"));
-    }
-
     @ExceptionHandler(AccessDeniedException.class)
     public ResponseEntity<Map<String, Object>> forbidden(AccessDeniedException exception) {
         return ResponseEntity.status(HttpStatus.FORBIDDEN).header("Cache-Control", "no-store").body(Map.of("message", exception.getMessage()));

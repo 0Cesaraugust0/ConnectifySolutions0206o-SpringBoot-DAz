@@ -10,7 +10,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.test.util.ReflectionTestUtils;
 import java.math.BigDecimal;
-import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.*;
 import static org.assertj.core.api.Assertions.*;
@@ -105,17 +104,25 @@ class IzipayWebCheckoutServiceTest {
     }
 
     @Test
-    void pendingExpiredOrderPreventsAccidentalSecondCharge() throws Exception {
+    void pendingOrderIsReplacedWhenCustomerRetakesPayment() throws Exception {
         Map<String, Object> first = service.start(email, buyer(), cart());
         var capture = org.mockito.ArgumentCaptor.forClass(IzipayWebAttempt.class);
         verify(attempts).save(capture.capture());
         IzipayWebAttempt saved = capture.getValue();
         when(attempts.findByBuyerEmailIgnoreCaseAndStatusOrderByCreatedAtDesc(email, "PENDING")).thenReturn(List.of(saved));
-        assertThat(service.start(email, buyer(), cart()).get("orderNumber")).isEqualTo(first.get("orderNumber"));
-        verify(gateway, times(1)).authorize(any());
-        saved.setCreatedAt(Instant.now().minusSeconds(900));
-        assertThatThrownBy(() -> service.start(email, buyer(), cart())).isInstanceOf(IzipayWebCheckoutService.PendingPaymentException.class);
-        verify(gateway, times(1)).authorize(any());
+        Map<String, Object> resumed = service.start(email, buyer(), cart());
+        assertThat(resumed.get("orderNumber")).isNotEqualTo(first.get("orderNumber"));
+        assertThat(saved.getStatus()).isEqualTo("ABANDONED");
+        verify(gateway, times(2)).authorize(any());
+        verify(attempts, times(2)).save(any());
+    }
+
+    @Test
+    void lateApprovalForReplacedOrderGoesToReviewWithoutDuplicateTickets() {
+        attempt.setStatus("ABANDONED");
+        assertThat(service.notification(mapper.createObjectNode()).get("status")).isEqualTo("REVIEW");
+        assertThat(attempt.getReviewReason()).contains("reemplazado");
+        verifyNoInteractions(purchases);
     }
 
     @Test
