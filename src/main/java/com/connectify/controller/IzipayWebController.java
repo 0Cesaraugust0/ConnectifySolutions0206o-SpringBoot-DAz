@@ -1,8 +1,6 @@
 package com.connectify.controller;
 
-import com.connectify.dto.CartItem;
 import com.connectify.dto.IzipayWebBuyer;
-import com.connectify.dto.IzipayWebLine;
 import com.connectify.service.CartService;
 import com.connectify.service.IzipayWebCheckoutService;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -35,7 +33,8 @@ public class IzipayWebController {
         String expected = (String) session.getAttribute(REQUEST_TOKEN_KEY);
         if (expected == null || checkoutToken == null || !MessageDigest.isEqual(expected.getBytes(StandardCharsets.UTF_8), checkoutToken.getBytes(StandardCharsets.UTF_8)))
             throw new AccessDeniedException("La sesión de checkout venció. Recarga la página antes de continuar.");
-        return noStore(checkout.start(email(authentication), buyer, List.copyOf(cart.getItems(session))));
+        String buyerEmail = email(authentication);
+        return noStore(checkout.start(buyerEmail, buyer, List.copyOf(cart.getItems(buyerEmail))));
     }
 
     @PostMapping("/cart/checkout/izipay/verify")
@@ -103,16 +102,7 @@ public class IzipayWebController {
             if (consumed == null) { consumed = new HashSet<>(); session.setAttribute(CONSUMED_KEY, consumed); }
             String order = response.get("orderNumber").toString();
             if (consumed.contains(order)) return;
-            List<CartItem> items = cart.getItems(session);
-            for (IzipayWebLine paid : checkout.purchasedLines(email, order)) {
-                for (CartItem item : items) {
-                    if (Objects.equals(item.getEventId(), paid.eventId()) && Objects.equals(item.getTicketTypeId(), paid.ticketTypeId())) {
-                        item.setQuantity(Math.max(0, item.getQuantity() - paid.quantity()));
-                        break;
-                    }
-                }
-            }
-            items.removeIf(item -> item.getQuantity() == 0);
+            cart.removePurchased(email, order, checkout.purchasedLines(email, order));
             consumed.add(order);
         }
     }

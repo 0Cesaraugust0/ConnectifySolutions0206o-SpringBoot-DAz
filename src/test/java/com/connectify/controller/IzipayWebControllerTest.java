@@ -27,7 +27,7 @@ class IzipayWebControllerTest {
         MockHttpSession session = new MockHttpSession();
         String token = IzipayWebController.requestToken(session);
         var account = UsernamePasswordAuthenticationToken.authenticated("client@example.test", "ignored", List.of());
-        when(cart.getItems(session)).thenReturn(new ArrayList<>(List.of(new CartItem(1L, "Event", "", "", 1, BigDecimal.TEN))));
+        when(cart.getItems("client@example.test")).thenReturn(new ArrayList<>(List.of(new CartItem(1L, "Event", "", "", 1, BigDecimal.TEN))));
         when(service.start(eq("client@example.test"), any(), any())).thenReturn(Map.of("orderNumber", "0123456789ABCDE"));
         mvc.perform(post("/cart/checkout/izipay/session").session(session).principal(account)
                 .param("checkoutToken", "wrong-token").param("firstName", "Test").param("lastName", "Client"))

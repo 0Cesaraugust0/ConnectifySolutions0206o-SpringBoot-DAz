@@ -60,7 +60,7 @@ public class IzipayPaymentController {
         if (!izipayPaymentService.isPaid(krAnswer)) {
             return paymentRejected("La transacción no quedó pagada. Estado: " + izipayPaymentService.orderStatus(krAnswer), redirectAttributes);
         }
-        if (!sameAmount(checkoutSession.expectedTotal(), cartService.total(session))) {
+        if (!sameAmount(checkoutSession.expectedTotal(), cartService.total(checkoutSession.email()))) {
             return paymentRejected("El carrito cambió después de preparar el pago. Revisa tu compra antes de volver a pagar.", redirectAttributes);
         }
 

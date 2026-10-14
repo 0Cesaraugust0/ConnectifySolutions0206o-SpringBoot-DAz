@@ -30,7 +30,7 @@ public class PurchaseService {
 
     @Transactional
     public Purchase completePurchase(HttpSession session, String firstName, String lastName, String dni, String phone, String email) {
-        List<CartItem> items = cartService.getItems(session);
+        List<CartItem> items = cartService.getItems(email);
         if (items.isEmpty()) {
             throw new IllegalStateException("No hay entradas en el carrito");
         }
@@ -41,9 +41,9 @@ public class PurchaseService {
         purchase.setBuyerDni(dni);
         purchase.setBuyerPhone(phone);
         purchase.setBuyerEmail(email);
-        purchase.setSubtotal(cartService.subtotal(session));
-        purchase.setServiceFee(cartService.serviceFee(session));
-        purchase.setTotal(cartService.total(session));
+        purchase.setSubtotal(cartService.subtotal(email));
+        purchase.setServiceFee(cartService.serviceFee(email));
+        purchase.setTotal(cartService.total(email));
         purchase.setStatus(PurchaseStatus.COMPLETED);
 
         String attendeeName = firstName + " " + lastName;
@@ -67,7 +67,7 @@ public class PurchaseService {
         }
 
         Purchase saved = purchaseRepository.save(purchase);
-        cartService.clear(session);
+        cartService.clear(email);
         return saved;
     }
 
