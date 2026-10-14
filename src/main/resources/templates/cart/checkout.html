@@ -3,120 +3,101 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Checkout - Connectify Solutions</title>
+    <title>Finalizar compra - Connectify</title>
     <link rel="stylesheet" th:href="@{/css/styles.css}">
     <link rel="stylesheet" th:href="@{/css/cart.css(v='checkout-compact-1')}">
-    <link rel="stylesheet"
-          href="https://static.micuentaweb.pe/static/js/krypton-client/V4.0/ext/classic.css"
-          th:if="${izipayReady and izipayFormToken != null}">
-    <script type="text/javascript"
-            th:if="${izipayReady and izipayFormToken != null}"
-            th:src="${izipayScriptUrl}"
-            th:attr="kr-public-key=${izipayPublicKey},kr-post-url-success=${izipaySuccessUrl},kr-post-url-error=${izipayErrorUrl},kr-post-url-cancel=${izipayCancelUrl},kr-language='es-ES'"></script>
-    <script type="text/javascript"
-            src="https://static.micuentaweb.pe/static/js/krypton-client/V4.0/ext/classic.js"
-            th:if="${izipayReady and izipayFormToken != null}"></script>
+    <link rel="stylesheet" th:href="@{/css/checkout-izipay.css(v='web-core-1')}">
+    <script th:if="${izipayWebReady}" th:src="${izipayWebScriptUrl}" defer></script>
+    <script th:src="@{/js/checkout-izipay.js(v='web-core-1')}" defer></script>
 </head>
 <body class="checkout-body">
 <header class="navbar dashboard-nav checkout-nav">
     <a class="brand brand-link" th:href="@{/dashboard/client}">
         <span class="logo brand-mark">C</span>
-        <div><strong>Connectify</strong><small>Checkout de Cliente</small></div>
+        <div><strong>Connectify</strong><small>Área del cliente</small></div>
     </a>
     <nav class="top-actions" aria-label="Acciones del checkout">
         <a class="btn secondary" th:href="@{/cart}">Volver al carrito</a>
         <a class="btn secondary" th:href="@{/dashboard/client/tickets}">Mis tickets QR</a>
     </nav>
 </header>
-
 <main class="dashboard-page checkout-page">
     <section class="dashboard-hero checkout-hero">
-        <p class="badge">Checkout seguro</p>
-        <h1>Finalizar compra</h1>
-        <p class="muted">La compra queda asociada a tu cuenta Cliente. Los tickets QR se guardan automaticamente en <strong th:text="${buyerEmail}">cliente@email.com</strong>.</p>
+        <div><p class="badge">02 / Datos y pago</p>
+            <h1>Finalizar compra</h1>
+            <p class="muted">Completa tus datos y continúa al formulario de pago de IZIPay.</p>
+        </div>
+        <span class="checkout-test-label" th:if="${izipayWebMode == 'SANDBOX'}">Entorno de pruebas</span>
     </section>
-
     <section class="checkout-layout" th:if="${!items.isEmpty()}">
         <div class="checkout-main">
-            <form class="checkout-form"
-                  th:action="${izipayEnabled} ? @{/cart/checkout/izipay/start} : @{/cart/checkout/confirm}"
-                  method="post">
+            <form id="izipay-checkout-form" class="checkout-form" th:action="@{/cart/checkout/izipay/session}" method="post"
+                  th:attr="data-ready=${izipayWebReady},data-status-url=@{/cart/checkout/izipay/status},data-verify-url=@{/cart/checkout/izipay/verify}">
+                <input type="hidden" name="checkoutToken" th:value="${izipayWebRequestToken}">
                 <h2>Datos del comprador</h2>
-                <div th:if="${param.profileError != null}" class="alert error">Completa nombres y apellidos para generar tus tickets.</div>
-                <div th:if="${param.paymentConfigError != null}" class="alert error">IZIPay esta activo, pero faltan credenciales locales para preparar el pago.</div>
-                <div th:if="${param.paymentTokenError != null}" class="alert error">No se pudo preparar el pago con IZIPay. Revisa la configuracion.</div>
-                <div th:if="${param.paymentError != null}" class="alert error">El pago no fue confirmado. No se generaron tickets.</div>
-                <div th:if="${param.paymentCancelled != null}" class="alert error">Pago cancelado. Puedes volver a intentarlo cuando desees.</div>
-                <div th:if="${paymentErrorMessage != null}" class="alert error" th:text="${paymentErrorMessage}">Detalle del pago</div>
-
+                <p class="checkout-intro">Tus entradas se guardarán en tu cuenta una vez confirmado el pago.</p>
+                <div th:if="${paymentErrorMessage != null}" class="alert error" th:text="${paymentErrorMessage}"></div>
                 <div class="form-grid">
-                    <label>Nombres<input name="firstName" type="text" th:value="${buyerFirstName}" autocomplete="given-name" placeholder="Juan" required></label>
-                    <label>Apellidos<input name="lastName" type="text" th:value="${buyerLastName}" autocomplete="family-name" placeholder="Perez" required></label>
-                    <label>DNI<input name="dni" type="text" th:value="${buyerDni}" autocomplete="off" placeholder="12345678" required></label>
-                    <label>Telefono<input name="phone" type="tel" th:value="${buyerPhone}" autocomplete="tel" placeholder="987654321" required></label>
-                    <label class="wide">Cuenta Cliente<input type="email" th:value="${buyerEmail}" readonly aria-readonly="true"><small class="muted">El correo se toma de la sesion activa y no puede cambiarse durante la compra.</small></label>
+                    <label>Nombres<input name="firstName" type="text" th:value="${buyerFirstName}" autocomplete="given-name" minlength="2" maxlength="50" required></label>
+                    <label>Apellidos<input name="lastName" type="text" th:value="${buyerLastName}" autocomplete="family-name" minlength="2" maxlength="50" required></label>
+                    <label>DNI<input name="dni" type="text" th:value="${buyerDni}" inputmode="numeric" pattern="[0-9]{8}" minlength="8" maxlength="8" title="Ingresa los 8 dígitos de tu DNI" required></label>
+                    <label>Teléfono<input name="phone" type="tel" th:value="${buyerPhone}" autocomplete="tel" minlength="7" maxlength="15" pattern="[0-9]{7,15}" required></label>
+                    <label class="wide">Correo de tu cuenta<input type="email" th:value="${buyerEmail}" readonly aria-readonly="true"></label>
+                    <label class="wide">Dirección de facturación<input name="street" type="text" autocomplete="street-address" minlength="5" maxlength="40" required></label>
+                    <label>Ciudad<input name="city" type="text" autocomplete="address-level2" minlength="3" maxlength="25" required></label>
+                    <label>Departamento<input name="state" type="text" autocomplete="address-level1" minlength="3" maxlength="25" required></label>
+                    <label>Código postal<input name="postalCode" type="text" autocomplete="postal-code" inputmode="numeric" pattern="[0-9]{5,10}" minlength="5" maxlength="10" title="Ingresa tu código postal" required></label>
+                    <div class="checkout-country"><span>País de facturación</span><strong>Perú</strong></div>
                 </div>
-
-                <p class="legal-consent">Al continuar aceptas los <a th:href="@{/terms}">terminos y condiciones</a> aplicables al marketplace y al evento seleccionado.</p>
-                <button class="btn primary full"
-                        type="submit"
-                        th:disabled="${izipayEnabled and !izipayReady}"
-                        th:text="${izipayEnabled} ? 'Preparar pago seguro con IZIPay' : 'Confirmar compra y generar tickets'">Preparar pago seguro</button>
+                <section class="checkout-payment-methods" aria-label="Medios de pago">
+                    <div class="checkout-payment-heading"><strong>Pago con IZIPay</strong><span>Formulario seguro</span></div>
+                    <p>Al pulsar “Proceder al pago” se abrirá una ventana sobre esta página para ingresar tus datos de pago.</p>
+                    <div class="checkout-methods">
+                        <span th:if="${#strings.contains(izipayWebMethods, 'CARD')}">Tarjeta</span>
+                        <span th:if="${#strings.contains(izipayWebMethods, 'QR')}">QR</span>
+                        <span th:if="${#strings.contains(izipayWebMethods, 'YAPE_CODE')}">Yape</span>
+                        <span th:if="${#strings.contains(izipayWebMethods, 'PAGO_PUSH')}">Plin Interbank</span>
+                    </div>
+                </section>
+                <div th:unless="${izipayWebReady}" class="payment-warning">
+                    <strong>Los pagos aún no están disponibles</strong>
+                    <small>Estamos preparando la conexión con IZIPay. Tus entradas permanecen en el carrito.</small>
+                </div>
+                <p class="legal-consent">Al continuar aceptas los <a th:href="@{/terms}">términos y condiciones</a> aplicables al marketplace y al evento seleccionado.</p>
+                <button id="izipay-pay-button" class="btn primary full" type="submit" th:disabled="${!izipayWebReady}">
+                    <span>Proceder al pago</span><span th:text="${'S/ ' + #numbers.formatDecimal(total, 1, 'COMMA', 2, 'POINT')}">S/ 0.00</span>
+                </button>
+                <noscript><p class="alert error">Activa JavaScript para abrir el formulario de pago.</p></noscript>
             </form>
-
-            <section class="payment-box">
-                <div class="payment-heading">
-                    <div>
-                        <p class="badge">Pago</p>
-                        <h2 th:text="${izipayEnabled} ? 'Formulario embebido IZIPay' : 'Pago prototipo'">Pago</h2>
-                    </div>
-                    <span th:if="${izipayOrderId != null}" class="payment-order" th:text="${izipayOrderId}">CNF-000</span>
-                </div>
-
-                <div th:if="${izipayReady and izipayFormToken != null}" class="izipay-embedded-box">
-                    <p class="muted">Orden preparada. Ingresa los datos de la tarjeta en el formulario seguro de IZIPay.</p>
-                    <div id="micuentawebstd_rest_wrapper" class="izipay-wrapper">
-                        <div class="kr-embedded" th:attr="kr-form-token=${izipayFormToken}"></div>
-                    </div>
-                    <p class="payment-note">Los tickets QR se generan solo cuando IZIPay devuelve una respuesta pagada y firmada.</p>
-                </div>
-
-                <div th:if="${izipayEnabled and izipayReady and izipayFormToken == null}" class="fake-payment">
-                    <span>IP</span>
-                    <strong>Listo para preparar el pago</strong>
-                    <small>Completa o confirma tus datos y pulsa el boton principal. Spring Boot generara el formToken y aqui aparecera el formulario incrustado.</small>
-                </div>
-
-                <div th:if="${izipayEnabled and !izipayReady}" class="payment-warning">
-                    <strong>Falta configuracion local de IZIPay</strong>
-                    <small>Completa endpoint, usuario REST, password, public key, HMAC y URL del script en variables de entorno o application-local.properties.</small>
-                </div>
-
-                <div th:if="${!izipayEnabled}" class="fake-payment">
-                    <span>OK</span>
-                    <strong>Pago prototipo habilitado</strong>
-                    <small>Activa IZIPay en la configuracion local para reemplazar este bloque por el formulario real.</small>
+            <section id="izipay-payment-status" class="checkout-payment-status" hidden aria-live="polite" aria-atomic="true">
+                <p id="izipay-status-text"></p>
+                <small id="izipay-order-reference"></small>
+                <div class="checkout-recovery-actions">
+                    <button id="izipay-check-status" type="button" class="btn secondary" hidden>Consultar estado del pago</button>
+                    <button id="izipay-reopen" type="button" class="btn secondary" hidden>Volver a abrir el pago</button>
+                    <a id="izipay-sign-in" class="btn secondary" th:href="@{/login}" hidden>Iniciar sesión</a>
                 </div>
             </section>
         </div>
-
-        <aside class="summary-card">
+        <aside class="summary-card checkout-order-summary">
+            <p class="checkout-summary-eyebrow">Tu selección</p>
             <h2>Resumen de compra</h2>
             <div class="mini-item" th:each="item : ${items}">
                 <span th:text="${item.eventTitle}">Evento</span>
-                <strong th:text="${item.quantity + ' x S/ ' + item.unitPrice}">1 x S/ 0.00</strong>
+                <strong th:text="${item.quantity + ' × S/ ' + #numbers.formatDecimal(item.unitPrice, 1, 'COMMA', 2, 'POINT')}">1 × S/ 0.00</strong>
             </div>
             <div class="summary-row"><span>Entradas</span><strong th:text="${cartCount}">0</strong></div>
-            <div class="summary-row"><span>Subtotal</span><strong th:text="${'S/ ' + subtotal}">S/ 0.00</strong></div>
-            <div class="summary-row"><span>Cargo servicio 5%</span><strong th:text="${'S/ ' + serviceFee}">S/ 0.00</strong></div>
-            <div class="summary-row total"><span>Total</span><strong th:text="${'S/ ' + total}">S/ 0.00</strong></div>
+            <div class="summary-row"><span>Subtotal</span><strong th:text="${'S/ ' + #numbers.formatDecimal(subtotal, 1, 'COMMA', 2, 'POINT')}">S/ 0.00</strong></div>
+            <div class="summary-row"><span>Cargo de servicio (5%)</span><strong th:text="${'S/ ' + #numbers.formatDecimal(serviceFee, 1, 'COMMA', 2, 'POINT')}">S/ 0.00</strong></div>
+            <div class="summary-row total"><span>Total a pagar</span><strong th:text="${'S/ ' + #numbers.formatDecimal(total, 1, 'COMMA', 2, 'POINT')}">S/ 0.00</strong></div>
+            <p class="checkout-payment-note">Los tickets se emitirán cuando recibamos la confirmación del pago.</p>
         </aside>
     </section>
-
     <section class="empty-state" th:if="${items.isEmpty()}">
         <h2>No hay entradas para pagar</h2>
         <p class="muted">Agrega entradas al carrito antes de continuar al checkout.</p>
         <a class="btn primary" th:href="@{/events}">Explorar eventos</a>
+        <a class="btn secondary" th:href="@{/dashboard/client/tickets}">Ver mis tickets</a>
     </section>
 </main>
 <div th:replace="~{fragments/site-footer :: publicFooter}"></div>

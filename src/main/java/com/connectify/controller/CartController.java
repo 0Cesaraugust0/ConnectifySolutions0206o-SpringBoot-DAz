@@ -1,6 +1,7 @@
 package com.connectify.controller;
 
 import com.connectify.config.IzipayProperties;
+import com.connectify.config.IzipayWebProperties;
 import com.connectify.dto.IzipayCheckoutSession;
 import com.connectify.dto.IzipayPaymentRequest;
 import com.connectify.dto.IzipayPaymentToken;
@@ -48,6 +49,7 @@ public class CartController {
     private final IzipayProperties izipayProperties;
     private final TicketTypeRepository ticketTypeRepository;
     private final UserAccountRepository userAccountRepository;
+    private final IzipayWebProperties izipayWebProperties;
 
     public CartController(CartService cartService,
                           EventService eventService,
@@ -55,7 +57,8 @@ public class CartController {
                           IzipayPaymentService izipayPaymentService,
                           IzipayProperties izipayProperties,
                           TicketTypeRepository ticketTypeRepository,
-                          UserAccountRepository userAccountRepository) {
+                          UserAccountRepository userAccountRepository,
+                          IzipayWebProperties izipayWebProperties) {
         this.cartService = cartService;
         this.eventService = eventService;
         this.purchaseService = purchaseService;
@@ -63,6 +66,7 @@ public class CartController {
         this.izipayProperties = izipayProperties;
         this.ticketTypeRepository = ticketTypeRepository;
         this.userAccountRepository = userAccountRepository;
+        this.izipayWebProperties = izipayWebProperties;
     }
 
     @GetMapping
@@ -113,6 +117,12 @@ public class CartController {
         model.addAttribute("buyerDni", text(account.getDni()));
         model.addAttribute("buyerPhone", text(account.getPhone()));
         addIzipayAttributes(session, model);
+        model.addAttribute("izipayWebEnabled", izipayWebProperties.isEnabled());
+        model.addAttribute("izipayWebReady", izipayWebProperties.isReady());
+        model.addAttribute("izipayWebScriptUrl", izipayWebProperties.scriptUrl());
+        model.addAttribute("izipayWebMethods", String.join(",", izipayWebProperties.methods()));
+        model.addAttribute("izipayWebMode", izipayWebProperties.getEnvironment().toUpperCase(java.util.Locale.ROOT));
+        model.addAttribute("izipayWebRequestToken", IzipayWebController.requestToken(session));
         return "cart/checkout";
     }
 
@@ -124,6 +134,9 @@ public class CartController {
                                       HttpSession session,
                                       Authentication authentication,
                                       RedirectAttributes redirectAttributes) {
+        if (izipayWebProperties.isEnabled()) {
+            throw new AccessDeniedException("Usa el botón de pago IZIPay del checkout.");
+        }
         UserAccount account = currentAccount(authentication);
         String normalizedFirstName = text(firstName);
         String normalizedLastName = text(lastName);
@@ -186,6 +199,9 @@ public class CartController {
                                   @RequestParam String phone,
                                   HttpSession session,
                                   Authentication authentication) {
+        if (izipayWebProperties.isEnabled()) {
+            throw new AccessDeniedException("La compra requiere un pago confirmado por IZIPay.");
+        }
         UserAccount account = currentAccount(authentication);
         String normalizedFirstName = firstName == null ? "" : firstName.trim();
         String normalizedLastName = lastName == null ? "" : lastName.trim();

@@ -1,30 +1,17 @@
-# Copia este archivo como application-local.properties.
-# Este archivo real está ignorado por Git: no lo subas ni compartas.
-
-# Activa exclusivamente el entorno de PRUEBA.
-izipay.enabled=true
-izipay.mode=TEST
-izipay.currency=PEN
-
-# API REST de Izipay / Mi Cuenta Web (pruebas)
-# Usa la URL CreatePayment indicada en la documentación de tu comercio.
-izipay.endpoint=https://api.micuentaweb.pe/api-payment/V4/Charge/CreatePayment
-izipay.username=
-izipay.password=
-
-# SmartForm JavaScript
-izipay.public-key=
-izipay.smart-form-script-url=https://static.micuentaweb.pe/static/js/krypton-client/V4.0/stable/kr-payment-form.min.js
-
-# Validación de retorno / IPN
-izipay.hmac-sha256-key=
-izipay.success-url=http://localhost:8080/payments/izipay/success
-izipay.error-url=http://localhost:8080/payments/izipay/error
-izipay.cancel-url=http://localhost:8080/payments/izipay/cancel
-
-# La URL de notificación debe ser HTTPS y públicamente alcanzable.
-# En local, no uses localhost como URL de IPN.
-izipay.notification-url=
-
-# Nota de seguridad: si compartiste capturas con claves visibles, rota esas
-# credenciales en el Back Office antes de pasar a produccion.
+# Copiar como application-local.properties en la raíz del proyecto (ignorado por Git).
+# Claves de Panel de Comercio sandbox > Desarrolladores > Claves.
+# Son credenciales Web Core / Punto Web, distintas de Mi Cuenta Web / Krypton.
+izipay.web.enabled=true
+izipay.web.environment=sandbox
+izipay.web.merchant-code=
+izipay.web.api-key=
+izipay.web.public-key=
+izipay.web.hash-key=
+izipay.web.payment-methods=CARD
+# Después de habilitar las billeteras en el comercio:
+# izipay.web.payment-methods=CARD,YAPE_CODE,PAGO_PUSH
+# IPN: requiere una URL pública HTTPS de esta aplicación.
+# Ruta: /payments/izipay/web/notification
+izipay.web.ipn-url=
+# Mantener desactivada la integración anterior.
+izipay.enabled=false

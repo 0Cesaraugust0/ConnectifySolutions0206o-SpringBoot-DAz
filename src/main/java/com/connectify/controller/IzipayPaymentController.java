@@ -1,6 +1,7 @@
 package com.connectify.controller;
 
 import com.connectify.dto.IzipayCheckoutSession;
+import com.connectify.config.IzipayWebProperties;
 import com.connectify.entity.Purchase;
 import com.connectify.service.CartService;
 import com.connectify.service.IzipayPaymentService;
@@ -24,19 +25,25 @@ public class IzipayPaymentController {
     private final IzipayPaymentService izipayPaymentService;
     private final PurchaseService purchaseService;
     private final CartService cartService;
+    private final IzipayWebProperties izipayWebProperties;
 
     public IzipayPaymentController(IzipayPaymentService izipayPaymentService,
                                    PurchaseService purchaseService,
-                                   CartService cartService) {
+                                   CartService cartService,
+                                   IzipayWebProperties izipayWebProperties) {
         this.izipayPaymentService = izipayPaymentService;
         this.purchaseService = purchaseService;
         this.cartService = cartService;
+        this.izipayWebProperties = izipayWebProperties;
     }
 
     @PostMapping("/success")
     public String success(@RequestParam Map<String, String> payload,
                           HttpSession session,
                           RedirectAttributes redirectAttributes) {
+        if (izipayWebProperties.isEnabled()) {
+            return paymentRejected("Usa el checkout Web Core para verificar tu pago.", redirectAttributes);
+        }
         String krAnswer = payload.get("kr-answer");
         String krHash = payload.get("kr-hash");
         IzipayCheckoutSession checkoutSession = checkoutSession(session);
