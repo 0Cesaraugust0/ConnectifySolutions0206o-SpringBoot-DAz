@@ -44,6 +44,10 @@ Los datos de facturación se completan por el cliente; no se inventa una direcci
 - La consulta del estado exige la cuenta propietaria de la compra.
 - El inicio exige un token de sesión adicional para proteger el formulario.
 - Las respuestas del API de checkout usan `Cache-Control: no-store`.
+- Cerrar el Pop-In no cambia la orden a pagada ni bloquea el checkout. Los botones
+  permanecen disponibles y el mismo método reabre la sesión activa.
+- La compra y los tickets sólo se crean después de validar una respuesta firmada
+  del SDK o la notificación servidor a servidor de IZIPay.
 
 Para recibir IPN, configurar la URL HTTPS pública de este endpoint en
 `izipay.web.ipn-url` y habilitar/configurar las notificaciones en el comercio según IZIPay.

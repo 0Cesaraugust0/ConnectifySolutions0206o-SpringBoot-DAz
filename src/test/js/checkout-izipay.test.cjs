@@ -18,7 +18,7 @@ function setup(responses, ready = true) {
     form.dataset = {ready: String(ready), statusUrl:'/cart/checkout/izipay/status',verifyUrl:'/cart/checkout/izipay/verify'};
     form.action = '/cart/checkout/izipay/session';
     const calls = [], redirects = [];
-    let options, openedConfig;
+    let options, openedConfig, opens = 0;
     const sandbox = {
         document:{getElementById:id=>nodes[id]}, sessionStorage:{getItem(){return null;},setItem(){},removeItem(){}},
         URL, AbortSignal, FormData: class {}, console,
@@ -29,20 +29,21 @@ function setup(responses, ready = true) {
             return {ok:true,status:200,redirected:false,headers:{get:()=> 'application/json'},
                 json: async () => response};
         },
-        window:{Izipay:class {constructor(arg){this.config=arg.config; openedConfig=arg.config;} LoadForm(arg){options=arg;}},
+        window:{Izipay:class {constructor(arg){this.config=arg.config; openedConfig=arg.config;} LoadForm(arg){options=arg; opens++;}},
             clearTimeout(){},setTimeout(){return 1;},addEventListener(){},
             location:{origin:'http://localhost:8080',assign(url){redirects.push(url);}}}
     };
     vm.runInNewContext(code,sandbox);
-    return {nodes,calls,redirects, callback:r=>options.callbackResponse(r), config:()=>openedConfig,
+    return {nodes,calls,redirects, callback:r=>options.callbackResponse(r), config:()=>openedConfig, opens:()=>opens,
         submit:(method)=>form.handlers.submit({preventDefault(){},submitter:method ? {dataset:{paymentMethod:method}} : null})};
 }
 const session = {orderNumber:'ABC123',verificationToken:'local-token',authorization:'sdk-token',keyRSA:'public-fixture',
-    config:{render:{typeForm:'pop-up'}}};
+    paymentMethod:'CARD',config:{order:{payMethod:'CARD'},render:{typeForm:'pop-up'}}};
 test('double submit opens one order and only server confirmation redirects', async () => {
     const app=setup([session,{status:'COMPLETED',redirectUrl:'/cart/confirmation/42'}]);
     await app.submit(); await app.submit();
     assert.equal(app.calls.length,1);
+    assert.equal(app.opens(),2);
     assert.equal(app.redirects.length,0);
     await app.callback({code:'00',payloadHttp:'signed fixture',signature:'signature fixture'});
     assert.equal(app.calls.length,2);
@@ -56,6 +57,12 @@ test('unsigned success/cancel never creates tickets or calls verification', asyn
     assert.equal(app.calls.length,1);
     assert.equal(app.redirects.length,0);
     assert.equal(app.nodes['izipay-check-status'].hidden,true);
+    for (const id of ['izipay-pay-button','izipay-yape-button','izipay-plin-button','izipay-qr-button']) {
+        assert.equal(app.nodes[id].disabled,false);
+    }
+    await app.submit('CARD');
+    assert.equal(app.calls.length,1);
+    assert.equal(app.opens(),2);
 });
 test('network loss during signed callback retains order for status recovery', async () => {
     const app=setup([session,new Error('Network unavailable')]);

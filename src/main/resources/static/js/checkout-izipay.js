@@ -115,7 +115,7 @@
             show('El formulario anterior quedó pendiente. Pulsa “Retomar pago” para abrir nuevamente el Pop-In.');
             check.hidden = true;
             reopen.hidden = !activeSession;
-            if (!activeSession) setBusy(false);
+            setBusy(false);
         }
     }
 
@@ -154,9 +154,11 @@
             show('El formulario de pago se cerró. Puedes abrirlo nuevamente para continuar.');
             check.hidden = true;
             reopen.hidden = false;
+            setBusy(false);
             return;
         }
         verifying = true;
+        setBusy(true);
         reopen.hidden = true;
         show('Verificando el pago con IZIPay…');
         try {
@@ -174,6 +176,7 @@
             show('Aún no recibimos la confirmación. Seguiremos comprobando el pago automáticamente.', true);
             check.hidden = true;
             polling = true;
+            setBusy(false);
             poll();
         } finally {
             verifying = false;
@@ -183,18 +186,25 @@
     function openPayment() {
         if (!activeSession || verifying) return;
         if (typeof window.Izipay !== 'function') throw new Error('No se pudo cargar IZIPay. Revisa tu conexión y recarga esta página.');
+        setBusy(true);
         reopen.hidden = true;
-        checkout = new window.Izipay({ config: activeSession.config });
-        checkout.LoadForm({
-            authorization: activeSession.authorization,
-            keyRSA: activeSession.keyRSA,
-            callbackResponse: handleResponse
-        });
-        show('Completa el pago con ' + methodName(activeSession.paymentMethod) + ' en la ventana de IZIPay. Tus tickets se emitirán al confirmar la operación.');
-        check.hidden = false;
-        polls = 0;
-        polling = true;
-        poll();
+        try {
+            checkout = new window.Izipay({ config: activeSession.config });
+            checkout.LoadForm({
+                authorization: activeSession.authorization,
+                keyRSA: activeSession.keyRSA,
+                callbackResponse: handleResponse
+            });
+            show('Completa el pago con ' + methodName(activeSession.paymentMethod) + ' en la ventana de IZIPay. Puedes cerrar el Pop-In y retomarlo sin perder el carrito.');
+            check.hidden = false;
+            polls = 0;
+            polling = true;
+            poll();
+        } finally {
+            // LoadForm only opens the Pop-In. The checkout must remain usable until
+            // a signed provider response or the server notification confirms payment.
+            setBusy(false);
+        }
     }
 
     form.addEventListener('submit', async (event) => {
@@ -203,6 +213,12 @@
         const selectedMethod = event.submitter && event.submitter.dataset.paymentMethod
             ? event.submitter.dataset.paymentMethod : ((payMethod && payMethod.value) || 'CARD');
         if (payMethod) payMethod.value = selectedMethod;
+        if (activeSession && activeSession.paymentMethod === selectedMethod) {
+            try { openPayment(); }
+            catch (error) { show(error.message, true); reopen.hidden = false; setBusy(false); }
+            return;
+        }
+        stopPolling();
         setBusy(true);
         show('Preparando tu pago con ' + methodName(selectedMethod) + '…');
         try {
@@ -211,7 +227,6 @@
             if (complete(data)) return;
             activeSession = data;
             rememberOrder(data.orderNumber);
-            setBusy(true, 'Pago en curso');
             openPayment();
         } catch (error) {
             show(error.message, true);
