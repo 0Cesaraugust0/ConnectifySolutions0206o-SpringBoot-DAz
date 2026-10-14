@@ -7,9 +7,8 @@ izipay.web.merchant-code=
 izipay.web.api-key=
 izipay.web.public-key=
 izipay.web.hash-key=
-izipay.web.payment-methods=CARD
-# Después de habilitar las billeteras en el comercio:
-# izipay.web.payment-methods=CARD,YAPE_CODE,PAGO_PUSH
+izipay.web.payment-methods=CARD,YAPE_CODE,PAGO_PUSH,QR
+# CARD=tarjeta, YAPE_CODE=Yape, PAGO_PUSH=Plin Interbank, QR=QR interoperable.
 # IPN: requiere una URL pública HTTPS de esta aplicación.
 # Ruta: /payments/izipay/web/notification
 izipay.web.ipn-url=

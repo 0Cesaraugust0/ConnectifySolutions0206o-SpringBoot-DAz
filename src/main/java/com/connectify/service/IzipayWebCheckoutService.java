@@ -43,15 +43,16 @@ public class IzipayWebCheckoutService {
     }
 
     @Transactional
-    public Map<String, Object> start(String email, IzipayWebBuyer buyer, List<CartItem> cart) {
+    public Map<String, Object> start(String email, IzipayWebBuyer buyer, List<CartItem> cart, String requestedMethod) {
         ready();
+        String paymentMethod = normalizePaymentMethod(requestedMethod);
         // Serialize parallel start requests for the same customer, including separate browser tabs.
         UserAccount user = users.findLockedByEmail(email)
                 .orElseThrow(() -> new AccessDeniedException("Cuenta no encontrada."));
         if (user.getRole() != Role.CLIENT || !user.isActive())
             throw new AccessDeniedException("Se requiere una cuenta Cliente activa.");
         Map<String, String> billing = buyer.billing(user.getEmail());
-        if (properties.methods().contains("PAGO_PUSH") && !billing.get("phoneNumber").matches("[0-9]{9}"))
+        if ("PAGO_PUSH".equals(paymentMethod) && !billing.get("phoneNumber").matches("[0-9]{9}"))
             throw new IllegalArgumentException("Para Plin, ingresa un teléfono de 9 dígitos.");
         List<IzipayWebLine> lines = snapshot(cart);
         String snapshotJson = json(lines);
@@ -71,6 +72,7 @@ public class IzipayWebCheckoutService {
         attempt.setTransactionId(UUID.randomUUID().toString().replace("-", ""));
         attempt.setBuyerEmail(user.getEmail());
         attempt.setMerchantCode(properties.getMerchantCode());
+        attempt.setPaymentMethod(paymentMethod);
         attempt.setSnapshotJson(snapshotJson);
         attempt.setBillingJson(billingJson);
         attempt.setFingerprint(fingerprint);
@@ -259,7 +261,7 @@ public class IzipayWebCheckoutService {
         config.put("merchantCode", attempt.getMerchantCode());
         config.put("order", Map.of("orderNumber", attempt.getOrderNumber(), "currency", attempt.getCurrency(),
                 "amount", attempt.getAmount().toPlainString(), "processType", "AT",
-                "payMethod", String.join(",", properties.methods()),
+                "payMethod", attempt.getPaymentMethod(),
                 "merchantBuyerId", IzipayWebSignature.sha256(attempt.getBuyerEmail()).substring(0, 32),
                 "dateTimeTransaction", Long.toString(attempt.getCreatedAt().toEpochMilli() * 1000)));
         config.put("billing", readBilling(attempt.getBillingJson()));
@@ -271,6 +273,7 @@ public class IzipayWebCheckoutService {
         }
         return Map.of("config", config, "authorization", attempt.getAuthorization(), "keyRSA", properties.getPublicKey(),
                 "orderNumber", attempt.getOrderNumber(),
+                "paymentMethod", attempt.getPaymentMethod(),
                 "verificationToken", signatures.verificationToken(attempt.getOrderNumber(), attempt.getBuyerEmail()));
     }
 
@@ -278,6 +281,7 @@ public class IzipayWebCheckoutService {
         Map<String, Object> response = new LinkedHashMap<>();
         response.put("orderNumber", attempt.getOrderNumber());
         response.put("status", attempt.getStatus());
+        if (attempt.getPaymentMethod() != null) response.put("paymentMethod", attempt.getPaymentMethod());
         if ("COMPLETED".equals(attempt.getStatus()) && attempt.getPurchase() != null)
             response.put("redirectUrl", "/cart/confirmation/" + attempt.getPurchase().getId());
         else if ("REVIEW".equals(attempt.getStatus()))
@@ -295,6 +299,12 @@ public class IzipayWebCheckoutService {
     private void own(IzipayWebAttempt attempt, String email) {
         if (email == null || !attempt.getBuyerEmail().equalsIgnoreCase(email))
             throw new AccessDeniedException("Esta orden pertenece a otra cuenta.");
+    }
+    private String normalizePaymentMethod(String requestedMethod) {
+        String value = requestedMethod == null ? "" : requestedMethod.trim().toUpperCase(Locale.ROOT);
+        if (!properties.methods().contains(value))
+            throw new IllegalArgumentException("El medio de pago seleccionado no está habilitado.");
+        return value;
     }
     private void ready() { if (!properties.isReady()) throw new IllegalStateException("IZIPay aún no está configurado para recibir pagos."); }
     private BigDecimal money(BigDecimal value) { return value.setScale(2, RoundingMode.HALF_UP); }

@@ -29,12 +29,13 @@ public class IzipayWebController {
     @PostMapping("/cart/checkout/izipay/session")
     public ResponseEntity<Map<String, Object>> start(@ModelAttribute IzipayWebBuyer buyer,
                                                     @RequestParam String checkoutToken,
+                                                    @RequestParam String payMethod,
                                                     Authentication authentication, HttpSession session) {
         String expected = (String) session.getAttribute(REQUEST_TOKEN_KEY);
         if (expected == null || checkoutToken == null || !MessageDigest.isEqual(expected.getBytes(StandardCharsets.UTF_8), checkoutToken.getBytes(StandardCharsets.UTF_8)))
             throw new AccessDeniedException("La sesión de checkout venció. Recarga la página antes de continuar.");
         String buyerEmail = email(authentication);
-        return noStore(checkout.start(buyerEmail, buyer, List.copyOf(cart.getItems(buyerEmail))));
+        return noStore(checkout.start(buyerEmail, buyer, List.copyOf(cart.getItems(buyerEmail)), payMethod));
     }
 
     @PostMapping("/cart/checkout/izipay/verify")

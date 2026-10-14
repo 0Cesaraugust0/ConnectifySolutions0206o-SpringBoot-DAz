@@ -18,15 +18,16 @@ Variables equivalentes:
 - `IZIPAY_WEB_API_KEY`
 - `IZIPAY_WEB_PUBLIC_KEY`
 - `IZIPAY_WEB_HASH_KEY`
-- `IZIPAY_WEB_PAYMENT_METHODS=CARD`
+- `IZIPAY_WEB_PAYMENT_METHODS=CARD,YAPE_CODE,PAGO_PUSH,QR`
 - `IZIPAY_WEB_IPN_URL`
 
 Sin credenciales completas, el checkout muestra pagos no disponibles y no genera tickets.
 No hay credenciales de comercio incluidas ni pagos reales realizados por las pruebas.
 
 ## Tarjetas, Yape y Plin
-Se inicia con `CARD`. Una vez habilitados por IZIPay, configurar
-`CARD,YAPE_CODE,PAGO_PUSH` para tarjetas, código Yape y Plin Interbank.
+El checkout muestra botones separados y crea una sesión específica por modalidad:
+`CARD` para tarjeta, `YAPE_CODE` para Yape, `PAGO_PUSH` para Plin Interbank y
+`QR` para el QR interoperable.
 La disponibilidad final depende de la afiliación y los límites del comercio.
 El SDK solicita los datos sensibles; Connectify no recibe números de tarjeta ni CVV.
 Los datos de facturación se completan por el cliente; no se inventa una dirección.

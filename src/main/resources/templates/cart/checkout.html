@@ -6,9 +6,9 @@
     <title>Finalizar compra - Connectify</title>
     <link rel="stylesheet" th:href="@{/css/styles.css}">
     <link rel="stylesheet" th:href="@{/css/cart.css(v='checkout-compact-1')}">
-    <link rel="stylesheet" th:href="@{/css/checkout-izipay.css(v='web-core-1')}">
+    <link rel="stylesheet" th:href="@{/css/checkout-izipay.css(v='wallets-1')}">
     <script th:if="${izipayWebReady}" th:src="${izipayWebScriptUrl}" defer></script>
-    <script th:src="@{/js/checkout-izipay.js(v='web-core-2')}" defer></script>
+    <script th:src="@{/js/checkout-izipay.js(v='wallets-1')}" defer></script>
 </head>
 <body class="checkout-body">
 <header class="navbar dashboard-nav checkout-nav">
@@ -34,6 +34,7 @@
             <form id="izipay-checkout-form" class="checkout-form" th:action="@{/cart/checkout/izipay/session}" method="post"
                   th:attr="data-ready=${izipayWebReady},data-status-url=@{/cart/checkout/izipay/status},data-verify-url=@{/cart/checkout/izipay/verify}">
                 <input type="hidden" name="checkoutToken" th:value="${izipayWebRequestToken}">
+                <input id="izipay-pay-method" type="hidden" name="payMethod" value="CARD">
                 <h2>Datos del comprador</h2>
                 <p class="checkout-intro">Tus entradas se guardarán en tu cuenta una vez confirmado el pago.</p>
                 <div th:if="${paymentErrorMessage != null}" class="alert error" th:text="${paymentErrorMessage}"></div>
@@ -49,14 +50,39 @@
                     <label>Código postal<input name="postalCode" type="text" autocomplete="postal-code" inputmode="numeric" pattern="[0-9]{5,10}" minlength="5" maxlength="10" title="Ingresa tu código postal" required></label>
                     <div class="checkout-country"><span>País de facturación</span><strong>Perú</strong></div>
                 </div>
-                <section class="checkout-payment-methods" aria-label="Medios de pago">
-                    <div class="checkout-payment-heading"><strong>Pago con IZIPay</strong><span>Formulario seguro</span></div>
-                    <p>Al pulsar “Proceder al pago” se abrirá una ventana sobre esta página para ingresar tus datos de pago.</p>
-                    <div class="checkout-methods">
-                        <span th:if="${#strings.contains(izipayWebMethods, 'CARD')}">Tarjeta</span>
-                        <span th:if="${#strings.contains(izipayWebMethods, 'QR')}">QR</span>
-                        <span th:if="${#strings.contains(izipayWebMethods, 'YAPE_CODE')}">Yape</span>
-                        <span th:if="${#strings.contains(izipayWebMethods, 'PAGO_PUSH')}">Plin Interbank</span>
+                <section class="checkout-payment-methods" aria-labelledby="payment-method-title">
+                    <div class="checkout-payment-heading">
+                        <div><span class="payment-step">Medios de pago</span><strong id="payment-method-title">Elige cómo pagar</strong></div>
+                        <span>Procesado por IZIPay</span>
+                    </div>
+                    <p>Se abrirá el Pop-In seguro con la modalidad seleccionada. El carrito se conserva si cierras la ventana.</p>
+                    <div class="payment-route-grid">
+                        <article class="payment-route-card" th:if="${#strings.contains(izipayWebMethods, 'CARD')}">
+                            <span class="payment-route-icon" aria-hidden="true">▤</span>
+                            <div><h3>Tarjeta</h3><p>Visa, Mastercard, American Express y Diners.</p></div>
+                            <button id="izipay-pay-button" class="payment-method-button card-payment-button" type="submit"
+                                    data-payment-method="CARD" th:disabled="${!izipayWebReady}">
+                                <span>Pagar con tarjeta</span><span aria-hidden="true">→</span>
+                            </button>
+                        </article>
+                        <article class="payment-route-card wallet-route">
+                            <span class="payment-route-icon wallet-icon" aria-hidden="true">◫</span>
+                            <div><h3>Pago con billetera digital</h3><p>Elige Yape, Plin Interbank o escanea un QR interoperable.</p></div>
+                            <div class="wallet-payment-options">
+                                <button id="izipay-yape-button" class="payment-method-button yape-button" type="submit"
+                                        data-payment-method="YAPE_CODE" th:if="${#strings.contains(izipayWebMethods, 'YAPE_CODE')}" th:disabled="${!izipayWebReady}">
+                                    <span class="wallet-brand">Yape</span><small>Código de aprobación</small><span aria-hidden="true">→</span>
+                                </button>
+                                <button id="izipay-plin-button" class="payment-method-button plin-button" type="submit"
+                                        data-payment-method="PAGO_PUSH" th:if="${#strings.contains(izipayWebMethods, 'PAGO_PUSH')}" th:disabled="${!izipayWebReady}">
+                                    <span class="wallet-brand">Plin</span><small>Confirmación en Interbank</small><span aria-hidden="true">→</span>
+                                </button>
+                                <button id="izipay-qr-button" class="payment-method-button qr-button" type="submit"
+                                        data-payment-method="QR" th:if="${#strings.contains(izipayWebMethods, 'QR')}" th:disabled="${!izipayWebReady}">
+                                    <span class="wallet-brand">Escanear QR</span><small>Billetera compatible</small><span aria-hidden="true">⌗</span>
+                                </button>
+                            </div>
+                        </article>
                     </div>
                 </section>
                 <div th:unless="${izipayWebReady}" class="payment-warning">
@@ -64,9 +90,7 @@
                     <small>Estamos preparando la conexión con IZIPay. Tus entradas permanecen en el carrito.</small>
                 </div>
                 <p class="legal-consent">Al continuar aceptas los <a th:href="@{/terms}">términos y condiciones</a> aplicables al marketplace y al evento seleccionado.</p>
-                <button id="izipay-pay-button" class="btn primary full" type="submit" th:disabled="${!izipayWebReady}">
-                    <span>Proceder al pago</span><span th:text="${'S/ ' + #numbers.formatDecimal(total, 1, 'COMMA', 2, 'POINT')}">S/ 0.00</span>
-                </button>
+                <div class="checkout-total-confirmation"><span>Total protegido por IZIPay</span><strong th:text="${'S/ ' + #numbers.formatDecimal(total, 1, 'COMMA', 2, 'POINT')}">S/ 0.00</strong></div>
                 <noscript><p class="alert error">Activa JavaScript para abrir el formulario de pago.</p></noscript>
             </form>
             <section id="izipay-payment-status" class="checkout-payment-status" hidden aria-live="polite" aria-atomic="true">

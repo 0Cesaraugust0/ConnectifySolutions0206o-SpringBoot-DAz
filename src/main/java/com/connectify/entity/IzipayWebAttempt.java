@@ -18,6 +18,8 @@ public class IzipayWebAttempt {
     private String buyerEmail;
     @Column(nullable = false, length = 20)
     private String merchantCode;
+    @Column(length = 20)
+    private String paymentMethod;
     @Column(nullable = false, length = 3)
     private String currency = "PEN";
     @Column(nullable = false, precision = 14, scale = 2)
@@ -59,6 +61,8 @@ public class IzipayWebAttempt {
     public void setBuyerEmail(String buyerEmail) { this.buyerEmail = buyerEmail; }
     public String getMerchantCode() { return merchantCode; }
     public void setMerchantCode(String merchantCode) { this.merchantCode = merchantCode; }
+    public String getPaymentMethod() { return paymentMethod; }
+    public void setPaymentMethod(String paymentMethod) { this.paymentMethod = paymentMethod; }
     public String getCurrency() { return currency; }
     public void setCurrency(String currency) { this.currency = currency; }
     public BigDecimal getAmount() { return amount; }

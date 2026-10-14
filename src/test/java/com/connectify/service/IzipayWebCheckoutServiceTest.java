@@ -35,6 +35,7 @@ class IzipayWebCheckoutServiceTest {
         IzipayWebProperties properties = new IzipayWebProperties();
         properties.setMerchantCode("1234567"); properties.setApiKey("fixture-api");
         properties.setPublicKey("fixture-public"); properties.setHashKey("fixture-hash");
+        properties.setPaymentMethods("CARD,YAPE_CODE,PAGO_PUSH,QR");
         service = new IzipayWebCheckoutService(properties, attempts, users, events, types, purchases, gateway,
                 signatures, new IzipayWebPaymentValidator(), mapper);
         event = new Event(); ReflectionTestUtils.setField(event, "id", 1L);
@@ -52,6 +53,7 @@ class IzipayWebCheckoutServiceTest {
         attempt = new IzipayWebAttempt();
         attempt.setOrderNumber("0123456789ABCDE"); attempt.setTransactionId("transaction123");
         attempt.setBuyerEmail(email); attempt.setMerchantCode("1234567");
+        attempt.setPaymentMethod("CARD");
         attempt.setAmount(new BigDecimal("105.00")); attempt.setSubtotal(new BigDecimal("100.00")); attempt.setServiceFee(new BigDecimal("5.00"));
         attempt.setSnapshotJson(mapper.writeValueAsString(List.of(new IzipayWebLine(1L, null, "Test Event", "General", 1, new BigDecimal("100.00")))));
         attempt.setBillingJson(mapper.writeValueAsString(buyer().billing(email)));
@@ -95,22 +97,25 @@ class IzipayWebCheckoutServiceTest {
 
     @Test
     void startDoesNotChargeOrIssueTicketsAndStoresSnapshot() {
-        Map<String, Object> response = service.start(email, buyer(), cart());
+        Map<String, Object> response = service.start(email, buyer(), cart(), "YAPE_CODE");
         assertThat(response.get("authorization")).isEqualTo("fixture-authorization");
+        assertThat(response.get("paymentMethod")).isEqualTo("YAPE_CODE");
+        assertThat(((Map<?, ?>) ((Map<?, ?>) response.get("config")).get("order")).get("payMethod")).isEqualTo("YAPE_CODE");
         verify(attempts).save(argThat(value -> value.getOrderNumber().length() == 15
                 && value.getAmount().compareTo(new BigDecimal("105.00")) == 0
+                && "YAPE_CODE".equals(value.getPaymentMethod())
                 && value.getSnapshotJson().contains("Test Event")));
         verifyNoInteractions(purchases);
     }
 
     @Test
     void pendingOrderIsReplacedWhenCustomerRetakesPayment() throws Exception {
-        Map<String, Object> first = service.start(email, buyer(), cart());
+        Map<String, Object> first = service.start(email, buyer(), cart(), "CARD");
         var capture = org.mockito.ArgumentCaptor.forClass(IzipayWebAttempt.class);
         verify(attempts).save(capture.capture());
         IzipayWebAttempt saved = capture.getValue();
         when(attempts.findByBuyerEmailIgnoreCaseAndStatusOrderByCreatedAtDesc(email, "PENDING")).thenReturn(List.of(saved));
-        Map<String, Object> resumed = service.start(email, buyer(), cart());
+        Map<String, Object> resumed = service.start(email, buyer(), cart(), "QR");
         assertThat(resumed.get("orderNumber")).isNotEqualTo(first.get("orderNumber"));
         assertThat(saved.getStatus()).isEqualTo("ABANDONED");
         verify(gateway, times(2)).authorize(any());
@@ -128,7 +133,14 @@ class IzipayWebCheckoutServiceTest {
     @Test
     void staleCartPriceCannotSetGatewayAmount() {
         List<CartItem> changed = cart(); changed.get(0).setUnitPrice(BigDecimal.ONE);
-        assertThatThrownBy(() -> service.start(email, buyer(), changed)).hasMessageContaining("precio");
+        assertThatThrownBy(() -> service.start(email, buyer(), changed, "CARD")).hasMessageContaining("precio");
+        verifyNoInteractions(gateway);
+    }
+
+    @Test
+    void rejectsPaymentMethodThatIsNotEnabled() {
+        assertThatThrownBy(() -> service.start(email, buyer(), cart(), "APPLE_PAY"))
+                .isInstanceOf(IllegalArgumentException.class).hasMessageContaining("no está habilitado");
         verifyNoInteractions(gateway);
     }
 

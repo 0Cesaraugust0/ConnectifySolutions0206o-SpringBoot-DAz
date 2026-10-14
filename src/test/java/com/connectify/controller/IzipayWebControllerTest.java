@@ -28,25 +28,25 @@ class IzipayWebControllerTest {
         String token = IzipayWebController.requestToken(session);
         var account = UsernamePasswordAuthenticationToken.authenticated("client@example.test", "ignored", List.of());
         when(cart.getItems("client@example.test")).thenReturn(new ArrayList<>(List.of(new CartItem(1L, "Event", "", "", 1, BigDecimal.TEN))));
-        when(service.start(eq("client@example.test"), any(), any())).thenReturn(Map.of("orderNumber", "0123456789ABCDE"));
+        when(service.start(eq("client@example.test"), any(), any(), eq("YAPE_CODE"))).thenReturn(Map.of("orderNumber", "0123456789ABCDE"));
         mvc.perform(post("/cart/checkout/izipay/session").session(session).principal(account)
-                .param("checkoutToken", "wrong-token").param("firstName", "Test").param("lastName", "Client"))
+                .param("checkoutToken", "wrong-token").param("payMethod", "YAPE_CODE").param("firstName", "Test").param("lastName", "Client"))
                 .andExpect(status().isForbidden());
         verifyNoInteractions(service);
         mvc.perform(post("/cart/checkout/izipay/session").session(session).principal(account)
-                .param("checkoutToken", token).param("firstName", "Test").param("lastName", "Client")
+                .param("checkoutToken", token).param("payMethod", "YAPE_CODE").param("firstName", "Test").param("lastName", "Client")
                 .param("dni", "12345678").param("phone", "999999999").param("street", "Avenida Peru 100")
                 .param("city", "Lima").param("state", "Lima").param("postalCode", "15001"))
                 .andExpect(status().isOk()).andExpect(header().string("Cache-Control", "no-store"))
                 .andExpect(jsonPath("$.orderNumber").value("0123456789ABCDE"));
-        verify(service).start(eq("client@example.test"), argThat(buyer -> buyer.firstName().equals("Test") && buyer.postalCode().equals("15001")), any());
+        verify(service).start(eq("client@example.test"), argThat(buyer -> buyer.firstName().equals("Test") && buyer.postalCode().equals("15001")), any(), eq("YAPE_CODE"));
     }
 
     @Test
     void lostHttpSessionCannotStartPaymentUsingOldPageToken() throws Exception {
         var account = UsernamePasswordAuthenticationToken.authenticated("client@example.test", "ignored", List.of());
         mvc.perform(post("/cart/checkout/izipay/session").session(new MockHttpSession()).principal(account)
-                .param("checkoutToken", "from-an-expired-session").param("firstName", "Test").param("lastName", "Client"))
+                .param("checkoutToken", "from-an-expired-session").param("payMethod", "CARD").param("firstName", "Test").param("lastName", "Client"))
                 .andExpect(status().isForbidden());
         verifyNoInteractions(service);
     }

@@ -3,15 +3,36 @@
 .checkout-page .checkout-intro { margin: -7px 0 0; color: #687383; font-size: .66rem; line-height: 1.5; }
 .checkout-country { display: grid; align-content: center; gap: 7px; font-size: .64rem; color: #697382; }
 .checkout-country strong { font-size: .7rem; color: #172033; font-weight: 500; }
-.checkout-payment-methods { padding: 15px; border: 1px solid #d9e3df; border-radius: 7px; background: #f6f9f7; }
+.checkout-payment-methods { padding: 18px; border: 1px solid #d9e0e9; border-radius: 10px; background: #f7f9fc; }
 .checkout-payment-heading { display: flex; justify-content: space-between; gap: 10px; align-items: center; }
-.checkout-payment-heading strong { color: #172033; font-size: .78rem; }
+.checkout-payment-heading > div { display: grid; gap: 3px; }
+.checkout-payment-heading strong { color: #172033; font-size: .82rem; }
 .checkout-payment-heading > span { color: #567262; font-size: .57rem; }
+.payment-step { color: #67738a; font-size: .52rem; font-weight: 650; letter-spacing: .11em; text-transform: uppercase; }
 .checkout-payment-methods p, .checkout-page .checkout-payment-note { color: #687383; font-size: .64rem; line-height: 1.5; margin: 9px 0 0; }
-.checkout-methods { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
-.checkout-methods span { padding: 6px 10px; border: 1px solid #d6ded9; border-radius: 4px; background: #fff; color: #3c5145; font-size: .61rem; font-weight: 600; }
-.checkout-page #izipay-pay-button { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
-.checkout-page #izipay-pay-button:disabled { opacity: .55; cursor: not-allowed; }
+.payment-route-grid { display: grid; gap: 11px; margin-top: 15px; }
+.payment-route-card { display: grid; grid-template-columns: 38px minmax(0, 1fr) minmax(138px, auto); gap: 12px; align-items: center; padding: 13px; border: 1px solid #dce2eb; border-radius: 9px; background: #fff; box-shadow: 0 5px 16px rgba(21, 31, 50, .04); }
+.payment-route-card h3 { margin: 0; color: #172033; font-size: .72rem; font-weight: 650; }
+.payment-route-card p { margin: 4px 0 0; font-size: .58rem; }
+.payment-route-icon { display: grid; place-items: center; width: 36px; height: 36px; border-radius: 7px; color: #fff; background: #182238; font-size: 1rem; }
+.wallet-route { grid-template-columns: 38px minmax(0, 1fr); align-items: start; border-color: #d7ddec; background: linear-gradient(135deg, #fff 0%, #f7f6fc 100%); }
+.wallet-icon { background: #4a4264; }
+.wallet-payment-options { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.payment-method-button { border: 0; border-radius: 7px; cursor: pointer; font: inherit; transition: transform .16s ease, box-shadow .16s ease, filter .16s ease; }
+.payment-method-button:hover { transform: translateY(-1px); filter: brightness(1.02); }
+.payment-method-button:focus-visible { outline: 2px solid #2f6fed; outline-offset: 2px; }
+.payment-method-button:disabled { opacity: .48; cursor: not-allowed; transform: none; }
+.card-payment-button { display: flex; align-items: center; justify-content: space-between; gap: 10px; min-height: 36px; padding: 9px 12px; color: #fff; background: #172033; font-size: .61rem; font-weight: 650; }
+.wallet-payment-options .payment-method-button { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 2px 8px; min-height: 55px; padding: 10px 11px; color: #fff; text-align: left; box-shadow: 0 6px 14px rgba(25, 31, 48, .1); }
+.wallet-payment-options .wallet-brand { font-size: .67rem; font-weight: 720; }
+.wallet-payment-options small { grid-column: 1; color: inherit; opacity: .8; font-size: .5rem; }
+.wallet-payment-options .payment-method-button > span:last-child { grid-column: 2; grid-row: 1 / span 2; align-self: center; font-size: .8rem; }
+.yape-button { background: linear-gradient(135deg, #592b82, #6e35a3); }
+.plin-button { background: linear-gradient(135deg, #176d8f, #1186a5 57%, #c53375 160%); }
+.qr-button { background: linear-gradient(135deg, #27334a, #465774); }
+.checkout-total-confirmation { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 11px 13px; border: 1px solid #dfe3e9; border-radius: 7px; color: #667085; background: #fff; font-size: .61rem; }
+.checkout-total-confirmation strong { color: #172033; font-size: .78rem; }
+.checkout-form[aria-busy="true"] .payment-method-button { pointer-events: none; }
 .checkout-payment-status { padding: 16px; border: 1px solid #cbd6e4; border-radius: 8px; background: #eff4fa; color: #30445e; }
 .checkout-payment-status p { margin: 0; font-size: .73rem; line-height: 1.5; }
 .checkout-payment-status small { display: block; margin-top: 7px; overflow-wrap: anywhere; font-size: .6rem; }
@@ -22,4 +43,5 @@
 .checkout-summary-eyebrow { margin: 0; color: #64816f; font-size: .54rem; text-transform: uppercase; letter-spacing: .1em; font-weight: 600; }
 .checkout-order-summary .mini-item strong { flex-shrink: 0; }
 .checkout-order-summary .total { border-top: 1px solid #dfe3e8; border-bottom: 0; }
-@media (max-width: 620px) { .checkout-hero { flex-direction: column; } }
+@media (max-width: 720px) { .wallet-payment-options { grid-template-columns: 1fr; } }
+@media (max-width: 620px) { .checkout-hero { flex-direction: column; } .payment-route-card { grid-template-columns: 38px minmax(0, 1fr); } .card-payment-button { grid-column: 1 / -1; } }

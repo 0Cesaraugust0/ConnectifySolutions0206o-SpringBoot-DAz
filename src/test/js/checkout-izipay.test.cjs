@@ -7,16 +7,18 @@ const code = fs.readFileSync(path.join(__dirname, '../../main/resources/static/j
 function setup(responses, ready = true) {
     const nodes = {};
     for (const id of ['izipay-checkout-form','izipay-pay-button','izipay-payment-status','izipay-status-text',
-        'izipay-order-reference','izipay-check-status','izipay-reopen','izipay-sign-in']) {
+        'izipay-order-reference','izipay-check-status','izipay-reopen','izipay-sign-in','izipay-pay-method',
+        'izipay-yape-button','izipay-plin-button','izipay-qr-button']) {
         nodes[id] = {hidden: true, disabled: false, textContent: '', dataset: {}, handlers: {},
             addEventListener(name, fn) { this.handlers[name] = fn; }, setAttribute() {},
             reportValidity() { return true; }, querySelector() { return this.label ||= {textContent:''}; }};
     }
     const form = nodes['izipay-checkout-form'];
+    nodes['izipay-pay-method'].value = 'CARD';
     form.dataset = {ready: String(ready), statusUrl:'/cart/checkout/izipay/status',verifyUrl:'/cart/checkout/izipay/verify'};
     form.action = '/cart/checkout/izipay/session';
     const calls = [], redirects = [];
-    let options;
+    let options, openedConfig;
     const sandbox = {
         document:{getElementById:id=>nodes[id]}, sessionStorage:{getItem(){return null;},setItem(){},removeItem(){}},
         URL, AbortSignal, FormData: class {}, console,
@@ -27,13 +29,13 @@ function setup(responses, ready = true) {
             return {ok:true,status:200,redirected:false,headers:{get:()=> 'application/json'},
                 json: async () => response};
         },
-        window:{Izipay:class {constructor(arg){this.config=arg.config;} LoadForm(arg){options=arg;}},
+        window:{Izipay:class {constructor(arg){this.config=arg.config; openedConfig=arg.config;} LoadForm(arg){options=arg;}},
             clearTimeout(){},setTimeout(){return 1;},addEventListener(){},
             location:{origin:'http://localhost:8080',assign(url){redirects.push(url);}}}
     };
     vm.runInNewContext(code,sandbox);
-    return {nodes,calls,redirects, callback:r=>options.callbackResponse(r),
-        submit:()=>form.handlers.submit({preventDefault(){}})};
+    return {nodes,calls,redirects, callback:r=>options.callbackResponse(r), config:()=>openedConfig,
+        submit:(method)=>form.handlers.submit({preventDefault(){},submitter:method ? {dataset:{paymentMethod:method}} : null})};
 }
 const session = {orderNumber:'ABC123',verificationToken:'local-token',authorization:'sdk-token',keyRSA:'public-fixture',
     config:{render:{typeForm:'pop-up'}}};
@@ -67,6 +69,13 @@ test('no credentials means no outgoing payment request', async () => {
     const app=setup([],false);
     await app.submit();
     assert.equal(app.calls.length,0);
+});
+test('selected wallet method is sent and opens its dedicated SDK configuration', async () => {
+    const yapeSession = {...session, paymentMethod:'YAPE_CODE', config:{order:{payMethod:'YAPE_CODE'},render:{typeForm:'pop-up'}}};
+    const app=setup([yapeSession]);
+    await app.submit('YAPE_CODE');
+    assert.equal(app.nodes['izipay-pay-method'].value,'YAPE_CODE');
+    assert.equal(app.config().order.payMethod,'YAPE_CODE');
 });
 test('server receipt cannot redirect outside the application', async () => {
     const app=setup([session,{status:'COMPLETED',redirectUrl:'https://example.test'}]);

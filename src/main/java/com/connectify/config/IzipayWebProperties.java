@@ -17,7 +17,7 @@ public class IzipayWebProperties {
     private String apiKey = "";
     private String publicKey = "";
     private String hashKey = "";
-    private String paymentMethods = "CARD";
+    private String paymentMethods = "CARD,YAPE_CODE,PAGO_PUSH,QR";
     private String ipnUrl = "";
 
     public boolean isEnabled() { return enabled; }
@@ -47,7 +47,7 @@ public class IzipayWebProperties {
         if (paymentMethods == null) return List.of();
         return Arrays.stream(paymentMethods.split(","))
                 .map(String::trim).map(value -> value.toUpperCase(Locale.ROOT))
-                .filter(Set.of("CARD", "YAPE_CODE", "PAGO_PUSH")::contains).distinct().toList();
+                .filter(Set.of("CARD", "YAPE_CODE", "PAGO_PUSH", "QR")::contains).distinct().toList();
     }
 
     public String scriptUrl() {

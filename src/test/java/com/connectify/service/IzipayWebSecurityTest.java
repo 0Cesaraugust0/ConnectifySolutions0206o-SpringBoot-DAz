@@ -30,6 +30,7 @@ class IzipayWebSecurityTest {
         attempt.setOrderNumber("0123456789ABCDE");
         attempt.setTransactionId("transaction123");
         attempt.setMerchantCode("1234567");
+        attempt.setPaymentMethod("CARD");
         attempt.setAmount(new BigDecimal("105.00"));
     }
 
@@ -92,8 +93,10 @@ class IzipayWebSecurityTest {
 
     static JsonNode payload(String amount, String orderNumber) {
         return new ObjectMapper().valueToTree(Map.of("code", "00", "transactionId", "transaction123", "response", Map.of(
+                "payMethod", "CARD",
                 "merchant", Map.of("merchantCode", "1234567"), "order", new Object[]{Map.of("orderNumber", orderNumber,
-                        "currency", "PEN", "amount", amount, "codeAuth", "AUTH123", "uniqueId", "unique123")})));
+                        "currency", "PEN", "amount", amount, "codeAuth", "AUTH123", "uniqueId", "unique123",
+                        "payMethodAuthorization", "CARD")})));
     }
 
     private String sign(String raw) throws Exception {

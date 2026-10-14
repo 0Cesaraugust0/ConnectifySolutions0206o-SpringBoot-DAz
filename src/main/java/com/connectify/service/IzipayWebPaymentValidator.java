@@ -16,6 +16,10 @@ public class IzipayWebPaymentValidator {
         if (!orders.isArray() || orders.size() != 1)
             throw new IllegalArgumentException("La respuesta de IZIPay no contiene una única orden válida.");
         JsonNode order = orders.get(0);
+        if (attempt.getPaymentMethod() != null && !attempt.getPaymentMethod().isBlank()) {
+            requireEqual(attempt.getPaymentMethod(), response.path("payMethod").asText(), "medio de pago");
+            requireEqual(attempt.getPaymentMethod(), order.path("payMethodAuthorization").asText(), "autorización del medio de pago");
+        }
         requireEqual(attempt.getOrderNumber(), order.path("orderNumber").asText(), "orden");
         requireEqual(attempt.getCurrency(), order.path("currency").asText(), "moneda");
         try {

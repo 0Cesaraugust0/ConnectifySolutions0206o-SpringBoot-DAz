@@ -2,8 +2,10 @@
     'use strict';
     const form = document.getElementById('izipay-checkout-form');
     if (!form) return;
-    const pay = document.getElementById('izipay-pay-button');
-    const label = pay.querySelector('span');
+    const paymentButtons = ['izipay-pay-button', 'izipay-yape-button', 'izipay-plin-button', 'izipay-qr-button']
+        .map(id => document.getElementById(id)).filter(Boolean);
+    if (!paymentButtons.length) return;
+    const payMethod = document.getElementById('izipay-pay-method');
     const panel = document.getElementById('izipay-payment-status');
     const message = document.getElementById('izipay-status-text');
     const reference = document.getElementById('izipay-order-reference');
@@ -42,11 +44,14 @@
         window.clearTimeout(pollTimer);
     }
 
-    function setBusy(value, text) {
+    function setBusy(value) {
         busy = value;
-        pay.disabled = value || !ready;
+        paymentButtons.forEach(button => { button.disabled = value || !ready; });
         form.setAttribute('aria-busy', String(value));
-        label.textContent = text || 'Proceder al pago';
+    }
+
+    function methodName(value) {
+        return ({CARD: 'tarjeta', YAPE_CODE: 'Yape', PAGO_PUSH: 'Plin Interbank', QR: 'QR'})[value] || 'IZIPay';
     }
 
     async function request(url, options = {}) {
@@ -96,7 +101,7 @@
         } else if (data.status === 'REVIEW') {
             stopPolling();
             reopen.hidden = true;
-            setBusy(true, 'Pago en revisión');
+            setBusy(true);
             show('Recibimos el pago y estamos revisando la emisión de tus entradas. Conserva el número de orden y contacta a soporte.', true);
         } else if (data.status === 'ABANDONED') {
             stopPolling();
@@ -104,13 +109,13 @@
             rememberOrder(null);
             check.hidden = true;
             reopen.hidden = true;
-            setBusy(false, 'Proceder al pago');
+            setBusy(false);
             show('El intento anterior fue reemplazado. Puedes abrir nuevamente el formulario de pago.');
         } else {
             show('El formulario anterior quedó pendiente. Pulsa “Retomar pago” para abrir nuevamente el Pop-In.');
             check.hidden = true;
             reopen.hidden = !activeSession;
-            if (!activeSession) setBusy(false, 'Retomar pago');
+            if (!activeSession) setBusy(false);
         }
     }
 
@@ -185,7 +190,7 @@
             keyRSA: activeSession.keyRSA,
             callbackResponse: handleResponse
         });
-        show('Completa el pago en la ventana de IZIPay. Tus tickets se emitirán al confirmar la operación.');
+        show('Completa el pago con ' + methodName(activeSession.paymentMethod) + ' en la ventana de IZIPay. Tus tickets se emitirán al confirmar la operación.');
         check.hidden = false;
         polls = 0;
         polling = true;
@@ -195,8 +200,11 @@
     form.addEventListener('submit', async (event) => {
         event.preventDefault();
         if (busy || !ready || !form.reportValidity()) return;
-        setBusy(true, 'Preparando pago…');
-        show('Preparando tu orden de pago…');
+        const selectedMethod = event.submitter && event.submitter.dataset.paymentMethod
+            ? event.submitter.dataset.paymentMethod : ((payMethod && payMethod.value) || 'CARD');
+        if (payMethod) payMethod.value = selectedMethod;
+        setBusy(true);
+        show('Preparando tu pago con ' + methodName(selectedMethod) + '…');
         try {
             if (typeof window.Izipay !== 'function') throw new Error('No se pudo cargar IZIPay. Revisa tu conexión y recarga esta página.');
             const data = await request(form.action, { method: 'POST', body: new FormData(form) });
@@ -211,7 +219,7 @@
                 check.hidden = false;
                 reopen.hidden = false;
             } else {
-                setBusy(false, orderNumber ? 'Retomar pago' : 'Proceder al pago');
+                setBusy(false);
             }
         }
     });
@@ -224,7 +232,7 @@
     if (orderNumber) {
         reference.textContent = 'Orden: ' + orderNumber;
         check.hidden = true;
-        setBusy(false, 'Retomar pago');
-        show('Pulsa “Retomar pago” para abrir nuevamente el formulario de IZIPay.');
+        setBusy(false);
+        show('El carrito sigue disponible. Elige nuevamente un medio de pago para retomar el checkout.');
     }
 })();
