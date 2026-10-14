@@ -287,6 +287,7 @@
     border-radius: 8px;
     background: #ffffff;
     color: #172033;
+    text-decoration: none;
     box-shadow: none;
     transition: border-color 160ms ease, box-shadow 160ms ease, transform 160ms ease;
 }
@@ -295,6 +296,14 @@
     transform: translateY(-1px);
     border-color: #9ca6b4;
     box-shadow: 0 8px 18px rgba(23, 32, 51, 0.07);
+    text-decoration: none;
+}
+
+.client-action-card:focus,
+.client-action-card:active,
+.client-action-card:visited {
+    color: #172033;
+    text-decoration: none;
 }
 
 .client-action-icon {
@@ -329,7 +338,7 @@
 
 .client-action-card p {
     margin: 0;
-    color: #687282;
+    color: #505b6c;
     font-size: 0.65rem;
     line-height: 1.45;
     text-decoration: none;
