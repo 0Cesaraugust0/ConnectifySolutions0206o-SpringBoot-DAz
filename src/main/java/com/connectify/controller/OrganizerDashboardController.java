@@ -30,8 +30,11 @@ import java.math.BigDecimal;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Objects;
 
 @Controller
@@ -282,15 +285,26 @@ public class OrganizerDashboardController {
     @GetMapping("/metrics")
     public String metrics(Model model, Authentication authentication) {
         List<Event> events = eventRepository.findByOrganizerEmailIgnoreCaseOrderByUpdatedAtDesc(currentEmail(authentication));
+        List<Long> eventIds = events.stream().map(Event::getId).toList();
+        List<TicketType> allTicketTypes = eventIds.isEmpty()
+                ? List.of()
+                : ticketTypeRepository.findByEventIdInOrderByEventIdAscPriceAsc(eventIds);
+        Map<Long, List<TicketType>> ticketTypesByEvent = new LinkedHashMap<>();
+        allTicketTypes.forEach(type -> ticketTypesByEvent
+                .computeIfAbsent(type.getEvent().getId(), ignored -> new ArrayList<>())
+                .add(type));
+        List<EventMetric> eventMetrics = events.stream()
+                .map(event -> buildEventMetric(event, ticketTypesByEvent.getOrDefault(event.getId(), List.of())))
+                .toList();
         int totalEvents = events.size();
         int totalCapacity = events.stream().map(Event::getCapacity).filter(Objects::nonNull).mapToInt(Integer::intValue).sum();
         int totalSold = events.stream().map(Event::getSold).filter(Objects::nonNull).mapToInt(Integer::intValue).sum();
         int availableTickets = Math.max(totalCapacity - totalSold, 0);
         double occupancyRate = totalCapacity == 0 ? 0 : totalSold * 100.0 / totalCapacity;
-        BigDecimal revenue = events.stream()
-                .map(event -> safePrice(event).multiply(BigDecimal.valueOf(event.getSold() == null ? 0 : event.getSold())))
+        BigDecimal revenue = eventMetrics.stream()
+                .map(EventMetric::getRevenue)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
-        model.addAttribute("events", events);
+        model.addAttribute("eventMetrics", eventMetrics);
         model.addAttribute("totalEvents", totalEvents);
         model.addAttribute("totalCapacity", totalCapacity);
         model.addAttribute("totalSold", totalSold);
@@ -298,6 +312,43 @@ public class OrganizerDashboardController {
         model.addAttribute("occupancyRate", String.format("%.1f", occupancyRate));
         model.addAttribute("revenue", revenue);
         return "dashboard/organizer/metrics";
+    }
+
+    private EventMetric buildEventMetric(Event event, List<TicketType> ticketTypes) {
+        List<TicketMetric> breakdown = new ArrayList<>();
+        int assignedSold = 0;
+        int assignedCapacity = 0;
+
+        for (TicketType type : ticketTypes) {
+            int capacity = safeInt(type.getQuantityAvailable());
+            int sold = safeInt(type.getQuantitySold());
+            BigDecimal price = type.getPrice() == null ? BigDecimal.ZERO : type.getPrice();
+            assignedCapacity += capacity;
+            assignedSold += sold;
+            breakdown.add(new TicketMetric(type.getName(), price, capacity, sold,
+                    Math.max(capacity - sold, 0), price.multiply(BigDecimal.valueOf(sold)), type.isActive(), true));
+        }
+
+        int eventSold = safeInt(event.getSold());
+        int unassignedSold = Math.max(eventSold - assignedSold, 0);
+        if (ticketTypes.isEmpty() || unassignedSold > 0) {
+            int capacity = ticketTypes.isEmpty()
+                    ? safeInt(event.getCapacity())
+                    : Math.max(safeInt(event.getCapacity()) - assignedCapacity, unassignedSold);
+            BigDecimal price = safePrice(event);
+            String name = ticketTypes.isEmpty() ? "Entrada general" : "Ventas sin tipo asociado";
+            breakdown.add(new TicketMetric(name, price, capacity, unassignedSold,
+                    Math.max(capacity - unassignedSold, 0), price.multiply(BigDecimal.valueOf(unassignedSold)), true, false));
+        }
+
+        BigDecimal eventRevenue = breakdown.stream()
+                .map(TicketMetric::getRevenue)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+        return new EventMetric(event, List.copyOf(breakdown), eventRevenue);
+    }
+
+    private int safeInt(Integer value) {
+        return value == null ? 0 : Math.max(value, 0);
     }
 
     private Event findOwnedEvent(Long id, Authentication authentication) {
@@ -418,5 +469,53 @@ public class OrganizerDashboardController {
 
     private BigDecimal safePrice(Event event) {
         return event.getPrice() == null ? BigDecimal.ZERO : event.getPrice();
+    }
+
+    public static final class EventMetric {
+        private final Event event;
+        private final List<TicketMetric> ticketTypes;
+        private final BigDecimal revenue;
+
+        private EventMetric(Event event, List<TicketMetric> ticketTypes, BigDecimal revenue) {
+            this.event = event;
+            this.ticketTypes = ticketTypes;
+            this.revenue = revenue;
+        }
+
+        public Event getEvent() { return event; }
+        public List<TicketMetric> getTicketTypes() { return ticketTypes; }
+        public BigDecimal getRevenue() { return revenue; }
+    }
+
+    public static final class TicketMetric {
+        private final String name;
+        private final BigDecimal price;
+        private final int capacity;
+        private final int sold;
+        private final int available;
+        private final BigDecimal revenue;
+        private final boolean active;
+        private final boolean configured;
+
+        private TicketMetric(String name, BigDecimal price, int capacity, int sold, int available,
+                             BigDecimal revenue, boolean active, boolean configured) {
+            this.name = name;
+            this.price = price;
+            this.capacity = capacity;
+            this.sold = sold;
+            this.available = available;
+            this.revenue = revenue;
+            this.active = active;
+            this.configured = configured;
+        }
+
+        public String getName() { return name; }
+        public BigDecimal getPrice() { return price; }
+        public int getCapacity() { return capacity; }
+        public int getSold() { return sold; }
+        public int getAvailable() { return available; }
+        public BigDecimal getRevenue() { return revenue; }
+        public boolean isActive() { return active; }
+        public boolean isConfigured() { return configured; }
     }
 }

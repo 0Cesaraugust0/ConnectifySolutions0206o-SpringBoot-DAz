@@ -6,7 +6,7 @@
     <title>Métricas - Organizador</title>
     <link rel="stylesheet" th:href="@{/css/styles.css}">
     <link rel="stylesheet" th:href="@{/css/ui.css}">
-    <link rel="stylesheet" th:href="@{/css/organizer.css(v='metrics-compact-1')}">
+    <link rel="stylesheet" th:href="@{/css/organizer.css(v='metrics-breakdown-2')}">
 </head>
 <body>
 <header class="navbar dashboard-nav">
@@ -41,32 +41,83 @@
         <a class="module-card" th:href="@{/dashboard/organizer/events}"><span>📅</span><h3>Gestionar eventos</h3><p>Volver al listado de eventos del organizador.</p></a>
     </section>
 
-    <section class="table-card">
+    <section class="table-card metrics-table-card">
+        <div class="metrics-table-heading">
+            <div><span>Detalle comercial</span><h2>Ventas por evento</h2></div>
+            <p>Pulsa <strong>+</strong> para ver cada tipo de entrada.</p>
+        </div>
         <table class="table-modern">
             <thead>
             <tr>
+                <th aria-label="Desplegar"></th>
                 <th>Evento</th>
                 <th>Ciudad</th>
                 <th>Precio base</th>
                 <th>Capacidad</th>
                 <th>Vendidos</th>
                 <th>Disponibles</th>
+                <th>Ingresos</th>
                 <th>Estado</th>
             </tr>
             </thead>
             <tbody>
-            <tr th:each="event : ${events}">
-                <td><strong th:text="${event.title}">Evento</strong></td>
-                <td th:text="${event.city}">Lima</td>
-                <td th:text="${'S/ ' + event.price}">S/ 0.00</td>
-                <td th:text="${event.capacity}">0</td>
-                <td th:text="${event.sold}">0</td>
-                <td th:text="${event.availableTickets}">0</td>
-                <td><span class="status-pill status-open" th:text="${event.status}">PENDING_REVIEW</span></td>
-            </tr>
+            <th:block th:each="metric : ${eventMetrics}">
+                <tr class="event-metric-row">
+                    <td>
+                        <button class="metric-toggle" type="button" aria-expanded="false"
+                                th:attr="aria-controls=${'metric-detail-' + metric.event.id},data-target=${'metric-detail-' + metric.event.id}"
+                                th:aria-label="${'Ver tipos de entrada de ' + metric.event.title}"><span>+</span></button>
+                    </td>
+                    <td><strong th:text="${metric.event.title}">Evento</strong></td>
+                    <td th:text="${metric.event.city}">Lima</td>
+                    <td th:text="${'S/ ' + metric.event.price}">S/ 0.00</td>
+                    <td th:text="${metric.event.capacity}">0</td>
+                    <td><strong class="metric-sold" th:text="${metric.event.sold}">0</strong></td>
+                    <td th:text="${metric.event.availableTickets}">0</td>
+                    <td><strong th:text="${'S/ ' + metric.revenue}">S/ 0.00</strong></td>
+                    <td><span class="status-pill status-open" th:text="${metric.event.status}">PENDING_REVIEW</span></td>
+                </tr>
+                <tr class="metric-breakdown-row" th:id="${'metric-detail-' + metric.event.id}" hidden>
+                    <td colspan="9">
+                        <div class="metric-breakdown">
+                            <div class="metric-breakdown-head">
+                                <div><span>Subnivel del evento</span><strong>Tipos de entrada</strong></div>
+                                <p><b th:text="${metric.ticketTypes.size()}">0</b> categoría(s) · ingreso acumulado <strong th:text="${'S/ ' + metric.revenue}">S/ 0.00</strong></p>
+                            </div>
+                            <div class="ticket-metric-grid">
+                                <article class="ticket-metric-card" th:each="ticket : ${metric.ticketTypes}">
+                                    <div class="ticket-metric-title">
+                                        <div><span th:text="${ticket.configured ? 'Entrada configurada' : 'Venta base'}">Entrada configurada</span><h3 th:text="${ticket.name}">General</h3></div>
+                                        <span class="ticket-state" th:classappend="${ticket.active ? ' active' : ' inactive'}" th:text="${ticket.active ? 'Activa' : 'Inactiva'}">Activa</span>
+                                    </div>
+                                    <dl>
+                                        <div><dt>Precio</dt><dd th:text="${'S/ ' + ticket.price}">S/ 0.00</dd></div>
+                                        <div><dt>Capacidad</dt><dd th:text="${ticket.capacity}">0</dd></div>
+                                        <div><dt>Vendidas</dt><dd th:text="${ticket.sold}">0</dd></div>
+                                        <div><dt>Disponibles</dt><dd th:text="${ticket.available}">0</dd></div>
+                                    </dl>
+                                    <div class="ticket-revenue"><span>Ingreso generado</span><strong th:text="${'S/ ' + ticket.revenue}">S/ 0.00</strong></div>
+                                </article>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </th:block>
+            <tr th:if="${eventMetrics == null || eventMetrics.isEmpty()}"><td colspan="9" class="empty-row">Aún no hay eventos para mostrar.</td></tr>
             </tbody>
         </table>
     </section>
 </main>
+<script>
+    document.querySelectorAll('.metric-toggle').forEach(button => {
+        button.addEventListener('click', () => {
+            const detail = document.getElementById(button.dataset.target);
+            const expanded = button.getAttribute('aria-expanded') === 'true';
+            button.setAttribute('aria-expanded', String(!expanded));
+            button.querySelector('span').textContent = expanded ? '+' : '−';
+            detail.hidden = expanded;
+        });
+    });
+</script>
 </body>
 </html>

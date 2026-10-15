@@ -19,4 +19,6 @@ public interface TicketTypeRepository extends JpaRepository<TicketType, Long> {
     List<TicketType> findByEventIdOrderByPriceAsc(Long eventId);
 
     List<TicketType> findByEventIdAndActiveTrueOrderByPriceAsc(Long eventId);
+
+    List<TicketType> findByEventIdInOrderByEventIdAscPriceAsc(List<Long> eventIds);
 }

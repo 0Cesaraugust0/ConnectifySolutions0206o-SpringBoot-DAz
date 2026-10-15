@@ -993,8 +993,40 @@
     border-radius: 17px;
 }
 
+.organizer-metrics-page .metrics-table-heading {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    gap: 18px;
+    padding: 16px 18px;
+    border-bottom: 1px solid #e7eaf0;
+    background: #ffffff;
+}
+
+.organizer-metrics-page .metrics-table-heading span,
+.organizer-metrics-page .metric-breakdown-head span,
+.organizer-metrics-page .ticket-metric-title > div > span {
+    color: #6b7280;
+    font-size: .59rem;
+    font-weight: 750;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+}
+
+.organizer-metrics-page .metrics-table-heading h2 {
+    margin: 3px 0 0;
+    color: #172033;
+    font-size: 1rem;
+}
+
+.organizer-metrics-page .metrics-table-heading p {
+    margin: 0;
+    color: #697386;
+    font-size: .68rem;
+}
+
 .organizer-metrics-page .table-modern {
-    min-width: 720px;
+    min-width: 880px;
 }
 
 .organizer-metrics-page .table-modern th,
@@ -1012,6 +1044,163 @@
     font-size: .6rem;
 }
 
+.organizer-metrics-page .event-metric-row {
+    transition: background-color 150ms ease;
+}
+
+.organizer-metrics-page .event-metric-row:hover {
+    background: #fafbff;
+}
+
+.organizer-metrics-page .metric-sold {
+    color: #2756d8;
+}
+
+.organizer-metrics-page .metric-toggle {
+    display: grid;
+    width: 25px;
+    height: 25px;
+    place-items: center;
+    border: 1px solid #cbd6ee;
+    border-radius: 7px;
+    background: #f2f6ff;
+    color: #2756d8;
+    font: inherit;
+    font-size: .9rem;
+    font-weight: 800;
+    cursor: pointer;
+    transition: background-color 150ms ease, color 150ms ease, transform 150ms ease;
+}
+
+.organizer-metrics-page .metric-toggle:hover,
+.organizer-metrics-page .metric-toggle[aria-expanded="true"] {
+    border-color: #2756d8;
+    background: #2756d8;
+    color: #ffffff;
+}
+
+.organizer-metrics-page .metric-toggle[aria-expanded="true"] {
+    transform: rotate(180deg);
+}
+
+.organizer-metrics-page .metric-breakdown-row > td {
+    padding: 0;
+    border-bottom: 1px solid #cdd9ee;
+    background: #eef4ff;
+}
+
+.organizer-metrics-page .metric-breakdown {
+    padding: 16px 18px 18px 52px;
+    border-left: 3px solid #4b72db;
+}
+
+.organizer-metrics-page .metric-breakdown-head {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 11px;
+}
+
+.organizer-metrics-page .metric-breakdown-head > div > strong {
+    display: block;
+    margin-top: 2px;
+    color: #172033;
+    font-size: .82rem;
+}
+
+.organizer-metrics-page .metric-breakdown-head p {
+    margin: 0;
+    color: #5e6b80;
+    font-size: .65rem;
+}
+
+.organizer-metrics-page .ticket-metric-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 9px;
+}
+
+.organizer-metrics-page .ticket-metric-card {
+    padding: 13px;
+    border: 1px solid #d6dfef;
+    border-radius: 12px;
+    background: #ffffff;
+    box-shadow: 0 5px 14px rgba(32, 54, 94, .05);
+}
+
+.organizer-metrics-page .ticket-metric-title {
+    display: flex;
+    align-items: start;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.organizer-metrics-page .ticket-metric-title h3 {
+    margin: 3px 0 0;
+    color: #172033;
+    font-size: .78rem;
+}
+
+.organizer-metrics-page .ticket-state {
+    padding: 4px 7px;
+    border-radius: 999px;
+    font-size: .55rem;
+    font-weight: 800;
+}
+
+.organizer-metrics-page .ticket-state.active {
+    background: #e5f7ed;
+    color: #147548;
+}
+
+.organizer-metrics-page .ticket-state.inactive {
+    background: #f1f2f4;
+    color: #727a86;
+}
+
+.organizer-metrics-page .ticket-metric-card dl {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 7px;
+    margin: 12px 0;
+}
+
+.organizer-metrics-page .ticket-metric-card dl > div {
+    padding: 8px;
+    border-radius: 8px;
+    background: #f6f8fc;
+}
+
+.organizer-metrics-page .ticket-metric-card dt {
+    color: #7b8492;
+    font-size: .53rem;
+    text-transform: uppercase;
+}
+
+.organizer-metrics-page .ticket-metric-card dd {
+    margin: 3px 0 0;
+    color: #243047;
+    font-size: .67rem;
+    font-weight: 750;
+}
+
+.organizer-metrics-page .ticket-revenue {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding-top: 9px;
+    border-top: 1px solid #e6eaf1;
+    color: #6b7482;
+    font-size: .62rem;
+}
+
+.organizer-metrics-page .ticket-revenue strong {
+    color: #183e9e;
+    font-size: .72rem;
+}
+
 @media (max-width: 760px) {
     .organizer-metrics-page .dashboard-grid {
         grid-template-columns: 1fr;
@@ -1019,6 +1208,10 @@
 
     .organizer-metrics-page .module-card {
         min-height: 120px;
+    }
+
+    .organizer-metrics-page .ticket-metric-grid {
+        grid-template-columns: 1fr;
     }
 }
 
