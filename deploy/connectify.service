@@ -1,0 +1,24 @@
+[Unit]
+Description=Connectify Solutions Spring Boot
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=simple
+User=connectify
+Group=connectify
+WorkingDirectory=/opt/connectify
+EnvironmentFile=/etc/connectify/connectify.env
+ExecStart=/usr/bin/java -XX:MaxRAMPercentage=65 -Djava.security.egd=file:/dev/urandom -jar /opt/connectify/connectify.jar
+SuccessExitStatus=143
+Restart=on-failure
+RestartSec=5
+TimeoutStopSec=30
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/opt/connectify
+
+[Install]
+WantedBy=multi-user.target
