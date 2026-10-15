@@ -6,7 +6,7 @@
     <title>Crear evento - Organizador</title>
     <link rel="stylesheet" th:href="@{/css/styles.css}">
     <link rel="stylesheet" th:href="@{/css/ui.css}">
-    <link rel="stylesheet" th:href="@{/css/organizer.css(v='create-compact-1')}">
+    <link rel="stylesheet" th:href="@{/css/organizer.css(v='organizer-nav-shell-2')}">
     <link rel="stylesheet" th:href="@{/css/organizer-presentation-modal.css(v='templates-2')}">
     <style>
         .create-shell{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:24px;align-items:start}.create-card{background:#fff;border:1px solid #e8eaf2;border-radius:24px;padding:26px;box-shadow:0 18px 45px rgba(15,23,42,.06)}.stepper{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:18px 0 22px}.step{padding:10px;border-radius:12px;background:#f5f6fb;color:#68708a;font-size:.83rem;font-weight:800}.step b{display:inline-grid;place-items:center;width:22px;height:22px;border-radius:50%;background:#e7eaff;color:#4f46e5;margin-right:6px}.step.active{background:#efedff;color:#3328b7}.step.active b{background:#5146e5;color:#fff}.create-section{padding:22px 0;border-top:1px solid #edf0f6}.create-section:first-of-type{border-top:0;padding-top:0}.create-section h2{margin:0 0 4px}.section-note{margin:0 0 18px;color:#667085;font-size:.92rem}.ticket-toolbar{display:flex;justify-content:space-between;gap:12px;align-items:center;margin:12px 0}.ticket-toolbar small{color:#68708a}.ticket-rows{display:grid;gap:12px}.ticket-row{border:1px solid #e5e8f2;border-radius:16px;padding:16px;background:#fbfcff;position:relative}.ticket-row-grid{display:grid;grid-template-columns:1.15fr .75fr .75fr;gap:12px}.ticket-row .wide{grid-column:1/-1}.remove-ticket{position:absolute;right:12px;top:12px;border:0;background:#fff1f2;color:#be123c;border-radius:8px;padding:7px 9px;font-weight:800;cursor:pointer}.design-request{border:1px solid #dedbff;background:#faf9ff;border-radius:16px;padding:16px;margin-top:14px}.design-request label{font-weight:800}.brief-wrap{display:none;margin-top:12px}.brief-wrap.open{display:block}.summary-side{position:sticky;top:18px}.summary-side h2{margin-top:0}.summary-side .summary-row{padding:13px 0}.price-preview{font-size:1.4rem;font-weight:900;color:#312e81}.save-bar{display:flex;gap:10px;justify-content:flex-end;align-items:center;padding-top:20px}.save-bar .btn{min-width:220px}@media(max-width:980px){.create-shell{grid-template-columns:1fr}.summary-side{position:static}.stepper{grid-template-columns:1fr 1fr}}@media(max-width:620px){.ticket-row-grid,.field-grid{grid-template-columns:1fr}.stepper{grid-template-columns:1fr}.save-bar{align-items:stretch;flex-direction:column}.save-bar .btn{width:100%}}
@@ -16,7 +16,7 @@
 <body>
 <header class="navbar dashboard-nav">
     <a class="brand brand-link" th:href="@{/dashboard/organizer/events}">
-        <span class="logo">🎯</span><div><strong>Connectify</strong><small>Organizador</small></div>
+        <span class="logo organizer-brand-icon" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><path d="M7 3v3M17 3v3M4.5 9h15M6.5 5h11a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2h-11a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2Z"/><path d="m9 14 2 2 4-4"/></svg></span><div><strong>Connectify</strong><small>Organizador</small></div>
     </a>
     <nav class="top-actions organizer-create-nav"><a class="btn secondary" th:href="@{/dashboard/organizer}">Dashboard</a><a class="btn secondary" th:href="@{/dashboard/organizer/events}">Mis eventos</a></nav>
 </header>

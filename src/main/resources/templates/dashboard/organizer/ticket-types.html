@@ -6,12 +6,12 @@
     <title>Gestión de Tickets - Organizador</title>
     <link rel="stylesheet" th:href="@{/css/styles.css}">
     <link rel="stylesheet" th:href="@{/css/ui.css}">
-    <link rel="stylesheet" th:href="@{/css/organizer.css}">
+    <link rel="stylesheet" th:href="@{/css/organizer.css(v='organizer-nav-shell-2')}">
 </head>
 <body>
 <header class="navbar dashboard-nav">
     <a class="brand brand-link" th:href="@{/dashboard/organizer/events}">
-        <span class="logo">🎫</span>
+        <span class="logo organizer-brand-icon" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><path d="M7 3v3M17 3v3M4.5 9h15M6.5 5h11a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2h-11a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2Z"/><path d="m9 14 2 2 4-4"/></svg></span>
         <div><strong>Connectify</strong><small>Gestión de Tickets</small></div>
     </a>
     <nav class="top-actions">

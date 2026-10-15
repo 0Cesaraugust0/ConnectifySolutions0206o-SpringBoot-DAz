@@ -1,0 +1,42 @@
+/* Compact marketplace layout, scoped to the events listing. */
+.marketplace-compact .hero-search-panel > .btn{align-self:center}
+.marketplace-browse-header{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:28px;align-items:start;margin-top:24px}
+.marketplace-browse-filters .date-filter-strip{margin:0 0 16px;flex-wrap:wrap}
+.marketplace-browse-filters .category-strip{margin:0;flex-wrap:wrap}
+.marketplace-browse-copy{padding:0 0 0 8px}
+.marketplace-browse-copy h2{font-size:28px;line-height:1.2;letter-spacing:-.035em;margin:0 0 12px}
+.marketplace-browse-copy p{font-size:13px;line-height:1.6;margin:0;max-width:540px}
+.marketplace-compact .marketplace-explore-heading{align-items:center;margin:20px 0 20px;padding-bottom:8px;border-bottom:2px solid #111827;gap:16px}
+.marketplace-explore-heading .badge{margin:0;padding:3px 9px;font-size:11px}
+.marketplace-explore-heading .btn{padding:6px 10px;font-size:11px}
+.marketplace-compact .event-grid{grid-template-columns:repeat(auto-fill,minmax(min(100%,310px),310px));gap:20px;justify-content:start}
+.marketplace-compact .professional-event-card{min-height:416px;border-radius:15px}
+.marketplace-compact .event-cover{min-height:152px;padding:13px}
+.marketplace-compact .event-cover-fallback{padding:18px}
+.marketplace-compact .event-cover-fallback span{font-size:10px}
+.marketplace-compact .event-status{font-size:10px;padding:6px 10px}
+.marketplace-compact .event-thumbnail-template{font-size:9px;left:14px;bottom:11px}
+.marketplace-compact .event-body{padding:18px;gap:11px}
+.marketplace-compact .event-body h3{font-size:18px;line-height:1.25}
+.marketplace-compact .event-description{font-size:13px}
+.marketplace-compact .event-category{font-size:10px;padding:5px 9px}
+.marketplace-compact .event-info{gap:8px;grid-template-columns:1fr 1fr}
+.marketplace-compact .event-info span{padding:8px 9px;border-radius:10px;min-width:0}
+.marketplace-compact .event-info strong{font-size:9px}
+.marketplace-compact .event-info b{font-size:11px;overflow-wrap:anywhere}
+.marketplace-compact .availability{gap:6px}
+.marketplace-compact .availability-bar{height:7px}
+.marketplace-compact .availability small{font-size:10px}
+.marketplace-compact .event-footer strong{font-size:18px}
+.marketplace-compact .card-action{font-size:11px}
+.marketplace-compact .site-footer{margin-top:38px}
+.marketplace-compact .site-footer-inner{width:min(1240px,calc(100% - 48px));padding:28px 0 20px;gap:20px;grid-template-columns:1.4fr repeat(3,minmax(110px,1fr))}
+.marketplace-compact .site-footer a{font-size:11px}
+.marketplace-compact .site-footer h2{font-size:11px;margin-bottom:8px}
+.marketplace-compact .site-footer section:not(.footer-brand-block){gap:6px}
+.marketplace-compact .footer-brand{gap:7px}
+.marketplace-compact .footer-logo{display:grid;place-items:center;flex-shrink:0;width:26px;height:26px;border:1px solid #64748b;border-radius:50%;background:#374151;font-size:14px}
+.marketplace-compact .footer-brand-block p{font-size:11px;margin-top:8px;max-width:300px}
+.marketplace-compact .site-footer-bottom{width:min(1240px,calc(100% - 48px));padding:11px 0 17px;gap:11px;font-size:10px}
+@media(max-width:900px){.marketplace-browse-header{grid-template-columns:1fr;gap:18px}.marketplace-browse-copy{padding:0}.marketplace-browse-copy h2{font-size:24px}.marketplace-compact .event-grid{grid-template-columns:repeat(2,minmax(0,310px))}.marketplace-compact .site-footer-inner{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:560px){.marketplace-compact .event-grid{grid-template-columns:minmax(0,310px);justify-content:start}.marketplace-compact .site-footer-bottom{flex-direction:column}.marketplace-browse-filters .date-filter-strip{gap:8px}}

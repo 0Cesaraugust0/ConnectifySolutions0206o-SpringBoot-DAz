@@ -180,6 +180,7 @@ public class CommunicationController {
         }
 
         model.addAttribute("supportMode", currentRole == Role.CLIENT);
+        model.addAttribute("currentRole", currentRole);
         model.addAttribute("message", message);
         model.addAttribute("statuses", MessageStatus.values());
         return "communications/detail";

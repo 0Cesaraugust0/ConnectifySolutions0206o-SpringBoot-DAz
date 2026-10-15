@@ -7,8 +7,9 @@
     <link rel="stylesheet" th:href="@{/css/styles.css(v='marketplace-cards-regular-1')}">
     <link rel="stylesheet" th:href="@{/css/marketplace-presentation.css}">
     <link rel="stylesheet" th:href="@{/css/marketplace-account.css(v='nav-51')}">
+    <link rel="stylesheet" th:href="@{/css/marketplace-compact.css(v='4')}">
 </head>
-<body>
+<body class="marketplace-compact">
 <header class="navbar marketplace-nav">
     <a class="brand brand-link" th:href="@{/events}">
         <span class="logo brand-mark">C</span>
@@ -87,6 +88,8 @@
         </div>
     </section>
 
+    <div class="marketplace-browse-header">
+    <div class="marketplace-browse-filters">
     <section class="date-filter-strip">
         <span>Fecha</span>
         <a data-marketplace-filter th:href="@{/events(q=${q},city=${city},category=${category})}" th:classappend="${dateRange == null || dateRange.isBlank()} ? ' active' : ''">Todas</a>
@@ -104,13 +107,15 @@
         <a data-marketplace-filter th:href="@{/events(category='Deporte',dateRange=${dateRange})}" class="category-chip" th:classappend="${category == 'Deporte'} ? ' active' : ''">Deporte</a>
     </section>
 
-    <div id="marketplaceCards" class="marketplace-results" aria-live="polite">
-    <section id="featured" class="section-heading">
-        <div>
-            <p class="badge">Explorar</p>
+    </div>
+    <div class="marketplace-browse-copy">
             <h2>Eventos disponibles</h2>
             <p class="muted">Revisa eventos publicados, compara disponibilidad y compra tus entradas desde una cuenta Cliente.</p>
-        </div>
+    </div>
+    </div>
+    <div id="marketplaceCards" class="marketplace-results" aria-live="polite">
+    <section id="featured" class="section-heading marketplace-explore-heading">
+        <p class="badge">Explorar</p>
         <a data-marketplace-filter th:if="${q != null || city != null || category != null || dateRange != null}" th:href="@{/events}" class="btn secondary">Limpiar filtros</a>
     </section>
 

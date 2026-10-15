@@ -6,13 +6,14 @@
     <title th:text="${supportMode} ? 'Escribir a Administración - Connectify' : 'Nuevo mensaje - Connectify'">Nuevo mensaje</title>
     <link rel="stylesheet" th:href="@{/css/styles.css}">
     <link rel="stylesheet" th:href="@{/css/ui.css}">
-    <link rel="stylesheet" th:href="@{/css/communications-center.css(v='messages-restored-1')}">
+    <link rel="stylesheet" th:href="@{/css/communications-center.css(v='organizer-nav-2')}">
     <link rel="stylesheet" th:href="@{/css/communications-compose.css(v='compose-compact-1')}">
 </head>
 <body class="compose-body">
-<header class="navbar dashboard-nav communications-nav compose-nav">
+<header class="navbar dashboard-nav communications-nav compose-nav" th:classappend="${!supportMode and senderRole.name() == 'ORGANIZER'} ? ' organizer-role-nav' : ''">
     <a class="brand brand-link" th:href="@{/communications}">
-        <span class="logo">✉</span>
+        <span class="logo organizer-brand-icon" aria-hidden="true" th:if="${!supportMode and senderRole.name() == 'ORGANIZER'}"><svg viewBox="0 0 24 24" focusable="false"><path d="M7 3v3M17 3v3M4.5 9h15M6.5 5h11a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2h-11a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2Z"/><path d="m9 14 2 2 4-4"/></svg></span>
+        <span class="logo" th:unless="${!supportMode and senderRole.name() == 'ORGANIZER'}">✉</span>
         <div><strong>Connectify</strong><small th:text="${supportMode} ? 'Soporte de Administración' : 'Nuevo mensaje'">Nuevo mensaje</small></div>
     </a>
     <nav class="top-actions">

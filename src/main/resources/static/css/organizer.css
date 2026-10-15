@@ -1254,3 +1254,63 @@
         flex-direction: column-reverse;
     }
 }
+
+/* Barra del rol Organizador: escala y ritmo visual de communications/new. */
+.dashboard-nav {
+    min-height: 62px;
+    padding: 7px 28px;
+}
+
+.dashboard-nav .brand,
+.dashboard-nav .brand-link {
+    gap: 9px;
+}
+
+.dashboard-nav .brand strong {
+    font-size: .82rem;
+}
+
+.dashboard-nav .brand small {
+    font-size: .66rem;
+}
+
+.dashboard-nav .top-actions {
+    gap: 6px;
+}
+
+.dashboard-nav .top-actions form {
+    margin: 0;
+}
+
+.dashboard-nav .top-actions .btn {
+    padding: 6px 10px;
+    border-radius: 9px;
+    font-size: .67rem;
+    font-weight: 500;
+}
+
+.dashboard-nav .organizer-brand-icon {
+    width: 34px;
+    height: 34px;
+    border-radius: 10px;
+    background: linear-gradient(145deg, #101827, #334155);
+    border: 1px solid rgba(255, 255, 255, .15);
+    box-shadow: 0 6px 14px rgba(15, 23, 42, .18);
+    color: #f8fafc;
+}
+
+.dashboard-nav .organizer-brand-icon svg {
+    width: 18px;
+    height: 18px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+@media (max-width: 640px) {
+    .dashboard-nav {
+        padding: 8px 13px;
+    }
+}
