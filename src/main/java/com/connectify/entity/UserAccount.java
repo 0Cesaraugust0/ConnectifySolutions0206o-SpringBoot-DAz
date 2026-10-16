@@ -8,6 +8,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.persistence.PrePersist;
+import java.time.Instant;
 
 @Entity
 @Table(name = "user_accounts")
@@ -39,6 +41,16 @@ public class UserAccount {
     private String dni;
     private String phone;
     private boolean active = true;
+
+    // Legacy accounts retain an unknown registration date rather than an invented one.
+    private Instant createdAt;
+
+    @PrePersist
+    void recordRegistration() {
+        if (createdAt == null) createdAt = Instant.now();
+    }
+
+    public Instant getCreatedAt() { return createdAt; }
 
     public UserAccount() {
     }

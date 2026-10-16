@@ -8,6 +8,7 @@
     <link rel="stylesheet" th:href="@{/css/marketplace-presentation.css}">
     <link rel="stylesheet" th:href="@{/css/marketplace-account.css(v='nav-51')}">
     <link rel="stylesheet" th:href="@{/css/marketplace-compact.css(v='5')}">
+    <link rel="stylesheet" th:href="@{/css/launch-welcome.css(v='1')}">
 </head>
 <body class="marketplace-compact">
 <header class="navbar marketplace-nav">
@@ -85,6 +86,7 @@
             <span><strong th:text="${events.size()}">0</strong> eventos publicados</span>
             <span><strong>6</strong> formatos disponibles</span>
             <span class="hero-commerce-note">Compra en línea 24/7</span>
+            <button class="launch-welcome-trigger" type="button" data-launch-open>Nuestra apertura <span aria-hidden="true">↗</span></button>
         </div>
     </section>
 
@@ -161,6 +163,8 @@
 </main>
 <div th:replace="~{fragments/site-footer :: publicFooter}"></div>
 <div th:replace="~{fragments/site-footer :: cookieNotice}"></div>
+<div th:replace="~{fragments/launch-welcome :: welcome}"></div>
 <script th:src="@{/js/marketplace-filters.js(v='1')}" defer></script>
+<script th:src="@{/js/launch-welcome.js(v='1')}" defer></script>
 </body>
 </html>

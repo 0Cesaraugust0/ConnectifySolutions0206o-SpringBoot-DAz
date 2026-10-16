@@ -2,139 +2,123 @@ package com.connectify.controller;
 
 import com.connectify.entity.Role;
 import com.connectify.entity.UserAccount;
-import com.connectify.repository.UserAccountRepository;
-import org.springframework.security.access.AccessDeniedException;
+import com.connectify.repository.AccountAccessAuditRepository;
+import com.connectify.service.DeveloperAccountService;
+import com.connectify.service.DeveloperAccountService.AccountInput;
+import com.connectify.service.DeveloperAccountService.AccountRow;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.Comparator;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Locale;
-import java.util.Set;
 
 @Controller
 @RequestMapping("/dashboard/developer/accounts")
 public class DeveloperAccountController {
+    private final DeveloperAccountService service;
+    private final AccountAccessAuditRepository audits;
+    private static final DateTimeFormatter DATE = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm").withZone(ZoneId.of("America/Lima"));
 
-    private static final Set<Role> MANAGED_ROLES = Set.of(Role.ADMIN, Role.ORGANIZER, Role.DESIGNER, Role.GATE_AGENT);
-
-    private final UserAccountRepository userAccountRepository;
-    private final PasswordEncoder passwordEncoder;
-
-    public DeveloperAccountController(UserAccountRepository userAccountRepository,
-                                      PasswordEncoder passwordEncoder) {
-        this.userAccountRepository = userAccountRepository;
-        this.passwordEncoder = passwordEncoder;
+    public DeveloperAccountController(DeveloperAccountService service, AccountAccessAuditRepository audits) {
+        this.service = service; this.audits = audits;
     }
 
     @GetMapping
-    public String accounts(Model model, Authentication authentication) {
-        populateModel(model, authentication, "", "", "", "", "", Role.ADMIN, null);
-        return "dashboard/developer/accounts";
+    public String accounts(@RequestParam(required = false) Long edit,
+                           @RequestParam(defaultValue = "") String q,
+                           @RequestParam(defaultValue = "") String role,
+                           @RequestParam(defaultValue = "") String status,
+                           @RequestParam(defaultValue = "") String profile,
+                           Model model, Authentication authentication) {
+        UserAccount editing = edit == null ? null : service.managed(edit, authentication.getName());
+        AccountInput form = editing == null ? new AccountInput("", "", "", "", "", "", "", "", Role.CLIENT)
+                : new AccountInput(editing.getFirstName(), editing.getPaternalLastName(), editing.getMaternalLastName(),
+                editing.getEmail(), editing.getDni(), editing.getPhone(), editing.getCompanyName(), editing.getRuc(), editing.getRole());
+        return show(model, authentication, form, editing, q, role, status, profile);
     }
 
     @PostMapping
-    public String create(@RequestParam String firstName,
-                         @RequestParam String paternalLastName,
-                         @RequestParam(required = false) String maternalLastName,
-                         @RequestParam String dni,
-                         @RequestParam String email,
-                         @RequestParam String password,
-                         @RequestParam Role role,
-                         Model model,
-                         Authentication authentication) {
-        String normalizedFirstName = clean(firstName);
-        String normalizedPaternalLastName = clean(paternalLastName);
-        String normalizedMaternalLastName = clean(maternalLastName);
-        String normalizedDni = clean(dni);
-        String normalizedEmail = clean(email).toLowerCase(Locale.ROOT);
-
-        String error = validate(normalizedFirstName, normalizedPaternalLastName, normalizedDni, normalizedEmail, password, role);
-        if (error != null) {
-            populateModel(model, authentication, normalizedFirstName, normalizedPaternalLastName, normalizedMaternalLastName, normalizedDni, normalizedEmail, role, error);
-            return "dashboard/developer/accounts";
+    public String create(@ModelAttribute("form") AccountInput form, @RequestParam String password,
+                         Model model, Authentication authentication, RedirectAttributes flash) {
+        try {
+            service.create(form, password, authentication.getName());
+            flash.addFlashAttribute("success", "Cuenta creada correctamente.");
+            return "redirect:/dashboard/developer/accounts";
+        } catch (IllegalArgumentException | DataIntegrityViolationException ex) {
+            model.addAttribute("error", message(ex));
+            return show(model, authentication, form, null, "", "", "", "");
         }
-        if (userAccountRepository.existsByEmailIgnoreCase(normalizedEmail)) {
-            populateModel(model, authentication, normalizedFirstName, normalizedPaternalLastName, normalizedMaternalLastName, normalizedDni, normalizedEmail, role,
-                    "Ya existe una cuenta con este correo.");
-            return "dashboard/developer/accounts";
+    }
+
+    @PostMapping("/{id}/update")
+    public String update(@PathVariable Long id, @ModelAttribute("form") AccountInput form,
+                         Model model, Authentication authentication, RedirectAttributes flash) {
+        try {
+            service.update(id, form, authentication.getName());
+            flash.addFlashAttribute("success", "Perfil y correo de acceso actualizados. Las sesiones anteriores se cerrarán.");
+            return "redirect:/dashboard/developer/accounts";
+        } catch (IllegalArgumentException | DataIntegrityViolationException ex) {
+            model.addAttribute("error", message(ex));
+            return show(model, authentication, form, service.managed(id, authentication.getName()), "", "", "", "");
         }
+    }
 
-        UserAccount account = new UserAccount();
-        account.setFullName((normalizedFirstName + " " + normalizedPaternalLastName + " " + normalizedMaternalLastName).trim().replaceAll("\\s+", " "));
-        account.setFirstName(normalizedFirstName);
-        account.setPaternalLastName(normalizedPaternalLastName);
-        account.setMaternalLastName(normalizedMaternalLastName);
-        account.setDni(normalizedDni);
-        account.setEmail(normalizedEmail);
-        account.setCredentialHash(passwordEncoder.encode(password));
-        account.setRole(role);
-        account.setActive(true);
-        userAccountRepository.save(account);
+    @PostMapping("/{id}/password")
+    public String password(@PathVariable Long id, @RequestParam String password, @RequestParam String confirmation,
+                           Authentication authentication, RedirectAttributes flash) {
+        try {
+            service.resetPassword(id, password, confirmation, authentication.getName());
+            flash.addFlashAttribute("success", "Contraseña actualizada. Se cerrarán las sesiones anteriores de esta cuenta.");
+        } catch (IllegalArgumentException ex) { flash.addFlashAttribute("error", ex.getMessage()); }
+        return "redirect:/dashboard/developer/accounts?edit=" + id;
+    }
 
-        return "redirect:/dashboard/developer/accounts?created=" + role.name();
+    @PostMapping("/{id}/status")
+    public String status(@PathVariable Long id, @RequestParam boolean active, Authentication authentication, RedirectAttributes flash) {
+        service.setActive(id, active, authentication.getName());
+        flash.addFlashAttribute("success", active ? "Cuenta activada." : "Cuenta desactivada. Su historial se conserva.");
+        return "redirect:/dashboard/developer/accounts";
     }
 
     @PostMapping("/{id}/delete")
-    public String delete(@PathVariable Long id, Authentication authentication) {
-        UserAccount account = userAccountRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Cuenta no encontrada."));
-
-        if (!MANAGED_ROLES.contains(account.getRole())) {
-            throw new AccessDeniedException("Solo se pueden eliminar cuentas operativas.");
-        }
-        if (authentication != null && account.getEmail().equalsIgnoreCase(authentication.getName())) {
-            throw new AccessDeniedException("No puedes eliminar la cuenta con la que iniciaste sesión.");
-        }
-
-        userAccountRepository.delete(account);
-        return "redirect:/dashboard/developer/accounts?deleted=true";
+    public String delete(@PathVariable Long id, Authentication authentication, RedirectAttributes flash) {
+        try {
+            service.delete(id, authentication.getName());
+            flash.addFlashAttribute("success", "Cuenta sin actividad eliminada.");
+        } catch (IllegalArgumentException | DataIntegrityViolationException ex) { flash.addFlashAttribute("error", message(ex)); }
+        return "redirect:/dashboard/developer/accounts";
     }
 
-    private void populateModel(Model model,
-                               Authentication authentication,
-                               String firstName,
-                               String paternalLastName,
-                               String maternalLastName,
-                               String dni,
-                               String email,
-                               Role selectedRole,
-                               String error) {
-        List<UserAccount> accounts = userAccountRepository.findAll().stream()
-                .filter(account -> MANAGED_ROLES.contains(account.getRole()))
-                .sorted(Comparator.comparing(UserAccount::getRole).thenComparing(UserAccount::getFullName, String.CASE_INSENSITIVE_ORDER))
-                .toList();
-
-        model.addAttribute("accounts", accounts);
-        model.addAttribute("accountCount", accounts.size());
-        model.addAttribute("developerEmail", authentication == null ? "" : authentication.getName());
-        model.addAttribute("firstName", firstName);
-        model.addAttribute("paternalLastName", paternalLastName);
-        model.addAttribute("maternalLastName", maternalLastName);
-        model.addAttribute("dni", dni);
-        model.addAttribute("email", email);
-        model.addAttribute("selectedRole", selectedRole == null ? Role.ADMIN : selectedRole);
-        model.addAttribute("error", error);
+    private String show(Model model, Authentication authentication, AccountInput form, UserAccount editing,
+                        String q, String role, String status, String profile) {
+        List<AccountRow> all = service.accounts();
+        String needle = q.trim().toLowerCase(Locale.ROOT);
+        List<AccountRow> selected = all.stream()
+                .filter(r -> needle.isBlank() || (r.account().getFullName() + " " + r.account().getEmail() + " " + r.account().getDni()).toLowerCase(Locale.ROOT).contains(needle))
+                .filter(r -> role.isBlank() || r.account().getRole().name().equals(role))
+                .filter(r -> status.isBlank() || ("active".equals(status) == r.account().isActive()))
+                .filter(r -> profile.isBlank() || ("complete".equals(profile) == r.isComplete())).toList();
+        model.addAttribute("rows", selected);
+        model.addAttribute("accountCount", all.size());
+        model.addAttribute("counters", service.counters(all));
+        model.addAttribute("audits", audits.findTop30ByOrderByCreatedAtDesc());
+        model.addAttribute("dateFormat", DATE);
+        model.addAttribute("form", form);
+        model.addAttribute("editing", editing);
+        model.addAttribute("q", q); model.addAttribute("roleFilter", role);
+        model.addAttribute("statusFilter", status); model.addAttribute("profileFilter", profile);
+        model.addAttribute("developerEmail", authentication.getName());
+        return "dashboard/developer/accounts";
     }
 
-    private String validate(String firstName, String paternalLastName, String dni, String email, String password, Role role) {
-        if (firstName.length() < 2) return "Escribe los nombres de la persona.";
-        if (paternalLastName.length() < 2) return "Escribe el apellido paterno de la persona.";
-        if (!dni.matches("\\d{8}")) return "El DNI debe contener exactamente 8 dígitos.";
-        if (!email.matches("^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$")) return "Ingresa un correo válido.";
-        if (password == null || password.length() < 8) return "La contraseña debe tener al menos 8 caracteres.";
-        if (role == null || !MANAGED_ROLES.contains(role)) return "Selecciona un rol operativo válido.";
-        return null;
-    }
-
-    private String clean(String value) {
-        return value == null ? "" : value.trim();
+    private String message(RuntimeException ex) {
+        return ex instanceof DataIntegrityViolationException
+                ? "No se pudo guardar: existe un correo duplicado o actividad vinculada a esta cuenta." : ex.getMessage();
     }
 }

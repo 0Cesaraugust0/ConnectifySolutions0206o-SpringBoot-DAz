@@ -55,7 +55,7 @@ public class DashboardController {
     public String developer(Model model, Authentication authentication) {
         model.addAttribute("title", "Panel Developer");
         model.addAttribute("email", authentication.getName());
-        return "dashboard/developer-console";
+        return "redirect:/dashboard/developer/accounts";
     }
 
     @GetMapping("/dashboard/admin")

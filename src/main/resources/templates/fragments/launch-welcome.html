@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<body>
+<dialog th:fragment="welcome" id="launchWelcome" class="launch-welcome" aria-labelledby="launchWelcomeTitle" aria-describedby="launchWelcomeDescription">
+    <div class="launch-welcome-shell">
+        <canvas class="launch-confetti" aria-hidden="true"></canvas>
+        <button class="launch-close" type="button" data-launch-close aria-label="Cerrar bienvenida" autofocus>×</button>
+        <header class="launch-heading">
+            <div class="launch-brand"><span aria-hidden="true">C</span> Connectify Solutions</div>
+            <div class="launch-celebration" aria-hidden="true">
+                <svg class="launch-horn launch-horn-left" viewBox="0 0 100 100" fill="none">
+                    <path d="M17 86 35 25 78 66Z" fill="#eebd68"/>
+                    <path d="m25 60 28 17m-22-35 37 24" stroke="#b36c31" stroke-width="7"/>
+                    <ellipse cx="57" cy="45" rx="11" ry="30" transform="rotate(-46 57 45)" fill="#fff0c7"/>
+                    <path d="m67 25 5-13m8 27 13-3M49 17l-3-9" stroke="#eebd68" stroke-width="4" stroke-linecap="round"/>
+                </svg>
+                <span class="launch-spark">✦</span>
+                <svg class="launch-horn launch-horn-right" viewBox="0 0 100 100" fill="none">
+                    <path d="M17 86 35 25 78 66Z" fill="#9295ef"/>
+                    <path d="m25 60 28 17m-22-35 37 24" stroke="#605dc4" stroke-width="7"/>
+                    <ellipse cx="57" cy="45" rx="11" ry="30" transform="rotate(-46 57 45)" fill="#e9e7ff"/>
+                    <path d="m67 25 5-13m8 27 13-3M49 17l-3-9" stroke="#bcb8ff" stroke-width="4" stroke-linecap="round"/>
+                </svg>
+            </div>
+            <p class="launch-eyebrow">Inicio de actividades · Lima, Perú</p>
+            <h2 id="launchWelcomeTitle">El talento nos reúne.<br><span>Hoy conectamos contigo.</span></h2>
+            <p class="launch-service">Servicio de venta de entradas en línea</p>
+        </header>
+        <div class="launch-content">
+            <div class="launch-date"><span class="launch-date-label">Nuestra apertura</span><time datetime="2026-10-14T22:00:00-05:00">14 de octubre de 2026 <span>· 10:00 p. m.</span></time></div>
+            <p id="launchWelcomeDescription">Iniciamos este camino con el compromiso de brindar un servicio oportuno, limpio y asequible para la comunidad artística y educadora de Lima.</p>
+            <p class="launch-invitation">Crea tu cuenta y tu perfil personal para comenzar a difundir tus eventos, invitar a tu público y conectar con quienes quieren ser parte.</p>
+            <div class="launch-values" aria-label="Nuestro compromiso"><span>Oportuno</span><span>Limpio</span><span>Asequible</span></div>
+            <div class="launch-actions">
+                <a class="launch-primary" th:unless="${signedIn}" th:href="@{/register}">Crear mi cuenta <span aria-hidden="true">↗</span></a>
+                <a class="launch-primary" th:if="${signedIn}" th:href="@{/dashboard}">Ir a mi panel <span aria-hidden="true">↗</span></a>
+                <button class="launch-secondary" type="button" data-launch-close>Explorar eventos</button>
+            </div>
+            <p class="launch-signoff">Bienvenidos a Connectify Solutions.</p>
+        </div>
+    </div>
+</dialog>
+</body>
+</html>

@@ -19,12 +19,24 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.core.session.SessionRegistry;
+import org.springframework.security.core.session.SessionRegistryImpl;
+import org.springframework.security.web.session.HttpSessionEventPublisher;
+import org.springframework.security.web.csrf.CsrfFilter;
+import org.springframework.security.web.util.matcher.AndRequestMatcher;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Configuration
 public class SecurityConfig {
+
+    @Bean
+    public SessionRegistry sessionRegistry() { return new SessionRegistryImpl(); }
+
+    @Bean
+    public HttpSessionEventPublisher httpSessionEventPublisher() { return new HttpSessionEventPublisher(); }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -42,9 +54,13 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http,
-                                                   DaoAuthenticationProvider databaseAuthenticationProvider) throws Exception {
+                                                   DaoAuthenticationProvider databaseAuthenticationProvider,
+                                                   SessionRegistry sessionRegistry) throws Exception {
         http
-                .csrf(csrf -> csrf.disable())
+                .csrf(csrf -> csrf.requireCsrfProtectionMatcher(new AndRequestMatcher(
+                        CsrfFilter.DEFAULT_CSRF_MATCHER, new AntPathRequestMatcher("/dashboard/developer/accounts/**"))))
+                .sessionManagement(session -> session.maximumSessions(-1)
+                        .sessionRegistry(sessionRegistry).expiredUrl("/login?accessUpdated"))
                 .authenticationProvider(databaseAuthenticationProvider)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
