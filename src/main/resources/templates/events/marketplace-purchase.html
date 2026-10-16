@@ -8,7 +8,10 @@
     <link rel="stylesheet" th:href="@{/css/ui.css}">
     <link rel="stylesheet" th:href="@{/css/marketplace-presentation.css(v='templates-2')}">
     <link rel="stylesheet" th:href="@{/css/marketplace-account.css(v='detail-nav-1')}">
-    <link rel="stylesheet" th:href="@{/css/marketplace-purchase.css(v='detail-compact-1')}">
+    <link rel="stylesheet" th:href="@{/css/marketplace-purchase.css(v='organizer-preview-1')}">
+    <link rel="stylesheet" th:href="@{/css/marketplace-showcase.css(v='showcase-1')}">
+    <script th:src="@{/js/stage-map-modal.js(v='stage-modal-1')}" defer></script>
+    <script th:if="${organizerPreview == true}" th:src="@{/js/showcase/template-preview.js(v='showcase-1')}" defer></script>
 </head>
 <body>
 <header class="navbar marketplace-nav">
@@ -22,68 +25,107 @@
             <a class="market-text-control" th:href="@{/cart}">Carrito</a>
             <a class="market-text-control" th:href="@{/dashboard/client/favorites}">Guardados<span class="market-icon-badge" th:if="${favoriteCount > 0}" th:text="${favoriteCount}">0</span></a>
         </div>
-        <a class="btn secondary compact" th:if="${signedIn && !clientAccount}" th:href="@{/dashboard}">Mi panel</a>
+        <a class="btn secondary compact" th:if="${organizerPreview == true}" th:href="@{/dashboard/organizer/events/{id}(id=${event.id})}">Administrar evento</a>
+        <a class="btn secondary compact" th:if="${signedIn && !clientAccount && organizerPreview != true}" th:href="@{/dashboard}">Mi panel</a>
         <a class="btn secondary compact" th:unless="${signedIn}" th:href="@{/login}">Iniciar sesión</a>
         <a class="btn primary compact" th:unless="${signedIn}" th:href="@{/register}">Crear cuenta</a>
     </nav>
 </header>
 
-<main class="dashboard-page market-stage market-detail-page">
-    <section class="market-layout" th:classappend="${backgroundImageUrl != null && !backgroundImageUrl.isBlank()} ? ' has-background' : ''" th:attr="data-template=${event.designTemplate != null ? event.designTemplate.name() : 'CLASSIC'},data-focus=${presentation != null ? presentation.contentFocus : 'BALANCED'},data-info-position=${presentation != null ? presentation.infoPosition : 'STANDARD'}" th:style="${presentationStyle}">
+<section class="organizer-market-preview" th:if="${organizerPreview == true}">
+    <div>
+        <span class="organizer-preview-label">Vista privada del Organizador</span>
+        <strong>Esta es la presentación real del evento en Marketplace.</strong>
+        <small th:text="${event.status != null && event.status.name() == 'PUBLISHED' ? 'El evento está publicado.' : 'Todavía no es visible para clientes.'}">Vista previa</small>
+    </div>
+    <nav>
+        <a th:href="@{/dashboard/organizer/events}">Mis eventos</a>
+        <a th:href="@{/dashboard/organizer/events/{id}(id=${event.id})}">Administrar</a>
+        <a th:if="${!locked}" th:href="@{/dashboard/organizer/events/{id}/edit(id=${event.id})}">Editar datos</a>
+        <a th:href="@{/dashboard/organizer/events/{id}/ticket-types(id=${event.id})}">Gestionar entradas</a>
+    </nav>
+</section>
+
+<section class="presentation-comparison" th:if="${organizerPreview == true}" aria-label="Comparar las ocho presentaciones">
+    <div class="comparison-heading"><div><span>Explora el diseño</span><h2>Un evento, ocho composiciones</h2><p>Cambia de presentación para comparar el mismo contenido. Para conservar una elección, selecciónala en Editar.</p></div><button type="button" class="comparison-mobile" data-preview-mobile aria-pressed="false">Vista móvil</button></div>
+    <nav class="comparison-options" aria-label="Plantillas disponibles">
+        <a th:each="design : ${previewTemplates}" th:href="@{/dashboard/organizer/events/{id}/preview(id=${event.id},template=${design.name()})}" th:attr="data-preview-template=${design.name()},data-preview-label=${design.label},aria-current=${previewTemplate == design ? 'true' : 'false'}" th:text="${design.label}">Clásico</a>
+    </nav>
+    <p class="comparison-status" aria-live="polite">Comparando: <strong data-preview-current th:text="${previewTemplate.label}">Clásico</strong></p>
+</section>
+
+<main class="dashboard-page market-stage market-detail-page" th:with="effectiveTemplate=${organizerPreview == true && previewTemplate != null ? previewTemplate : event.designTemplate}">
+    <section class="market-layout" th:classappend="${backgroundImageUrl != null && !backgroundImageUrl.isBlank()} ? ' has-background' : ''" th:attr="data-template=${effectiveTemplate != null ? effectiveTemplate.name() : 'CLASSIC'},data-focus=${presentation != null ? presentation.contentFocus : 'BALANCED'},data-info-position=${presentation != null ? presentation.infoPosition : 'STANDARD'}" th:style="${presentationStyle}">
         <div class="market-cover">
             <img th:if="${coverImageUrl != null && !coverImageUrl.isBlank()}" th:src="${coverImageUrl}" alt="Portada del evento">
             <div class="market-cover-empty" th:unless="${coverImageUrl != null && !coverImageUrl.isBlank()}">Connectify</div>
             <div class="market-cover-title">
-                <span class="badge template-badge" th:text="${event.designTemplate != null ? event.designTemplate.label : 'Clásico'}">Clásico</span>
+                <span class="badge template-badge" th:text="${effectiveTemplate != null ? effectiveTemplate.label : 'Clásico'}">Clásico</span>
                 <h1 th:text="${event.title}">Evento</h1>
                 <p th:text="${event.category != null ? event.category.name : 'Evento'}">Categoría</p>
             </div>
         </div>
 
         <div class="market-content">
-            <div>
+            <div class="market-story">
                 <p class="market-intro" th:text="${event.description}">Descripción del evento.</p>
                 <p class="market-highlight" th:if="${presentation != null && presentation.highlightText != null && !presentation.highlightText.isBlank()}" th:text="${presentation.highlightText}">Texto destacado</p>
                 <div class="market-meta">
                     <div><strong>Fecha</strong><span th:text="${event.eventDate != null ? #temporals.format(event.eventDate, 'dd/MM/yyyy HH:mm') : 'Por definir'}">Fecha</span></div>
                     <div><strong>Ubicación</strong><span th:text="${(event.location != null ? event.location : 'Por definir') + ' · ' + (event.city != null ? event.city : '')}">Ubicación</span></div>
-                    <div class="organizer-meta-card"><strong>Organiza</strong><span class="market-organizer-brand"><img th:if="${organizerLogoUrl != null && !organizerLogoUrl.isBlank()}" th:src="${organizerLogoUrl}" alt="Logo del organizador"><em th:text="${organizerBrandName != null && !organizerBrandName.isBlank() ? organizerBrandName : 'Organizador'}">Organizador</em></span></div>
+                    <div class="organizer-meta-card" th:if="${presentation == null || presentation.showOrganizer}"><strong>Organiza</strong><span class="market-organizer-brand"><img th:if="${organizerLogoUrl != null && !organizerLogoUrl.isBlank()}" th:src="${organizerLogoUrl}" alt="Logo del organizador"><em th:text="${organizerBrandName != null && !organizerBrandName.isBlank() ? organizerBrandName : 'Organizador'}">Organizador</em></span></div>
                     <div><strong>Precio desde</strong><span th:text="${event.price != null ? 'S/ ' + event.price : 'Gratis'}">S/ 0.00</span></div>
                     <div><strong>Capacidad</strong><span th:text="${event.capacity != null ? event.capacity : 0}">0</span></div>
                     <div><strong>Disponibles</strong><span th:text="${event.availableTickets}">0</span></div>
                 </div>
 
+                <section class="stage-plan-access"
+                         th:if="${presentation != null && presentation.showStageMap && stageImageUrl != null && !stageImageUrl.isBlank()}">
+                    <button class="stage-plan-button" type="button" data-stage-modal-open="stageMapDialog" aria-haspopup="dialog">
+                        <span class="stage-plan-icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none">
+                                <path d="M4 5.5h16v11H4zM7 19h10M8 8.5h8M7 13.5l2.4-2.1 2.2 1.7 2.7-2.5L17 13"/>
+                            </svg>
+                        </span>
+                        <span class="stage-plan-copy">
+                            <small>Distribución del recinto</small>
+                            <strong>Ver figura del escenario</strong>
+                        </span>
+                        <span class="stage-plan-action">Abrir</span>
+                    </button>
+                </section>
+
                 <div class="market-extra-blocks" th:if="${presentation != null}">
+                    <section class="market-gallery-section" th:if="${presentation.showGallery && ((coverImageUrl != null && !coverImageUrl.isBlank()) || (thumbnailImageUrl != null && !thumbnailImageUrl.isBlank()))}">
+                        <h2 class="market-section-title">La experiencia en imágenes</h2>
+                        <div class="market-gallery">
+                            <figure th:if="${coverImageUrl != null && !coverImageUrl.isBlank()}"><img th:src="${coverImageUrl}" th:alt="${'Arte principal de ' + event.title}" loading="lazy"><figcaption>Imagen de la experiencia</figcaption></figure>
+                            <figure th:if="${thumbnailImageUrl != null && !thumbnailImageUrl.isBlank() && thumbnailImageUrl != coverImageUrl}"><img th:src="${thumbnailImageUrl}" th:alt="${'Detalle visual de ' + event.title}" loading="lazy"><figcaption>Una mirada al evento</figcaption></figure>
+                        </div>
+                    </section>
                     <section class="market-media-strip" th:if="${presentation.showMedia}">
                         <article class="market-media-embed youtube" th:if="${youtubeEmbedUrl != null && !youtubeEmbedUrl.isBlank()}"><iframe th:src="${youtubeEmbedUrl}" title="Video del evento" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy"></iframe></article>
                         <a th:if="${(youtubeEmbedUrl == null || youtubeEmbedUrl.isBlank()) && presentation.youtubeUrl != null && !presentation.youtubeUrl.isBlank()}" th:href="${presentation.youtubeUrl}" target="_blank" rel="noopener">Ver video</a>
                         <article class="market-media-embed spotify" th:if="${spotifyEmbedUrl != null && !spotifyEmbedUrl.isBlank()}"><iframe th:src="${spotifyEmbedUrl}" title="Playlist Spotify" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe></article>
                         <a th:if="${(spotifyEmbedUrl == null || spotifyEmbedUrl.isBlank()) && presentation.spotifyUrl != null && !presentation.spotifyUrl.isBlank()}" th:href="${presentation.spotifyUrl}" target="_blank" rel="noopener">Abrir playlist</a>
                     </section>
-                    <section class="market-stage-map" th:if="${presentation.showStageMap}">
-                        <div class="stage-map-frame">
-                            <img class="stage-map-image" th:if="${stageImageUrl != null && !stageImageUrl.isBlank()}" th:src="${stageImageUrl}" alt="Mapa de escenario">
-                            <div class="stage-map-visual" th:unless="${stageImageUrl != null && !stageImageUrl.isBlank()}"><span>Escenario</span><strong>VIP</strong><em>General</em></div>
-                        </div>
-                        <p th:text="${presentation.stageText != null && !presentation.stageText.isBlank() ? presentation.stageText : 'Zonas y accesos por confirmar.'}">Escenario</p>
-                    </section>
                     <section class="market-tour-sessions" th:if="${presentation.showSessions && presentation.sessionText != null && !presentation.sessionText.isBlank()}">
                         <h2>Sesiones disponibles</h2>
-                        <details th:each="session : ${#strings.arraySplit(presentation.sessionText, '\n')}" th:if="${session != null && !session.isBlank()}">
-                            <summary><span th:text="${session}">Lima · 25 julio</span><b>+</b></summary>
+                        <details th:each="eventSession : ${#strings.arraySplit(presentation.sessionText, '\n')}" th:if="${eventSession != null && !eventSession.isBlank()}">
+                            <summary><span th:text="${eventSession}">Lima · 25 julio</span><b>+</b></summary>
                             <p>Elige esta fecha y continúa con la compra desde las entradas disponibles.</p>
                             <a href="#ticketTypes">Comprar entrada</a>
                         </details>
                     </section>
-                    <section class="market-extra-block" th:if="${presentation.showAgenda && presentation.agendaText != null && !presentation.agendaText.isBlank()}"><b>Agenda</b><p th:text="${presentation.agendaText}">Agenda</p></section>
-                    <section class="market-extra-block" th:if="${presentation.showBenefits && presentation.benefitsText != null && !presentation.benefitsText.isBlank()}"><b>Beneficios</b><p th:text="${presentation.benefitsText}">Beneficios</p></section>
+                    <section class="market-extra-block market-agenda" th:if="${presentation.showAgenda && presentation.agendaText != null && !presentation.agendaText.isBlank()}"><h2 class="market-section-title">Programa del evento</h2><ol><li th:each="item : ${#strings.arraySplit(presentation.agendaText, '\n')}" th:if="${!item.isBlank()}" th:text="${item}">Agenda</li></ol></section>
+                    <section class="market-extra-block market-benefits" th:if="${presentation.showBenefits && presentation.benefitsText != null && !presentation.benefitsText.isBlank()}"><h2 class="market-section-title">Tu experiencia incluye</h2><ul><li th:each="item : ${#strings.arraySplit(presentation.benefitsText, '\n')}" th:if="${!item.isBlank()}" th:text="${item}">Beneficios</li></ul></section>
                     <section class="market-extra-block sponsor-block" th:if="${presentation.showSponsors && ((presentation.sponsorsText != null && !presentation.sponsorsText.isBlank()) || (presentation.sponsorLogosText != null && !presentation.sponsorLogosText.isBlank()))}">
                         <b>Marcas auspiciadoras</b>
                         <p th:if="${presentation.sponsorsText != null && !presentation.sponsorsText.isBlank()}" th:text="${presentation.sponsorsText}">Sponsors</p>
                         <div class="sponsor-logo-strip" th:if="${presentation.sponsorLogosText != null && !presentation.sponsorLogosText.isBlank()}">
                             <th:block th:each="sponsorLogo : ${#strings.arraySplit(presentation.sponsorLogosText, '\n')}">
-                                <span class="sponsor-logo" th:if="${sponsorLogo != null && !sponsorLogo.isBlank() && (#strings.startsWith(sponsorLogo, 'http') || #strings.startsWith(sponsorLogo, '/uploads/'))}"><img th:src="${sponsorLogo}" alt="Logo de auspiciador"></span>
-                                <span class="sponsor-logo-chip" th:if="${sponsorLogo != null && !sponsorLogo.isBlank() && !(#strings.startsWith(sponsorLogo, 'http') || #strings.startsWith(sponsorLogo, '/uploads/'))}" th:text="${sponsorLogo}">Sponsor</span>
+                                <span class="sponsor-logo" th:if="${sponsorLogo != null && !sponsorLogo.isBlank() && (#strings.startsWith(sponsorLogo, 'http') || #strings.startsWith(sponsorLogo, '/uploads/') || #strings.startsWith(sponsorLogo, '/images/showcase/'))}"><img th:src="${sponsorLogo}" alt="Logo de auspiciador"></span>
+                                <span class="sponsor-logo-chip" th:if="${sponsorLogo != null && !sponsorLogo.isBlank() && !(#strings.startsWith(sponsorLogo, 'http') || #strings.startsWith(sponsorLogo, '/uploads/') || #strings.startsWith(sponsorLogo, '/images/showcase/'))}" th:text="${sponsorLogo}">Sponsor</span>
                             </th:block>
                         </div>
                     </section>
@@ -102,7 +144,7 @@
                         <td th:text="${'S/ ' + type.price}">S/ 0.00</td>
                         <td th:text="${type.remaining}">0</td>
                         <td>
-                            <form class="ticket-cart-form" th:if="${clientAccount && type.remaining > 0}" th:action="@{/cart/add/{id}(id=${event.id})}" method="post">
+                            <form class="ticket-cart-form" th:if="${organizerPreview != true && clientAccount && type.remaining > 0}" th:action="@{/cart/add/{id}(id=${event.id})}" method="post">
                                 <input type="hidden" name="ticketTypeId" th:value="${type.id}">
                                 <div class="quantity-stepper" th:attr="data-max=${type.remaining}">
                                     <button type="button" class="quantity-plus" aria-label="Aumentar cantidad">+</button>
@@ -111,9 +153,10 @@
                                 </div>
                                 <button class="btn primary compact" type="submit">Agregar al carrito</button>
                             </form>
-                            <span class="ticket-sold-out" th:if="${clientAccount && type.remaining <= 0}">Agotado</span>
-                            <a class="btn secondary compact" th:if="${!signedIn}" th:href="@{/login}">Iniciar sesión</a>
-                            <span class="muted small" th:if="${signedIn && !clientAccount}">Solo cuenta Cliente</span>
+                            <span class="ticket-sold-out" th:if="${organizerPreview != true && clientAccount && type.remaining <= 0}">Agotado</span>
+                            <a class="btn secondary compact" th:if="${organizerPreview != true && !signedIn}" th:href="@{/login}">Iniciar sesión</a>
+                            <span class="organizer-preview-ticket" th:if="${organizerPreview == true}">Vista previa</span>
+                            <span class="muted small" th:if="${organizerPreview != true && signedIn && !clientAccount}">Solo cuenta Cliente</span>
                         </td>
                     </tr>
                     </tbody>
@@ -124,9 +167,28 @@
                 <span>El Organizador aún no ha publicado variantes de entrada para este evento.</span>
             </section>
         </div>
-        <div class="market-actions" style="padding:0 30px 30px"><a class="btn secondary" th:href="@{/events}">Seguir explorando</a><a class="btn primary" th:if="${clientAccount}" th:href="@{/cart}">Ver mi carrito</a></div>
+        <div class="market-actions" style="padding:0 30px 30px"><a class="btn secondary" th:if="${organizerPreview == true}" th:href="@{/dashboard/organizer/events}">Volver a mis eventos</a><a class="btn secondary" th:if="${organizerPreview != true}" th:href="@{/events}">Seguir explorando</a><a class="btn primary" th:if="${organizerPreview != true && clientAccount}" th:href="@{/cart}">Ver mi carrito</a></div>
     </section>
 </main>
+<dialog id="stageMapDialog" class="stage-map-dialog"
+        th:if="${presentation != null && presentation.showStageMap && stageImageUrl != null && !stageImageUrl.isBlank()}"
+        aria-labelledby="stageMapDialogTitle">
+    <article class="stage-map-dialog-card">
+        <header class="stage-map-dialog-header">
+            <div>
+                <span>Distribución del recinto</span>
+                <h2 id="stageMapDialogTitle">Figura del escenario</h2>
+            </div>
+            <button type="button" class="stage-map-dialog-close" data-stage-modal-close aria-label="Cerrar figura del escenario">&times;</button>
+        </header>
+        <figure class="stage-map-dialog-figure">
+            <img th:src="${stageImageUrl}" th:alt="${'Figura del escenario de ' + event.title}">
+        </figure>
+        <p class="stage-map-dialog-description"
+           th:if="${presentation.stageText != null && !presentation.stageText.isBlank()}"
+           th:text="${presentation.stageText}">Información sobre zonas y accesos.</p>
+    </article>
+</dialog>
 <script>
     document.querySelectorAll('.quantity-stepper').forEach(function (stepper) {
         var input = stepper.querySelector('input');

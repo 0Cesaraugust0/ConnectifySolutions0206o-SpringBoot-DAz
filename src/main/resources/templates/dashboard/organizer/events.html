@@ -22,7 +22,7 @@
     <section class="toolbar"><a class="btn primary" th:href="@{/dashboard/organizer/events/new}">+ Crear nueva propuesta</a><a class="btn secondary" th:href="@{/dashboard/organizer/events/metrics}">Ver métricas</a><a class="btn secondary" th:href="@{/events}">Explorar Marketplace</a></section>
     <div th:if="${param.deleted != null}" class="alert success">Evento eliminado dentro de la ventana permitida. Se conservó la trazabilidad administrativa.</div>
 
-    <div class="events-title-row"><div><h2>Listado de eventos</h2><p class="event-count" th:text="${events != null ? events.size() + ' evento(s) registrados' : '0 eventos registrados'}">0 eventos registrados</p></div><div class="quick-note">Crea entradas desde el detalle; no necesitas rehacer el evento para agregar nuevas variantes.</div></div>
+    <div class="events-title-row"><div><h2>Listado de eventos</h2><p class="event-count" th:text="${events != null ? events.size() + ' evento(s) registrados' : '0 eventos registrados'}">0 eventos registrados</p></div><div class="quick-note">Editar reúne datos, presentación y entradas en un solo lugar.</div></div>
 
     <section class="event-list" th:if="${events != null && !events.isEmpty()}">
         <article class="event-row-card" th:each="event : ${events}">
@@ -33,7 +33,11 @@
                 <div class="event-meta"><span th:text="${event.eventDate != null ? #temporals.format(event.eventDate, 'dd MMM yyyy · HH:mm') : 'Fecha por definir'}">Fecha</span><span th:text="${(event.location != null ? event.location : 'Lugar por definir') + ' · ' + (event.city != null ? event.city : 'Ciudad')}">Lugar</span></div>
                 <div class="event-kpis"><div class="event-kpi"><small>Entradas vendidas</small><strong th:text="${(event.sold != null ? event.sold : 0) + ' / ' + (event.capacity != null ? event.capacity : 0)}">0 / 0</strong></div><div class="event-kpi"><small>Ingreso estimado</small><strong th:text="${'S/ ' + ((event.sold != null ? event.sold : 0) * (event.price != null ? event.price : 0))}">S/ 0</strong></div><div class="event-kpi"><small>Estado de revisión</small><strong th:text="${event.status != null ? event.status : 'SIN_ESTADO'}">PENDING_REVIEW</strong></div></div>
             </div>
-            <div class="event-actions"><a class="btn primary compact" th:href="@{/dashboard/organizer/events/{id}(id=${event.id})}">Ver detalle</a><a class="btn secondary compact" th:href="@{/dashboard/organizer/events/{id}/ticket-types(id=${event.id})}">Gestionar entradas</a><a class="btn secondary compact" th:if="${event.status != null && event.status.name() == 'PUBLISHED'}" th:href="@{/events/{id}(id=${event.id})}">Ver en Marketplace</a></div>
+            <div class="event-actions">
+                <a class="btn primary compact" th:href="@{/dashboard/organizer/events/{id}/edit(id=${event.id})}">Editar</a>
+                <a class="btn secondary compact" th:href="@{/dashboard/organizer/events/{id}/ticket-types(id=${event.id})}">Gestionar entradas</a>
+                <a class="btn secondary compact" th:href="@{/dashboard/organizer/events/{id}/preview(id=${event.id})}">Ver en Marketplace</a>
+            </div>
         </article>
     </section>
 

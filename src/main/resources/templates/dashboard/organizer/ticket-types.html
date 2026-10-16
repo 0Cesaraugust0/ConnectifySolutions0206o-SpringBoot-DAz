@@ -7,8 +7,9 @@
     <link rel="stylesheet" th:href="@{/css/styles.css}">
     <link rel="stylesheet" th:href="@{/css/ui.css}">
     <link rel="stylesheet" th:href="@{/css/organizer.css(v='organizer-nav-shell-2')}">
+    <link rel="stylesheet" th:href="@{/css/organizer-ticket-types.css(v='compact-60-1')}">
 </head>
-<body>
+<body class="organizer-ticket-types-page">
 <header class="navbar dashboard-nav">
     <a class="brand brand-link" th:href="@{/dashboard/organizer/events}">
         <span class="logo organizer-brand-icon" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><path d="M7 3v3M17 3v3M4.5 9h15M6.5 5h11a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2h-11a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2Z"/><path d="m9 14 2 2 4-4"/></svg></span>
@@ -21,25 +22,34 @@
     </nav>
 </header>
 
-<main class="dashboard-page">
+<main class="dashboard-page organizer-ticket-types-shell">
     <section class="organizer-hero">
         <p class="badge">Gestión de tickets</p>
         <h1 th:text="${event.title}">Evento</h1>
         <p class="hero-text">Crea y modifica tipos de entrada con precio, cupo liberado y estado de venta.</p>
     </section>
 
+    <div th:if="${param.created}" class="alert success">La nueva variante fue agregada correctamente.</div>
+    <div th:if="${param.updated}" class="alert success">Precio, tipo y disponibilidad actualizados correctamente.</div>
+    <div th:if="${param.quantityError}" class="alert error">La cantidad total no puede ser menor que las entradas que ya fueron vendidas.</div>
+    <div th:if="${publishedEvent}" class="alert success">Este evento está publicado. Los cambios guardados aquí actualizan sus entradas disponibles en Marketplace.</div>
+
     <section class="checkout-layout">
-        <form class="form-card" th:action="@{/dashboard/organizer/events/{id}/ticket-types(id=${event.id})}" method="post">
+        <form class="form-card ticket-create-card" th:action="@{/dashboard/organizer/events/{id}/ticket-types(id=${event.id})}" method="post">
             <h2>Agregar tipo de entrada</h2>
             <div class="field-grid">
                 <label>Tipo predefinido
                     <select class="search-input" name="namePreset" required>
                         <option value="General">General</option>
-                        <option value="VIP">VIP</option>
-                        <option value="Early Bird">Early Bird</option>
                         <option value="Preferencial">Preferencial</option>
+                        <option value="VIP">VIP</option>
+                        <option value="Platinum">Platinum</option>
+                        <option value="Early Bird">Early Bird</option>
                         <option value="Platea">Platea</option>
                         <option value="Palco">Palco</option>
+                        <option value="Corporativo">Corporativo</option>
+                        <option value="Estudiante">Estudiante</option>
+                        <option value="Meet &amp; Greet">Meet &amp; Greet</option>
                         <option value="OTRO">Otro</option>
                     </select>
                 </label>
@@ -49,7 +59,7 @@
                 <label>Precio S/
                     <input class="search-input" name="price" type="number" step="0.01" min="0" placeholder="49.00" required>
                 </label>
-                <label>Cantidad a vender
+                <label>Cupos totales de la variante
                     <input class="search-input" name="quantityAvailable" type="number" min="1" placeholder="100" required>
                 </label>
                 <label class="wide">Descripción
@@ -68,7 +78,7 @@
         </aside>
     </section>
 
-    <section class="table-card">
+    <section class="table-card ticket-types-card">
         <h2>Tipos creados</h2>
         <table class="table-modern">
             <thead>
@@ -84,16 +94,21 @@
             <tbody>
             <tr th:each="type : ${ticketTypes}">
                 <td colspan="6">
-                    <form class="field-grid" th:action="@{/dashboard/organizer/events/{id}/ticket-types/{typeId}/update(id=${event.id}, typeId=${type.id})}" method="post">
+                    <form class="field-grid ticket-type-editor" th:action="@{/dashboard/organizer/events/{id}/ticket-types/{typeId}/update(id=${event.id}, typeId=${type.id})}" method="post">
                         <label>Tipo
                             <select class="search-input" name="namePreset">
                                 <option th:selected="${type.name == 'General'}" value="General">General</option>
-                                <option th:selected="${type.name == 'VIP'}" value="VIP">VIP</option>
-                                <option th:selected="${type.name == 'Early Bird'}" value="Early Bird">Early Bird</option>
                                 <option th:selected="${type.name == 'Preferencial'}" value="Preferencial">Preferencial</option>
+                                <option th:selected="${type.name == 'VIP'}" value="VIP">VIP</option>
+                                <option th:selected="${type.name == 'Platinum'}" value="Platinum">Platinum</option>
+                                <option th:selected="${type.name == 'Early Bird'}" value="Early Bird">Early Bird</option>
                                 <option th:selected="${type.name == 'Platea'}" value="Platea">Platea</option>
                                 <option th:selected="${type.name == 'Palco'}" value="Palco">Palco</option>
-                                <option value="OTRO">Otro</option>
+                                <option th:selected="${type.name == 'Corporativo'}" value="Corporativo">Corporativo</option>
+                                <option th:selected="${type.name == 'Estudiante'}" value="Estudiante">Estudiante</option>
+                                <option th:selected="${type.name == 'Meet &amp; Greet'}" value="Meet &amp; Greet">Meet &amp; Greet</option>
+                                <option value="OTRO"
+                                        th:selected="${type.name != 'General' && type.name != 'Preferencial' && type.name != 'VIP' && type.name != 'Platinum' && type.name != 'Early Bird' && type.name != 'Platea' && type.name != 'Palco' && type.name != 'Corporativo' && type.name != 'Estudiante' && type.name != 'Meet &amp; Greet'}">Otro / personalizado</option>
                             </select>
                         </label>
                         <label>Nombre opcional
@@ -102,8 +117,9 @@
                         <label>Precio
                             <input class="search-input" name="price" type="number" step="0.01" min="0" th:value="${type.price}" required>
                         </label>
-                        <label>Cantidad
-                            <input class="search-input" name="quantityAvailable" type="number" min="1" th:value="${type.quantityAvailable}" required>
+                        <label>Cupos totales
+                            <input class="search-input" name="quantityAvailable" type="number" th:min="${type.quantitySold != null && type.quantitySold > 0 ? type.quantitySold : 1}" th:value="${type.quantityAvailable}" required>
+                            <small class="muted" th:if="${type.quantitySold != null && type.quantitySold > 0}" th:text="${'Mínimo permitido: ' + type.quantitySold + ' (ya vendidas)'}">Mínimo vendido</small>
                         </label>
                         <label class="wide">Descripción
                             <textarea class="search-input" name="description" rows="3" th:text="${type.description}" required>Descripción</textarea>
@@ -124,7 +140,7 @@
         </table>
     </section>
 
-    <section class="table-card" style="margin-top:24px">
+    <section class="table-card ticket-audit-card">
         <h2>Trazabilidad</h2>
         <table class="table-modern">
             <thead>

@@ -4,6 +4,7 @@ import com.connectify.entity.Event;
 import com.connectify.entity.TicketType;
 import com.connectify.repository.CategoryRepository;
 import com.connectify.repository.EventAdminRecordRepository;
+import com.connectify.repository.EventPresentationSettingsRepository;
 import com.connectify.repository.EventRepository;
 import com.connectify.repository.TicketTypeRepository;
 import com.connectify.repository.UserAccountRepository;
@@ -30,6 +31,7 @@ class OrganizerDashboardControllerMetricsTest {
                 mock(CategoryRepository.class),
                 ticketTypes,
                 mock(EventAdminRecordRepository.class),
+                mock(EventPresentationSettingsRepository.class),
                 mock(InternalMessageService.class),
                 mock(UserAccountRepository.class));
         Authentication authentication = mock(Authentication.class);

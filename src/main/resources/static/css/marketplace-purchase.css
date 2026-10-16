@@ -139,6 +139,288 @@
     font-size:.82rem;
 }
 
+.organizer-market-preview{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:20px;
+    width:min(1120px,calc(100% - 32px));
+    margin:16px auto 0;
+    padding:12px 14px;
+    border:1px solid #d8dde6;
+    border-radius:9px;
+    background:#f7f8fa;
+    box-shadow:0 9px 24px rgba(15,23,42,.06);
+}
+
+.organizer-market-preview>div{
+    display:grid;
+    gap:2px;
+}
+
+.organizer-preview-label{
+    color:#5c6678;
+    font-size:.64rem;
+    font-weight:700;
+    letter-spacing:.055em;
+    text-transform:uppercase;
+}
+
+.organizer-market-preview strong{
+    color:#172033;
+    font-size:.82rem;
+}
+
+.organizer-market-preview small{
+    color:#70798a;
+    font-size:.7rem;
+}
+
+.organizer-market-preview nav{
+    display:flex;
+    align-items:center;
+    justify-content:flex-end;
+    flex-wrap:wrap;
+    gap:7px;
+}
+
+.organizer-market-preview nav a{
+    display:inline-flex;
+    align-items:center;
+    min-height:30px;
+    padding:6px 10px;
+    border:1px solid #cfd5df;
+    border-radius:6px;
+    background:#fff;
+    color:#28344b;
+    font-size:.71rem;
+    font-weight:700;
+    text-decoration:none;
+}
+
+.organizer-market-preview nav a:hover{
+    border-color:#929dad;
+    background:#eef1f5;
+}
+
+.organizer-preview-ticket{
+    display:inline-flex;
+    align-items:center;
+    min-height:28px;
+    padding:5px 9px;
+    border:1px solid #cfd5df;
+    border-radius:6px;
+    background:#f3f5f7;
+    color:#5d6675;
+    font-size:.69rem;
+    font-weight:700;
+}
+
+.stage-plan-access{
+    margin:2px 0 16px;
+}
+
+.stage-plan-button{
+    display:grid;
+    grid-template-columns:36px minmax(0,1fr) auto;
+    align-items:center;
+    gap:11px;
+    width:100%;
+    min-height:60px;
+    padding:9px 12px;
+    border:1px solid #d7dce5;
+    border-radius:8px;
+    background:#f2f4f7;
+    color:#172033;
+    font:inherit;
+    text-align:left;
+    cursor:pointer;
+    transition:border-color .18s ease,background .18s ease,box-shadow .18s ease,transform .18s ease;
+}
+
+.stage-plan-button:hover{
+    border-color:#aeb7c5;
+    background:#fff;
+    box-shadow:0 8px 22px rgba(15,23,42,.08);
+    transform:translateY(-1px);
+}
+
+.stage-plan-button:focus-visible{
+    outline:3px solid rgba(57,72,103,.22);
+    outline-offset:2px;
+}
+
+.stage-plan-icon{
+    display:grid;
+    place-items:center;
+    width:36px;
+    height:36px;
+    border-radius:6px;
+    background:#182133;
+    color:#fff;
+}
+
+.stage-plan-icon svg{
+    width:21px;
+    height:21px;
+    stroke:currentColor;
+    stroke-width:1.7;
+    stroke-linecap:round;
+    stroke-linejoin:round;
+}
+
+.stage-plan-copy{
+    display:grid;
+    gap:2px;
+    min-width:0;
+}
+
+.stage-plan-copy small{
+    color:#6b7485;
+    font-size:.66rem;
+    font-weight:600;
+    letter-spacing:.035em;
+    text-transform:uppercase;
+}
+
+.stage-plan-copy strong{
+    color:#172033;
+    font-size:.82rem;
+    font-weight:750;
+}
+
+.stage-plan-action{
+    display:inline-flex;
+    align-items:center;
+    min-height:30px;
+    padding:6px 11px;
+    border:1px solid #cdd3de;
+    border-radius:6px;
+    background:#fff;
+    color:#27334a;
+    font-size:.72rem;
+    font-weight:750;
+}
+
+.stage-map-dialog{
+    width:min(920px,calc(100vw - 34px));
+    max-width:none;
+    max-height:calc(100vh - 34px);
+    padding:0;
+    overflow:hidden;
+    border:0;
+    border-radius:10px;
+    background:#fff;
+    color:#172033;
+    box-shadow:0 30px 90px rgba(4,10,22,.38);
+}
+
+.stage-map-dialog::backdrop{
+    background:rgba(8,14,27,.74);
+    backdrop-filter:blur(5px);
+}
+
+.stage-map-dialog-card{
+    display:grid;
+    max-height:calc(100vh - 34px);
+}
+
+.stage-map-dialog-header{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:18px;
+    padding:15px 17px;
+    border-bottom:1px solid #e1e5eb;
+    background:#f6f7f9;
+}
+
+.stage-map-dialog-header span{
+    display:block;
+    margin-bottom:2px;
+    color:#6f7888;
+    font-size:.67rem;
+    font-weight:650;
+    letter-spacing:.055em;
+    text-transform:uppercase;
+}
+
+.stage-map-dialog-header h2{
+    margin:0;
+    color:#172033;
+    font-size:1.05rem;
+    line-height:1.25;
+}
+
+.stage-map-dialog-close{
+    display:grid;
+    place-items:center;
+    flex:0 0 auto;
+    width:34px;
+    height:34px;
+    padding:0;
+    border:1px solid #cfd5df;
+    border-radius:6px;
+    background:#fff;
+    color:#27334a;
+    font:400 1.45rem/1 Arial,sans-serif;
+    cursor:pointer;
+}
+
+.stage-map-dialog-close:hover{
+    border-color:#8e99aa;
+    background:#eef1f5;
+}
+
+.stage-map-dialog-figure{
+    display:grid;
+    place-items:center;
+    min-height:280px;
+    margin:0;
+    padding:18px;
+    overflow:auto;
+    background:#e9edf2;
+}
+
+.stage-map-dialog-figure img{
+    display:block;
+    max-width:100%;
+    max-height:calc(100vh - 210px);
+    object-fit:contain;
+    border:1px solid #d7dce4;
+    border-radius:6px;
+    background:#fff;
+    box-shadow:0 12px 28px rgba(15,23,42,.13);
+}
+
+.stage-map-dialog-description{
+    margin:0;
+    padding:13px 18px 15px;
+    border-top:1px solid #e1e5eb;
+    color:#515d70;
+    font-size:.79rem;
+    line-height:1.55;
+    white-space:pre-line;
+}
+
+html.stage-modal-open{
+    overflow:hidden;
+}
+
+.market-layout[data-template='IMMERSIVE'] .stage-plan-button{
+    border-color:rgba(255,255,255,.22);
+    background:rgba(255,255,255,.09);
+}
+
+.market-layout[data-template='IMMERSIVE'] .stage-plan-copy small,
+.market-layout[data-template='IMMERSIVE'] .stage-plan-copy strong{
+    color:#fff;
+}
+
+.market-layout[data-template='IMMERSIVE'] .stage-plan-action{
+    border-color:rgba(255,255,255,.3);
+}
+
 .market-detail-page .market-extra-blocks{
     gap:9px;
     margin:14px 0;
@@ -211,4 +493,14 @@
     .market-detail-page .market-layout[data-template='PROMO_DETAIL'] .market-cover,
     .market-detail-page .market-layout[data-template='IMMERSIVE'] .market-cover{height:245px}
     .market-detail-page .market-layout[data-template='TICKET_PANEL']{display:block}
+    .stage-plan-button{grid-template-columns:34px minmax(0,1fr);padding:9px 10px}
+    .stage-plan-icon{width:34px;height:34px}
+    .stage-plan-action{display:none}
+    .stage-map-dialog{width:calc(100vw - 18px);max-height:calc(100vh - 18px)}
+    .stage-map-dialog-card{max-height:calc(100vh - 18px)}
+    .stage-map-dialog-header{padding:12px 13px}
+    .stage-map-dialog-figure{min-height:220px;padding:10px}
+    .stage-map-dialog-figure img{max-height:calc(100vh - 180px)}
+    .organizer-market-preview{align-items:stretch;flex-direction:column;width:calc(100% - 18px);margin-top:9px}
+    .organizer-market-preview nav{justify-content:flex-start}
 }

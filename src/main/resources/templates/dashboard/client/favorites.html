@@ -6,45 +6,73 @@
     <title>Eventos seleccionados - Connectify</title>
     <link rel="stylesheet" th:href="@{/css/styles.css}">
     <link rel="stylesheet" th:href="@{/css/ui.css}">
-    <link rel="stylesheet" th:href="@{/css/marketplace-account.css(v='nav-50')}">
+    <link rel="stylesheet" th:href="@{/css/client-dashboard.css(v='client-executive-3')}">
+    <link rel="stylesheet" th:href="@{/css/client-favorites.css(v='favorites-executive-1')}">
 </head>
-<body>
-<header class="navbar marketplace-nav">
-    <a class="brand brand-link" th:href="@{/events}"><span class="logo">🎫</span><div><strong>Connectify</strong><small>Marketplace</small></div></a>
-    <nav class="top-actions">
-        <a class="nav-link" th:href="@{/events}">Eventos</a>
-        <a class="nav-link" th:href="@{/events} + '#featured'">Destacados</a>
-        <div class="market-account-cluster">
-            <a class="account-name-control" th:href="@{/dashboard/client}" title="Mi cuenta Cliente"><span class="windows-person-icon" aria-hidden="true"></span><strong th:text="${firstName}">Cliente</strong></a>
-            <a class="market-icon-control" th:href="@{/cart}" aria-label="Mi carrito" title="Mi carrito">🛒</a>
-            <a class="market-icon-control heart-control" th:href="@{/dashboard/client/favorites}" aria-label="Eventos seleccionados" title="Eventos seleccionados">♥<span class="market-icon-badge" th:if="${favoriteCount > 0}" th:text="${favoriteCount}">0</span></a>
-        </div>
+<body class="client-favorites-body">
+<header class="navbar dashboard-nav client-dashboard-nav favorites-nav">
+    <a class="brand brand-link" th:href="@{/dashboard/client}">
+        <span class="logo client-brand-mark">C</span>
+        <div><strong>Connectify</strong><small>Cuenta Cliente</small></div>
+    </a>
+    <nav class="top-actions" aria-label="Acciones de la cuenta Cliente">
+        <a class="btn secondary" th:href="@{/events}">Explorar eventos</a>
+        <a class="btn secondary" th:href="@{/dashboard/client}">Mi cuenta</a>
+        <a class="btn secondary" th:href="@{/cart}">Mi carrito</a>
+        <a class="btn primary" th:href="@{/dashboard/client/tickets}">Tickets QR</a>
     </nav>
 </header>
 
-<main class="dashboard-page">
-    <section class="dashboard-hero">
-        <p class="badge">Mi lista personal</p>
-        <h1>Eventos seleccionados</h1>
-        <p class="muted">Guarda los eventos que te interesan para revisarlos más tarde desde tu cuenta <strong th:text="${email}">cliente</strong>.</p>
+<main class="client-favorites-page">
+    <section class="favorites-hero">
+        <div>
+            <p class="favorites-eyebrow">Selección personal</p>
+            <h1>Eventos guardados</h1>
+            <p>Consulta en un solo lugar los eventos que marcaste para revisarlos o comprarlos después.</p>
+            <small>Cuenta activa: <strong th:text="${email}">cliente@email.com</strong></small>
+        </div>
+        <aside class="favorites-counter" aria-label="Cantidad de eventos guardados">
+            <span>Guardados</span>
+            <strong th:text="${favoriteCount}">0</strong>
+            <small>eventos en tu lista</small>
+        </aside>
+    </section>
+
+    <section class="favorites-section-heading">
+        <div><p>Tu lista</p><h2>Selección de eventos</h2></div>
+        <a th:href="@{/events}">Añadir otro evento <span>→</span></a>
     </section>
 
     <section class="favorites-page-grid" th:if="${favorites != null && !favorites.isEmpty()}">
         <article class="favorite-event-card" th:each="favorite : ${favorites}">
-            <p class="badge" th:text="${favorite.event.category != null ? favorite.event.category.name : 'Evento'}">Evento</p>
-            <h3 th:text="${favorite.event.title}">Evento</h3>
-            <p th:text="${favorite.event.eventDate != null ? #temporals.format(favorite.event.eventDate, 'dd/MM/yyyy HH:mm') : 'Fecha por definir'}">Fecha</p>
-            <p th:text="${favorite.event.city != null ? favorite.event.city : 'Ciudad por definir'}">Ciudad</p>
-            <div class="favorite-event-actions">
-                <a class="btn primary compact" th:href="@{/events/{id}(id=${favorite.event.id})}">Ver evento</a>
-                <form th:action="@{/dashboard/client/favorites/toggle/{id}(id=${favorite.event.id})}" method="post"><input type="hidden" name="redirectTo" value="/dashboard/client/favorites"><button class="btn secondary compact" type="submit">Quitar</button></form>
+            <div class="favorite-event-visual">
+                <img th:if="${favorite.event.imageUrl != null && !favorite.event.imageUrl.isBlank()}" th:src="${favorite.event.imageUrl}" th:alt="${'Imagen de ' + favorite.event.title}">
+                <span th:unless="${favorite.event.imageUrl != null && !favorite.event.imageUrl.isBlank()}">EV</span>
+            </div>
+            <div class="favorite-event-content">
+                <header>
+                    <span th:text="${favorite.event.category != null ? favorite.event.category.name : 'Evento'}">Evento</span>
+                    <small>Seleccionado</small>
+                </header>
+                <h3 th:text="${favorite.event.title}">Evento</h3>
+                <dl class="favorite-event-meta">
+                    <div><dt>Fecha</dt><dd th:text="${favorite.event.eventDate != null ? #temporals.format(favorite.event.eventDate, 'dd/MM/yyyy · HH:mm') : 'Por definir'}">Fecha</dd></div>
+                    <div><dt>Ciudad</dt><dd th:text="${favorite.event.city != null ? favorite.event.city : 'Por definir'}">Ciudad</dd></div>
+                </dl>
+                <div class="favorite-event-actions">
+                    <a class="btn primary compact" th:href="@{/events/{id}(id=${favorite.event.id})}">Ver evento</a>
+                    <form th:action="@{/dashboard/client/favorites/toggle/{id}(id=${favorite.event.id})}" method="post">
+                        <input type="hidden" name="redirectTo" value="/dashboard/client/favorites">
+                        <button class="btn secondary compact" type="submit">Quitar</button>
+                    </form>
+                </div>
             </div>
         </article>
     </section>
 
-    <section class="empty-state" th:if="${favorites == null || favorites.isEmpty()}">
-        <h2>Aún no has seleccionado eventos</h2>
-        <p class="muted">Usa el corazón en una tarjeta o en el detalle de un evento para guardarlo aquí.</p>
+    <section class="favorites-empty" th:if="${favorites == null || favorites.isEmpty()}">
+        <span>EV</span>
+        <div><p>Tu lista está disponible</p><h2>Aún no has seleccionado eventos</h2><small>Marca un evento desde el Marketplace para conservarlo aquí.</small></div>
         <a class="btn primary" th:href="@{/events}">Explorar eventos</a>
     </section>
 </main>

@@ -2,8 +2,10 @@ package com.connectify.controller;
 
 import com.connectify.entity.Category;
 import com.connectify.entity.Event;
+import com.connectify.entity.EventDesignTemplate;
 import com.connectify.entity.EventAdminRecord;
 import com.connectify.entity.EventAdminRecordType;
+import com.connectify.entity.EventPresentationSettings;
 import com.connectify.entity.EventStatus;
 import com.connectify.entity.MessagePriority;
 import com.connectify.entity.MessageType;
@@ -12,6 +14,7 @@ import com.connectify.entity.TicketType;
 import com.connectify.entity.UserAccount;
 import com.connectify.repository.CategoryRepository;
 import com.connectify.repository.EventAdminRecordRepository;
+import com.connectify.repository.EventPresentationSettingsRepository;
 import com.connectify.repository.EventRepository;
 import com.connectify.repository.TicketTypeRepository;
 import com.connectify.repository.UserAccountRepository;
@@ -47,6 +50,7 @@ public class OrganizerDashboardController {
     private final CategoryRepository categoryRepository;
     private final TicketTypeRepository ticketTypeRepository;
     private final EventAdminRecordRepository recordRepository;
+    private final EventPresentationSettingsRepository presentationSettingsRepository;
     private final InternalMessageService messageService;
     private final UserAccountRepository userAccountRepository;
 
@@ -54,12 +58,14 @@ public class OrganizerDashboardController {
                                         CategoryRepository categoryRepository,
                                         TicketTypeRepository ticketTypeRepository,
                                         EventAdminRecordRepository recordRepository,
+                                        EventPresentationSettingsRepository presentationSettingsRepository,
                                         InternalMessageService messageService,
                                         UserAccountRepository userAccountRepository) {
         this.eventRepository = eventRepository;
         this.categoryRepository = categoryRepository;
         this.ticketTypeRepository = ticketTypeRepository;
         this.recordRepository = recordRepository;
+        this.presentationSettingsRepository = presentationSettingsRepository;
         this.messageService = messageService;
         this.userAccountRepository = userAccountRepository;
     }
@@ -114,26 +120,38 @@ public class OrganizerDashboardController {
     }
 
     @GetMapping("/{id}")
-    public String detail(@PathVariable Long id, Model model, Authentication authentication) {
+    public String detail(@PathVariable Long id, Authentication authentication) {
+        findOwnedEvent(id, authentication);
+        return "redirect:/dashboard/organizer/events/" + id + "/edit";
+    }
+
+    @GetMapping("/{id}/preview")
+    public String preview(@PathVariable Long id,
+                          @RequestParam(required = false) EventDesignTemplate template,
+                          Model model, Authentication authentication) {
         Event event = findOwnedEvent(id, authentication);
-        model.addAttribute("event", event);
-        model.addAttribute("ticketTypes", ticketTypeRepository.findByEventIdOrderByPriceAsc(id));
-        model.addAttribute("records", recordRepository.findByEventIdOrderByCreatedAtDesc(id));
-        model.addAttribute("requests", messageService.relatedToEvent(id));
-        model.addAttribute("canDelete", canOrganizerDelete(event));
+        EventPresentationSettings presentation = presentationSettingsRepository.findByEventId(id).orElse(null);
+        addMarketplacePreviewModel(event, presentation, model);
+        model.addAttribute("previewTemplate", template != null ? template
+                : event.getDesignTemplate() != null ? event.getDesignTemplate() : EventDesignTemplate.CLASSIC);
+        model.addAttribute("previewTemplates", EventDesignTemplate.values());
+        model.addAttribute("organizerPreview", true);
         model.addAttribute("locked", isLocked(event));
-        return "dashboard/organizer/event-detail";
+        model.addAttribute("signedIn", true);
+        model.addAttribute("clientAccount", false);
+        model.addAttribute("favoriteCount", 0L);
+        return "events/marketplace-purchase";
     }
 
     @GetMapping("/{id}/edit")
     public String editEvent(@PathVariable Long id, Model model, Authentication authentication) {
         Event event = findOwnedEvent(id, authentication);
-        if (isLocked(event)) {
-            return "redirect:/dashboard/organizer/events/" + id + "?locked=true";
-        }
         model.addAttribute("event", event);
         model.addAttribute("categories", categoryRepository.findAll());
-        return "dashboard/organizer/event-edit";
+        model.addAttribute("ticketTypes", ticketTypeRepository.findByEventIdOrderByPriceAsc(id));
+        model.addAttribute("presentation", presentationSettingsRepository.findByEventId(id).orElse(null));
+        model.addAttribute("editMode", true);
+        return "dashboard/organizer/event-form";
     }
 
     @PostMapping("/{id}/edit")
@@ -193,12 +211,10 @@ public class OrganizerDashboardController {
     @GetMapping("/{id}/ticket-types")
     public String ticketTypes(@PathVariable Long id, Model model, Authentication authentication) {
         Event event = findOwnedEvent(id, authentication);
-        if (isLocked(event)) {
-            return "redirect:/dashboard/organizer/events/" + id + "?locked=true";
-        }
         model.addAttribute("event", event);
         model.addAttribute("ticketTypes", ticketTypeRepository.findByEventIdOrderByPriceAsc(id));
         model.addAttribute("records", recordRepository.findByEventIdOrderByCreatedAtDesc(id));
+        model.addAttribute("publishedEvent", event.getStatus() == EventStatus.PUBLISHED);
         return "dashboard/organizer/ticket-types";
     }
 
@@ -211,9 +227,6 @@ public class OrganizerDashboardController {
                                    @RequestParam Integer quantityAvailable,
                                    Authentication authentication) {
         Event event = findOwnedEvent(id, authentication);
-        if (isLocked(event)) {
-            return "redirect:/dashboard/organizer/events/" + id + "?locked=true";
-        }
         String finalName = resolveTicketTypeName(namePreset, customName);
 
         TicketType ticketType = new TicketType();
@@ -225,11 +238,13 @@ public class OrganizerDashboardController {
         ticketType.setQuantitySold(0);
         ticketType.setActive(true);
         ticketTypeRepository.save(ticketType);
-        event.setStatus(EventStatus.PENDING_REVIEW);
+        synchronizeEventTicketSummary(event);
+        keepPublishedOrRequestReview(event);
         eventRepository.save(event);
         createRecord(event, EventAdminRecordType.TICKET_TYPE_CREATED,
-                "Cambios solicitados por organizador:\n\nEntradas:\nAntes: Sin tipo de entrada registrado\nDespués: " + ticketDescriptor(finalName, price, quantityAvailable, true) + "\n\nEvento devuelto a revisión.");
-        return "redirect:/dashboard/organizer/events/" + id + "/ticket-types";
+                "Entrada agregada por el organizador:\n\n" + ticketDescriptor(finalName, price, quantityAvailable, true)
+                        + ticketManagementState(event));
+        return "redirect:/dashboard/organizer/events/" + id + "/ticket-types?created=true";
     }
 
     @PostMapping("/{id}/ticket-types/{typeId}/update")
@@ -243,13 +258,14 @@ public class OrganizerDashboardController {
                                    @RequestParam(required = false, defaultValue = "false") boolean active,
                                    Authentication authentication) {
         Event event = findOwnedEvent(id, authentication);
-        if (isLocked(event)) {
-            return "redirect:/dashboard/organizer/events/" + id + "?locked=true";
-        }
         TicketType ticketType = ticketTypeRepository.findById(typeId)
                 .orElseThrow(() -> new IllegalArgumentException("Tipo de entrada no encontrado"));
         if (!ticketType.getEvent().getId().equals(event.getId())) {
             throw new AccessDeniedException("El tipo de entrada no pertenece a este evento");
+        }
+        int alreadySold = ticketType.getQuantitySold() == null ? 0 : ticketType.getQuantitySold();
+        if (quantityAvailable < alreadySold) {
+            return "redirect:/dashboard/organizer/events/" + id + "/ticket-types?quantityError=true&typeId=" + typeId;
         }
 
         String finalName = resolveTicketTypeName(namePreset, customName);
@@ -262,10 +278,12 @@ public class OrganizerDashboardController {
         ticketType.setQuantityAvailable(quantityAvailable);
         ticketType.setActive(active);
         ticketTypeRepository.save(ticketType);
-        event.setStatus(EventStatus.PENDING_REVIEW);
+        synchronizeEventTicketSummary(event);
+        keepPublishedOrRequestReview(event);
         eventRepository.save(event);
         createRecord(event, EventAdminRecordType.TICKET_TYPE_UPDATED,
-                "Cambios solicitados por organizador:\n\nEntradas:\nAntes: " + previousTicket + "\nDespués: " + requestedTicket + "\n\nEvento devuelto a revisión.");
+                "Entrada actualizada por el organizador:\n\nAntes: " + previousTicket + "\nDespués: " + requestedTicket
+                        + ticketManagementState(event));
         return "redirect:/dashboard/organizer/events/" + id + "/ticket-types?updated=true";
     }
 
@@ -385,6 +403,110 @@ public class OrganizerDashboardController {
             return customName.trim();
         }
         return "Entrada general";
+    }
+
+    private void keepPublishedOrRequestReview(Event event) {
+        if (event.getStatus() != EventStatus.PUBLISHED) {
+            event.setStatus(EventStatus.PENDING_REVIEW);
+        }
+    }
+
+    private void synchronizeEventTicketSummary(Event event) {
+        List<TicketType> activeTypes = ticketTypeRepository.findByEventIdOrderByPriceAsc(event.getId()).stream()
+                .filter(TicketType::isActive)
+                .toList();
+        int totalCapacity = activeTypes.stream()
+                .map(TicketType::getQuantityAvailable)
+                .filter(Objects::nonNull)
+                .mapToInt(Integer::intValue)
+                .sum();
+        BigDecimal lowestPrice = activeTypes.stream()
+                .map(TicketType::getPrice)
+                .filter(Objects::nonNull)
+                .min(BigDecimal::compareTo)
+                .orElse(null);
+        if (totalCapacity > 0) {
+            event.setCapacity(totalCapacity);
+        }
+        if (lowestPrice != null) {
+            event.setPrice(lowestPrice);
+        }
+    }
+
+    private String ticketManagementState(Event event) {
+        return event.getStatus() == EventStatus.PUBLISHED
+                ? "\n\nEl evento continúa publicado y la disponibilidad fue actualizada."
+                : "\n\nEvento enviado a revisión administrativa.";
+    }
+
+    private void addMarketplacePreviewModel(Event event, EventPresentationSettings presentation, Model model) {
+        model.addAttribute("event", event);
+        model.addAttribute("ticketTypes", ticketTypeRepository.findByEventIdOrderByPriceAsc(event.getId()));
+        model.addAttribute("presentation", presentation);
+        model.addAttribute("coverImageUrl", firstText(presentation == null ? null : presentation.getCoverImageUrl(), event.getImageUrl()));
+        model.addAttribute("thumbnailImageUrl", firstText(presentation == null ? null : presentation.getThumbnailImageUrl(), event.getImageUrl()));
+        model.addAttribute("backgroundImageUrl", firstText(presentation == null ? null : presentation.getBackgroundImageUrl(), ""));
+        model.addAttribute("stageImageUrl", firstText(presentation == null ? null : presentation.getStageImageUrl(), ""));
+        model.addAttribute("organizerBrandName", firstText(presentation == null ? null : presentation.getOrganizerBrandName(), event.getOrganizerName()));
+        model.addAttribute("organizerLogoUrl", firstText(presentation == null ? null : presentation.getOrganizerLogoUrl(), ""));
+        model.addAttribute("youtubeEmbedUrl", embedYoutube(presentation == null ? null : presentation.getYoutubeUrl()));
+        model.addAttribute("spotifyEmbedUrl", embedSpotify(presentation == null ? null : presentation.getSpotifyUrl()));
+        model.addAttribute("presentationStyle", styleFor(presentation));
+    }
+
+    private String firstText(String preferred, String fallback) {
+        if (preferred != null && !preferred.isBlank()) return preferred;
+        return fallback == null ? "" : fallback;
+    }
+
+    private String styleFor(EventPresentationSettings presentation) {
+        if (presentation == null) return "";
+        String background = safeBackground(presentation.getBackgroundImageUrl());
+        return "--market-primary:" + safeColor(presentation.getPrimaryColor(), "#4338ca") + ";"
+                + "--market-accent:" + safeColor(presentation.getAccentColor(), "#7c3aed") + ";"
+                + "--market-cover-position:" + coverPosition(presentation.getCoverFocus()) + ";"
+                + (background.isBlank() ? "" : "--market-background-image:url('" + background + "');");
+    }
+
+    private String safeColor(String color, String fallback) {
+        return color != null && color.matches("#[0-9a-fA-F]{6}") ? color : fallback;
+    }
+
+    private String coverPosition(String value) {
+        if ("TOP".equals(value)) return "50% 18%";
+        if ("BOTTOM".equals(value)) return "50% 82%";
+        return "50% 50%";
+    }
+
+    private String safeBackground(String value) {
+        if (value == null || value.isBlank()) return "";
+        String normalized = value.trim();
+        return normalized.startsWith("https://") || normalized.startsWith("http://") || normalized.startsWith("/uploads/")
+                || normalized.startsWith("/images/showcase/")
+                ? normalized.replace("'", "%27") : "";
+    }
+
+    private String embedSpotify(String value) {
+        if (value == null || value.isBlank()) return "";
+        String url = value.trim();
+        if (!url.startsWith("https://open.spotify.com/")) return "";
+        return url.split("\\?")[0].replace("https://open.spotify.com/", "https://open.spotify.com/embed/")
+                + "?utm_source=generator";
+    }
+
+    private String embedYoutube(String value) {
+        if (value == null || value.isBlank()) return "";
+        String url = value.trim();
+        String id = "";
+        int watchIndex = url.indexOf("watch?v=");
+        if (watchIndex >= 0) {
+            id = url.substring(watchIndex + 8).split("&")[0];
+        } else if (url.startsWith("https://youtu.be/")) {
+            id = url.substring("https://youtu.be/".length()).split("\\?")[0];
+        } else if (url.startsWith("https://www.youtube.com/embed/")) {
+            id = url.substring("https://www.youtube.com/embed/".length()).split("\\?")[0];
+        }
+        return id.isBlank() ? "" : "https://www.youtube.com/embed/" + id;
     }
 
     private String displayNameFromEmail(String email) {

@@ -1,0 +1,208 @@
+.organizer-ticket-types-page {
+    background: #f5f7fb;
+}
+
+.organizer-ticket-types-shell {
+    width: min(1380px, calc(100% - 36px));
+    padding: 22px 0 44px;
+    font-size: .78rem;
+}
+
+.organizer-ticket-types-shell .organizer-hero {
+    padding: 18px 22px;
+    border-radius: 20px;
+    box-shadow: 0 14px 34px rgba(49, 46, 129, .2);
+}
+
+.organizer-ticket-types-shell .organizer-hero .badge {
+    padding: 4px 8px;
+    font-size: .62rem;
+}
+
+.organizer-ticket-types-shell .organizer-hero h1 {
+    margin: 7px 0 4px;
+    font-size: clamp(1.35rem, 2vw, 1.8rem);
+    line-height: 1.08;
+}
+
+.organizer-ticket-types-shell .organizer-hero .hero-text {
+    margin: 0;
+    font-size: .75rem;
+}
+
+.organizer-ticket-types-shell .alert {
+    margin: 10px 0;
+    padding: 8px 12px;
+    border-radius: 10px;
+    font-size: .7rem;
+}
+
+.organizer-ticket-types-shell .checkout-layout {
+    grid-template-columns: minmax(0, 1.65fr) minmax(230px, .55fr);
+    gap: 14px;
+    margin: 14px 0;
+    align-items: start;
+}
+
+.organizer-ticket-types-shell .form-card,
+.organizer-ticket-types-shell .summary-card {
+    gap: 10px;
+    padding: 16px;
+    border-radius: 16px;
+    box-shadow: 0 10px 24px rgba(15, 23, 42, .055);
+}
+
+.organizer-ticket-types-shell h2 {
+    margin: 0;
+    font-size: 1rem;
+}
+
+.organizer-ticket-types-shell .field-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 9px;
+}
+
+.organizer-ticket-types-shell .ticket-create-card .field-grid .wide {
+    grid-column: span 2;
+}
+
+.organizer-ticket-types-shell label {
+    gap: 4px;
+    font-size: .67rem;
+    font-weight: 650;
+}
+
+.organizer-ticket-types-shell .search-input {
+    min-height: 32px;
+    padding: 6px 9px;
+    border-radius: 8px;
+    font-size: .7rem;
+}
+
+.organizer-ticket-types-shell textarea.search-input {
+    min-height: 48px;
+    resize: vertical;
+}
+
+.organizer-ticket-types-shell .btn {
+    min-height: 30px;
+    padding: 6px 11px;
+    border-radius: 8px;
+    font-size: .68rem;
+}
+
+.organizer-ticket-types-shell .summary-row {
+    min-height: auto;
+    padding: 7px 0;
+    font-size: .7rem;
+}
+
+.organizer-ticket-types-shell .summary-card .muted {
+    margin: 5px 0 0;
+    font-size: .65rem;
+    line-height: 1.4;
+}
+
+.organizer-ticket-types-shell .table-card {
+    border-radius: 16px;
+    box-shadow: 0 10px 24px rgba(15, 23, 42, .05);
+}
+
+.organizer-ticket-types-shell .table-card > h2 {
+    padding: 12px 14px 7px;
+}
+
+.organizer-ticket-types-shell .table-modern th,
+.organizer-ticket-types-shell .table-modern td {
+    padding: 8px 11px;
+}
+
+.organizer-ticket-types-shell .table-modern th {
+    font-size: .6rem;
+}
+
+.organizer-ticket-types-shell .ticket-type-editor {
+    grid-template-columns: 1.1fr 1.1fr .65fr .72fr 1.8fr .6fr .55fr .55fr auto;
+    gap: 8px;
+    align-items: end;
+}
+
+.organizer-ticket-types-shell .ticket-type-editor .wide {
+    grid-column: auto;
+}
+
+.organizer-ticket-types-shell .ticket-type-editor textarea.search-input {
+    height: 32px;
+    min-height: 32px;
+}
+
+.organizer-ticket-types-shell .ticket-type-editor .summary-row {
+    display: grid;
+    gap: 2px;
+    padding: 0 2px 5px;
+    border: 0;
+}
+
+.organizer-ticket-types-shell .ticket-type-editor .summary-row span {
+    font-size: .58rem;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+}
+
+.organizer-ticket-types-shell .ticket-type-editor .summary-row strong {
+    font-size: .78rem;
+}
+
+.organizer-ticket-types-shell .ticket-type-editor small {
+    font-size: .57rem;
+    line-height: 1.2;
+}
+
+.organizer-ticket-types-shell .ticket-audit-card {
+    margin-top: 14px;
+}
+
+.organizer-ticket-types-shell .ticket-audit-card td {
+    font-size: .68rem;
+}
+
+.organizer-ticket-types-shell .status-pill {
+    padding: 4px 7px;
+    font-size: .58rem;
+}
+
+@media (max-width: 1120px) {
+    .organizer-ticket-types-shell .ticket-type-editor {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .organizer-ticket-types-shell .ticket-type-editor .wide {
+        grid-column: span 2;
+    }
+}
+
+@media (max-width: 760px) {
+    .organizer-ticket-types-shell {
+        width: min(100% - 20px, 680px);
+        padding-top: 12px;
+    }
+
+    .organizer-ticket-types-shell .checkout-layout,
+    .organizer-ticket-types-shell .field-grid,
+    .organizer-ticket-types-shell .ticket-type-editor {
+        grid-template-columns: 1fr;
+    }
+
+    .organizer-ticket-types-shell .ticket-create-card .field-grid .wide,
+    .organizer-ticket-types-shell .ticket-type-editor .wide {
+        grid-column: auto;
+    }
+
+    .organizer-ticket-types-shell .ticket-types-card {
+        overflow-x: auto;
+    }
+
+    .organizer-ticket-types-shell .ticket-types-card table {
+        min-width: 660px;
+    }
+}

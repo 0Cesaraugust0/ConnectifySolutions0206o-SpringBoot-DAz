@@ -32,7 +32,8 @@
                 <a class="btn secondary compact" th:href="@{/events/{id}(id=${event.id})}">Ver marketplace</a>
                 <form th:if="${canDelete}" th:action="@{/dashboard/organizer/events/{id}/delete(id=${event.id})}" method="post"><button class="btn secondary compact" type="submit">Eliminar</button></form>
             </div>
-            <div th:if="${locked}" class="alert success">Evento aprobado por Administración. Puedes consultar sus datos y el marketplace, pero no editar su construcción ni sus entradas.</div>
+            <div th:if="${locked}" class="alert success">Evento aprobado por Administración. La construcción visual permanece protegida, pero puedes gestionar precios, tipos y disponibilidad de entradas.</div>
+            <a th:if="${locked}" class="btn primary compact" th:href="@{/dashboard/organizer/events/{id}/ticket-types(id=${event.id})}">Gestionar entradas</a>
             <a th:if="${locked}" class="btn secondary compact" th:href="@{/events/{id}(id=${event.id})}">Ver marketplace</a>
             <p class="muted small">La eliminación solo está disponible durante las primeras 24 horas y antes de la aprobación administrativa.</p>
             <div class="summary-row"><span>Fecha</span><strong th:text="${event.eventDate != null ? #temporals.format(event.eventDate, 'dd/MM/yyyy HH:mm') : 'Por definir'}">Fecha</strong></div>
@@ -48,7 +49,7 @@
                 <label class="wide">Mensaje<textarea class="search-input" name="body" rows="4" placeholder="Describe qué necesitas para este evento." required></textarea></label>
             </div><button class="btn primary full" type="submit">Enviar solicitud</button>
         </form>
-        <section th:if="${locked}" class="form-card"><h2>Servicios bloqueados</h2><p class="muted">La aprobación deja congeladas las solicitudes y ajustes de este evento. Para un cambio posterior, el Administrador debe reabrirlo o despublicarlo.</p></section>
+        <section th:if="${locked}" class="form-card"><h2>Construcción protegida</h2><p class="muted">La aprobación mantiene bloqueados los datos generales y el diseño. La gestión comercial de entradas continúa disponible desde este evento.</p></section>
     </section>
 
     <section class="table-card" style="margin-top:24px"><h2>Solicitudes relacionadas</h2><div class="dashboard-grid" th:if="${requests != null && !requests.isEmpty()}"><a class="module-card" th:each="request : ${requests}" th:href="@{/communications/{id}(id=${request.id})}"><span th:text="${request.status.icon}">🟡</span><h3 th:text="${request.subject}">Solicitud</h3><p><strong th:text="${request.status.categoryLabel}">Pendiente / En gestión</strong></p><p class="muted small"><span th:text="${request.status.label}">Pendiente</span> · Para <span th:text="${request.targetRole}">ADMIN</span> · <span th:text="${request.priority}">NORMAL</span></p></a></div><p class="muted" th:if="${requests == null || requests.isEmpty()}">Aún no hay solicitudes relacionadas con este evento.</p></section>

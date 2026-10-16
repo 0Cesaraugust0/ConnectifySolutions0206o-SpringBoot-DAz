@@ -3,13 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crear evento - Organizador</title>
+    <title th:text="${editMode == true ? 'Editar evento - Organizador' : 'Crear evento - Organizador'}">Crear evento - Organizador</title>
     <link rel="stylesheet" th:href="@{/css/styles.css}">
     <link rel="stylesheet" th:href="@{/css/ui.css}">
     <link rel="stylesheet" th:href="@{/css/organizer.css(v='organizer-nav-shell-2')}">
     <link rel="stylesheet" th:href="@{/css/organizer-presentation-modal.css(v='templates-2')}">
+    <link rel="stylesheet" th:href="@{/css/organizer-visual-editor.css(v='visual-editor-1')}">
     <style>
-        .create-shell{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:24px;align-items:start}.create-card{background:#fff;border:1px solid #e8eaf2;border-radius:24px;padding:26px;box-shadow:0 18px 45px rgba(15,23,42,.06)}.stepper{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:18px 0 22px}.step{padding:10px;border-radius:12px;background:#f5f6fb;color:#68708a;font-size:.83rem;font-weight:800}.step b{display:inline-grid;place-items:center;width:22px;height:22px;border-radius:50%;background:#e7eaff;color:#4f46e5;margin-right:6px}.step.active{background:#efedff;color:#3328b7}.step.active b{background:#5146e5;color:#fff}.create-section{padding:22px 0;border-top:1px solid #edf0f6}.create-section:first-of-type{border-top:0;padding-top:0}.create-section h2{margin:0 0 4px}.section-note{margin:0 0 18px;color:#667085;font-size:.92rem}.ticket-toolbar{display:flex;justify-content:space-between;gap:12px;align-items:center;margin:12px 0}.ticket-toolbar small{color:#68708a}.ticket-rows{display:grid;gap:12px}.ticket-row{border:1px solid #e5e8f2;border-radius:16px;padding:16px;background:#fbfcff;position:relative}.ticket-row-grid{display:grid;grid-template-columns:1.15fr .75fr .75fr;gap:12px}.ticket-row .wide{grid-column:1/-1}.remove-ticket{position:absolute;right:12px;top:12px;border:0;background:#fff1f2;color:#be123c;border-radius:8px;padding:7px 9px;font-weight:800;cursor:pointer}.design-request{border:1px solid #dedbff;background:#faf9ff;border-radius:16px;padding:16px;margin-top:14px}.design-request label{font-weight:800}.brief-wrap{display:none;margin-top:12px}.brief-wrap.open{display:block}.summary-side{position:sticky;top:18px}.summary-side h2{margin-top:0}.summary-side .summary-row{padding:13px 0}.price-preview{font-size:1.4rem;font-weight:900;color:#312e81}.save-bar{display:flex;gap:10px;justify-content:flex-end;align-items:center;padding-top:20px}.save-bar .btn{min-width:220px}@media(max-width:980px){.create-shell{grid-template-columns:1fr}.summary-side{position:static}.stepper{grid-template-columns:1fr 1fr}}@media(max-width:620px){.ticket-row-grid,.field-grid{grid-template-columns:1fr}.stepper{grid-template-columns:1fr}.save-bar{align-items:stretch;flex-direction:column}.save-bar .btn{width:100%}}
+        .create-shell{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:24px;align-items:start}.create-card{background:#fff;border:1px solid #e8eaf2;border-radius:24px;padding:26px;box-shadow:0 18px 45px rgba(15,23,42,.06)}.stepper{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:18px 0 22px}.step{padding:10px;border-radius:12px;background:#f5f6fb;color:#68708a;font-size:.83rem;font-weight:800}.step b{display:inline-grid;place-items:center;width:22px;height:22px;border-radius:50%;background:#e7eaff;color:#4f46e5;margin-right:6px}.step.active{background:#efedff;color:#3328b7}.step.active b{background:#5146e5;color:#fff}.create-section{padding:22px 0;border-top:1px solid #edf0f6}.create-section:first-of-type{border-top:0;padding-top:0}.create-section h2{margin:0 0 4px}.section-note{margin:0 0 18px;color:#667085;font-size:.92rem}.ticket-toolbar{display:flex;justify-content:space-between;gap:12px;align-items:center;margin:12px 0}.ticket-toolbar small{color:#68708a}.ticket-rows{display:grid;gap:12px}.ticket-row{border:1px solid #e5e8f2;border-radius:16px;padding:16px;background:#fbfcff;position:relative}.ticket-row-grid{display:grid;grid-template-columns:1.15fr .75fr .75fr;gap:12px}.ticket-row .wide{grid-column:1/-1}.remove-ticket{position:absolute;right:12px;top:12px;border:0;background:#fff1f2;color:#be123c;border-radius:8px;padding:7px 9px;font-weight:800;cursor:pointer}.design-request{border:1px solid #dedbff;background:#faf9ff;border-radius:16px;padding:16px;margin-top:14px}.design-request label{font-weight:800}.brief-wrap{display:none;margin-top:12px}.brief-wrap.open{display:block}.summary-side{position:sticky;top:18px}.summary-side h2{margin-top:0}.summary-side .summary-row{padding:13px 0}.price-preview{font-size:1.4rem;font-weight:900;color:#312e81}.save-bar{display:flex;gap:10px;justify-content:flex-end;align-items:center;padding-top:20px}.save-bar .btn{min-width:220px}.edit-save-bar{flex-wrap:wrap}.edit-save-bar .btn{min-width:150px;text-align:center}@media(max-width:980px){.create-shell{grid-template-columns:1fr}.summary-side{position:static}.stepper{grid-template-columns:1fr 1fr}}@media(max-width:620px){.ticket-row-grid,.field-grid{grid-template-columns:1fr}.stepper{grid-template-columns:1fr}.save-bar{align-items:stretch;flex-direction:column}.save-bar .btn{width:100%}}
         .advanced-presentation{margin-top:16px;border:1px solid #e3e7f3;border-radius:18px;background:#fbfcff;overflow:hidden}.advanced-presentation summary{display:flex;justify-content:space-between;gap:12px;align-items:center;padding:15px 16px;cursor:pointer;font-weight:900;color:#27335d;list-style:none}.advanced-presentation summary::-webkit-details-marker{display:none}.advanced-presentation summary span{color:#6b7280;font-size:.82rem;font-weight:700}.advanced-presentation-body{display:grid;gap:16px;padding:0 16px 16px}.mini-toggle-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.mini-toggle-grid label{display:flex;gap:8px;align-items:flex-start;padding:10px;border:1px solid #e6e9f2;border-radius:12px;background:#fff;font-weight:800;color:#34405f}.mini-toggle-grid span{display:block;color:#6b7280;font-size:.78rem;font-weight:700}.advanced-presentation textarea{min-height:86px}
     </style>
 </head>
@@ -23,36 +24,40 @@
 
 <main class="dashboard-page organizer-create-page">
     <section class="organizer-hero">
-        <p class="badge">Nueva propuesta</p><h1>Crear evento</h1>
-        <p class="hero-text">Construye la información, define todas las variantes de entrada y prepara su presentación para Marketplace antes de enviarla a revisión.</p>
+        <p class="badge" th:text="${editMode == true ? 'Edición integral' : 'Nueva propuesta'}">Nueva propuesta</p>
+        <h1 th:text="${editMode == true ? 'Editar ' + event.title : 'Crear evento'}">Crear evento</h1>
+        <p class="hero-text" th:text="${editMode == true ? 'Edita información, presentación y entradas en una sola pantalla. Guarda un borrador, revisa su apariencia y envíalo cuando esté listo.' : 'Construye la información, define todas las variantes de entrada y prepara su presentación para Marketplace antes de enviarla a revisión.'}">Construye la información del evento.</p>
     </section>
+
+    <div th:if="${param.saved}" class="alert success">Cambios guardados como borrador. Puedes seguir editando antes de enviarlos a revisión.</div>
+    <div th:if="${param.submitted}" class="alert success">Cambios guardados y enviados a revisión administrativa.</div>
 
     <section class="stepper" aria-label="Flujo de creación">
         <div class="step active"><b>1</b>Información</div><div class="step active"><b>2</b>Presentación</div><div class="step active"><b>3</b>Entradas</div><div class="step active"><b>4</b>Revisión</div>
     </section>
 
     <div class="create-shell">
-        <form id="eventCreateForm" class="create-card" th:action="@{/dashboard/organizer/events/create-with-tickets}" method="post" enctype="multipart/form-data">
-            <input id="designTemplate" name="designTemplate" type="hidden" value="CLASSIC">
+        <form id="eventCreateForm" class="create-card" th:action="${editMode == true ? '/dashboard/organizer/events/' + event.id + '/edit-all' : '/dashboard/organizer/events/create-with-tickets'}" method="post" enctype="multipart/form-data">
+            <input id="designTemplate" name="designTemplate" type="hidden" th:value="${editMode == true && event.designTemplate != null ? event.designTemplate.name() : 'CLASSIC'}">
 
             <section class="create-section">
                 <div class="create-section-heading"><h2>1. Información principal</h2><p class="section-note">Estos datos describen el evento y serán revisados por Administración antes de publicarse.</p></div>
                 <div class="field-grid">
-                    <label class="wide">Título comercial<input id="eventTitle" class="search-input" name="title" type="text" placeholder="Ej. Festival Gastronómico Lima 2026" required></label>
-                    <label class="wide">Descripción del evento<textarea id="eventDescription" class="search-input" name="description" rows="5" placeholder="Explica la experiencia, público objetivo, beneficios y condiciones principales." required></textarea></label>
-                    <label>Categoría<select id="eventCategory" class="search-input" name="categoryId" required><option value="">Selecciona categoría</option><option th:each="category : ${categories}" th:value="${category.id}" th:text="${category.name}">Categoría</option></select></label>
-                    <label>Fecha y hora<input id="eventDate" class="search-input" name="eventDate" type="datetime-local" required></label>
-                    <label>Ubicación<input class="search-input" name="location" type="text" placeholder="Centro de Convenciones" required></label>
-                    <label>Ciudad<input id="eventCity" class="search-input" name="city" type="text" placeholder="Lima" required></label>
-                    <label>Capacidad total<input id="eventCapacity" class="search-input" name="capacity" type="number" min="1" placeholder="500" required></label>
-                    <label>Precio desde S/<input id="basePrice" class="search-input" name="price" type="number" min="0" step="0.01" placeholder="49.00" required></label>
+                    <label class="wide">Título comercial<input id="eventTitle" class="search-input" name="title" type="text" th:value="${editMode == true ? event.title : ''}" placeholder="Ej. Festival Gastronómico Lima 2026" required></label>
+                    <label class="wide">Descripción del evento<textarea id="eventDescription" class="search-input" name="description" rows="5" placeholder="Explica la experiencia, público objetivo, beneficios y condiciones principales." th:text="${editMode == true ? event.description : ''}" required></textarea></label>
+                    <label>Categoría<select id="eventCategory" class="search-input" name="categoryId" required><option value="">Selecciona categoría</option><option th:each="category : ${categories}" th:value="${category.id}" th:text="${category.name}" th:selected="${editMode == true && event.category != null && event.category.id == category.id}">Categoría</option></select></label>
+                    <label>Fecha y hora<input id="eventDate" class="search-input" name="eventDate" type="datetime-local" th:value="${editMode == true && event.eventDate != null ? #temporals.format(event.eventDate, 'yyyy-MM-dd') + 'T' + #temporals.format(event.eventDate, 'HH:mm') : ''}" required></label>
+                    <label>Ubicación<input class="search-input" name="location" type="text" th:value="${editMode == true ? event.location : ''}" placeholder="Centro de Convenciones" required></label>
+                    <label>Ciudad<input id="eventCity" class="search-input" name="city" type="text" th:value="${editMode == true ? event.city : ''}" placeholder="Lima" required></label>
+                    <label>Capacidad total<input id="eventCapacity" class="search-input" name="capacity" type="number" min="1" th:value="${editMode == true ? event.capacity : ''}" placeholder="500" required></label>
+                    <label>Precio desde S/<input id="basePrice" class="search-input" name="price" type="number" min="0" step="0.01" th:value="${editMode == true ? event.price : ''}" placeholder="49.00" required></label>
                 </div>
             </section>
 
             <section class="create-section">
                 <div class="create-section-heading"><h2>2. Presentación en Marketplace</h2><p class="section-note">Selecciona una plantilla inicial y mírala en una vista paralela. El Diseñador podrá tomar esa base y elevarla cuando le solicites apoyo.</p></div>
                 <div class="field-grid">
-                    <label>URL de imagen principal<input id="eventImageUrl" class="search-input" name="imageUrl" type="url" placeholder="https://.../portada-evento.jpg"></label>
+                    <label>URL de imagen principal<input id="eventImageUrl" class="search-input" name="imageUrl" type="text" th:value="${editMode == true ? event.imageUrl : ''}" placeholder="https://.../portada-evento.jpg"></label>
                     <label>Subir JPG/PNG<input id="eventImageFile" class="search-input" name="imageFile" type="file" accept="image/jpeg,image/png,image/webp"></label>
                 </div>
 
@@ -66,36 +71,54 @@
                 </div>
 
                 <details class="advanced-presentation">
-                    <summary>Contenido visual avanzado <span>Fondo, venta flotante, escenario, auspiciadores y media</span></summary>
+                    <summary>Contenido visual avanzado <span>Paleta, composición, imágenes y bloques del evento</span></summary>
                     <div class="advanced-presentation-body">
-                        <div class="field-grid">
-                            <label>URL de fondo para landing<input class="search-input" name="backgroundImageUrl" type="url" placeholder="https://.../fondo-campana.jpg"></label>
-                            <label>Marca visible del organizador<input class="search-input" name="organizerBrandName" type="text" placeholder="Ej. Producciones Andinas"></label>
-                            <label>Logo del organizador<input class="search-input" name="organizerLogoUrl" type="url" placeholder="https://.../logo.png"></label>
-                            <label class="wide">Texto destacado<input class="search-input" name="highlightText" type="text" placeholder="Ej. Preventa exclusiva, experiencia inmersiva o recorrido nacional."></label>
+                        <div class="visual-editor-heading"><strong>Dirección de arte</strong><small>Define la identidad y la jerarquía de la ficha, además de su plantilla.</small></div>
+                        <div class="field-grid visual-palette-grid">
+                            <label>Color principal<input id="presentationPrimary" class="search-input visual-color" name="primaryColor" type="color" th:value="${presentation != null && presentation.primaryColor != null ? presentation.primaryColor : '#4f46e5'}"></label>
+                            <label>Color de acento<input id="presentationAccent" class="search-input visual-color" name="accentColor" type="color" th:value="${presentation != null && presentation.accentColor != null ? presentation.accentColor : '#8b5cf6'}"></label>
+                            <label>Encuadre de portada<select id="presentationCoverFocus" class="search-input" name="coverFocus"><option value="TOP" th:selected="${presentation != null && presentation.coverFocus == 'TOP'}">Parte superior</option><option value="CENTER" th:selected="${presentation == null || presentation.coverFocus == 'CENTER'}">Centro</option><option value="BOTTOM" th:selected="${presentation != null && presentation.coverFocus == 'BOTTOM'}">Parte inferior</option></select></label>
+                            <label>Prioridad del contenido<select id="presentationContentFocus" class="search-input" name="contentFocus"><option value="BALANCED" th:selected="${presentation == null || presentation.contentFocus == 'BALANCED'}">Equilibrio visual</option><option value="INFORMATION" th:selected="${presentation != null && presentation.contentFocus == 'INFORMATION'}">Historia e información</option><option value="SALES" th:selected="${presentation != null && presentation.contentFocus == 'SALES'}">Entradas y compra</option></select></label>
+                            <label class="wide">Disposición de la ficha de compra<select id="presentationInfoPosition" class="search-input" name="infoPosition"><option value="STANDARD" th:selected="${presentation == null || presentation.infoPosition == 'STANDARD'}">Integrada en el contenido</option><option value="SIDEBAR" th:selected="${presentation != null && presentation.infoPosition == 'SIDEBAR'}">Panel lateral</option><option value="FLOATING" th:selected="${presentation != null && presentation.infoPosition == 'FLOATING'}">Panel lateral flotante</option></select></label>
                         </div>
+                        <div class="field-grid">
+                            <label>Portada de la ficha interna<input id="presentationCoverImage" class="search-input" name="coverImageUrl" type="text" th:value="${presentation != null ? presentation.coverImageUrl : ''}" placeholder="https://.../arte-de-portada.jpg"><small>Si queda vacía, se usa la imagen principal del evento.</small></label>
+                            <label>Miniatura del catálogo<input class="search-input" name="thumbnailImageUrl" type="text" th:value="${presentation != null ? presentation.thumbnailImageUrl : ''}" placeholder="https://.../miniatura.jpg"><small>Permite usar un encuadre distinto en las cards.</small></label>
+                            <label>URL de fondo para landing<input class="search-input" name="backgroundImageUrl" type="text" th:value="${presentation != null ? presentation.backgroundImageUrl : ''}" placeholder="https://.../fondo-campana.jpg"></label>
+                            <label>Marca visible del organizador<input class="search-input" name="organizerBrandName" type="text" th:value="${presentation != null ? presentation.organizerBrandName : ''}" placeholder="Ej. Producciones Andinas"></label>
+                            <label>Logo del organizador<input class="search-input" name="organizerLogoUrl" type="text" th:value="${presentation != null ? presentation.organizerLogoUrl : ''}" placeholder="https://.../logo.png"></label>
+                            <label class="wide">Texto destacado<input id="presentationHighlight" class="search-input" name="highlightText" type="text" maxlength="500" th:value="${presentation != null ? presentation.highlightText : ''}" placeholder="Ej. Preventa exclusiva, experiencia inmersiva o recorrido nacional."></label>
+                        </div>
+                        <div class="visual-editor-heading"><strong>Bloques de la experiencia</strong><small>Activa los bloques que aporten contenido a este evento.</small></div>
+                        <input type="hidden" name="_showGallery" value="on"><input type="hidden" name="_showOrganizer" value="on"><input type="hidden" name="_showAgenda" value="on"><input type="hidden" name="_showBenefits" value="on">
                         <div class="mini-toggle-grid">
-                            <label><input name="floatingSalesCard" value="true" type="checkbox"> Ficha de venta flotante <span>Ideal para Venta con panel lateral.</span></label>
-                            <label><input name="showSponsors" value="true" type="checkbox"> Marcas auspiciadoras <span>Nombres y/o logos por linea.</span></label>
-                            <label><input name="showMedia" value="true" type="checkbox"> YouTube / Spotify <span>Video y playlist del evento.</span></label>
-                            <label><input name="showStageMap" value="true" type="checkbox"> Escenario / zonas <span>PNG del mapa de zonas o descripcion.</span></label>
-                            <label><input name="showSessions" value="true" type="checkbox"> Sesiones desplegables <span>Gira nacional o fechas multiples.</span></label>
+                            <label><input name="showGallery" value="true" type="checkbox" th:checked="${presentation == null || presentation.showGallery}"> Galería visual <span>Imágenes vinculadas al evento.</span></label>
+                            <label><input name="showOrganizer" value="true" type="checkbox" th:checked="${presentation == null || presentation.showOrganizer}"> Identidad del organizador <span>Marca, nombre y logo.</span></label>
+                            <label><input id="presentationShowAgenda" name="showAgenda" value="true" type="checkbox" th:checked="${presentation != null && presentation.showAgenda}"> Agenda <span>Horarios y programación.</span></label>
+                            <label><input id="presentationShowBenefits" name="showBenefits" value="true" type="checkbox" th:checked="${presentation != null && presentation.showBenefits}"> Experiencias y beneficios <span>Qué incluye la visita.</span></label>
+                            <label><input name="showSponsors" value="true" type="checkbox" th:checked="${presentation != null && presentation.showSponsors}"> Marcas auspiciadoras <span>Nombres y/o logos por linea.</span></label>
+                            <label><input name="showMedia" value="true" type="checkbox" th:checked="${presentation != null && presentation.showMedia}"> YouTube / Spotify <span>Video y playlist del evento.</span></label>
+                            <label><input name="showStageMap" value="true" type="checkbox" th:checked="${presentation != null && presentation.showStageMap}"> Escenario / zonas <span>PNG del mapa de zonas o descripcion.</span></label>
+                            <label><input name="showSessions" value="true" type="checkbox" th:checked="${presentation != null && presentation.showSessions}"> Fechas y ciudades <span>Programa informativo de la gira.</span></label>
                         </div>
                         <div class="field-grid">
-                            <label class="wide">Auspiciadores<textarea class="search-input" name="sponsorsText" rows="3" placeholder="Marca A&#10;Marca B&#10;Institucion C"></textarea></label>
-                            <label class="wide">URLs de logos de auspiciadores<textarea class="search-input" name="sponsorLogosText" rows="3" placeholder="https://.../logo-bbva.png&#10;https://.../logo-radio.png"></textarea></label>
-                            <label>YouTube<input class="search-input" name="youtubeUrl" type="url" placeholder="https://www.youtube.com/watch?v=..."></label>
-                            <label>Playlist Spotify<input class="search-input" name="spotifyUrl" type="url" placeholder="https://open.spotify.com/playlist/..."></label>
-                            <label>URL PNG/JPG del escenario<input class="search-input" name="stageImageUrl" type="url" placeholder="https://.../mapa-escenario.png"></label>
-                            <label>Subir escenario PNG/JPG<input class="search-input" name="stageImageFile" type="file" accept="image/jpeg,image/png,image/webp"></label>
-                            <label class="wide">Detalle del escenario<textarea class="search-input" name="stageText" rows="3" placeholder="Escenario principal, Platinum, VIP, General, accesos..."></textarea></label>
-                            <label class="wide">Sesiones, fechas o ciudades<textarea class="search-input" name="sessionText" rows="4" placeholder="Lima | 25 julio | Parque de la Exposicion&#10;Cusco | 28 julio | Explanada principal&#10;Tacna | 30 julio | Parque Peru"></textarea></label>
+                            <label class="wide">Agenda y horarios<textarea id="presentationAgenda" class="search-input" name="agendaText" rows="4" th:text="${presentation != null ? presentation.agendaText : ''}" placeholder="18:00 | Apertura de puertas&#10;19:00 | Primera presentación&#10;21:00 | Show principal"></textarea></label>
+                            <label class="wide">Beneficios y experiencias<textarea id="presentationBenefits" class="search-input" name="benefitsText" rows="4" th:text="${presentation != null ? presentation.benefitsText : ''}" placeholder="Dos escenarios y artistas en vivo&#10;Zona gastronómica&#10;Espacios de descanso y accesibilidad"></textarea></label>
+                            <label class="wide">Auspiciadores<textarea class="search-input" name="sponsorsText" rows="3" th:text="${presentation != null ? presentation.sponsorsText : ''}" placeholder="Marca A&#10;Marca B&#10;Institucion C"></textarea></label>
+                            <label class="wide">URLs de logos de auspiciadores<textarea class="search-input" name="sponsorLogosText" rows="3" th:text="${presentation != null ? presentation.sponsorLogosText : ''}" placeholder="https://.../logo-bbva.png&#10;https://.../logo-radio.png"></textarea></label>
+                            <label>YouTube<input class="search-input" name="youtubeUrl" type="text" th:value="${presentation != null ? presentation.youtubeUrl : ''}" placeholder="https://www.youtube.com/watch?v=..."></label>
+                            <label>Playlist Spotify<input class="search-input" name="spotifyUrl" type="text" th:value="${presentation != null ? presentation.spotifyUrl : ''}" placeholder="https://open.spotify.com/playlist/..."></label>
+                            <label>Imagen del escenario<input id="presentationStageImage" class="search-input" name="stageImageUrl" type="text" th:value="${presentation != null ? presentation.stageImageUrl : ''}" placeholder="https://.../mapa-escenario.png"></label>
+                            <label>Subir escenario PNG/JPG<input id="presentationStageFile" class="search-input" name="stageImageFile" type="file" accept="image/jpeg,image/png,image/webp"></label>
+                            <label class="wide">Detalle del escenario<textarea class="search-input" name="stageText" rows="3" th:text="${presentation != null ? presentation.stageText : ''}" placeholder="Escenario principal, Platinum, VIP, General, accesos..."></textarea></label>
+                            <label class="wide">Sesiones, fechas o ciudades<textarea class="search-input" name="sessionText" rows="4" th:text="${presentation != null ? presentation.sessionText : ''}" placeholder="Lima | 25 julio | Parque de la Exposicion&#10;Cusco | 28 julio | Explanada principal&#10;Tacna | 30 julio | Parque Peru"></textarea><small>Información de programación; los cupos se administran en los tipos de entrada.</small></label>
                         </div>
+                        <div class="visual-saved-preview" th:if="${editMode == true}"><a class="btn secondary compact" th:href="@{/dashboard/organizer/events/{id}/preview(id=${event.id})}" target="_blank" rel="noopener">Ver presentación guardada</a><small>Muestra la ficha completa con todos sus bloques. Guarda primero los cambios de este formulario.</small></div>
                     </div>
                 </details>
 
                 <div class="design-request">
-                    <label><input id="requestDesigner" name="requestDesigner" value="true" type="checkbox"> Solicitar apoyo del Diseñador sobre esta plantilla</label>
+                    <label><input id="requestDesigner" name="requestDesigner" value="true" type="checkbox" th:checked="${editMode == true && event.designEnabled}"> Solicitar apoyo del Diseñador sobre esta plantilla</label>
                     <p class="muted small">El Diseñador partirá de tu selección, podrá ajustar colores, texto destacado, bloques visibles y la versión móvil sin cambiar los datos comerciales del evento.</p>
                     <div id="designBriefWrap" class="brief-wrap"><label>Brief visual<textarea class="search-input" name="designBrief" rows="3" placeholder="Ej. Estilo energético, tonos morados, portada con foco en artistas o productos."></textarea></label></div>
                 </div>
@@ -104,27 +127,71 @@
             <section class="create-section">
                 <div class="ticket-toolbar create-section-heading"><div><h2>3. Tipos y variantes de entrada</h2><p class="section-note">Agrega General, VIP, Early Bird, Corporativo u otras variantes con sus propios precios y cupos.</p></div><button id="addTicket" class="btn secondary compact" type="button">+ Agregar variante</button></div>
                 <div id="ticketRows" class="ticket-rows">
-                    <article class="ticket-row">
+                    <article class="ticket-row" th:if="${editMode != true}">
                         <button class="remove-ticket" type="button" title="Quitar entrada">×</button>
                         <div class="ticket-row-grid">
-                            <label>Tipo de entrada<input class="search-input ticket-name" name="ticketName" list="ticketPresets" value="General" placeholder="General, VIP, Corporativo" required></label>
+                            <label>Tipo de entrada
+                                <select class="search-input ticket-name" name="ticketName" required>
+                                    <option value="General" selected>General</option>
+                                    <option value="Preferencial">Preferencial</option>
+                                    <option value="VIP">VIP</option>
+                                    <option value="Platinum">Platinum</option>
+                                    <option value="Early Bird">Early Bird</option>
+                                    <option value="Platea">Platea</option>
+                                    <option value="Palco">Palco</option>
+                                    <option value="Corporativo">Corporativo</option>
+                                    <option value="Estudiante">Estudiante</option>
+                                    <option value="Meet &amp; Greet">Meet &amp; Greet</option>
+                                </select>
+                            </label>
                             <label>Precio S/<input class="search-input ticket-price" name="ticketPrice" type="number" min="0" step="0.01" placeholder="49.00" required></label>
                             <label>Cupos<input class="search-input ticket-quantity" name="ticketQuantity" type="number" min="1" placeholder="100" required></label>
                             <label class="wide">Descripción<textarea class="search-input" name="ticketDescription" rows="3" placeholder="Beneficios, zona, acceso o restricciones." required>Acceso general al evento.</textarea></label>
                         </div>
                     </article>
+                    <article class="ticket-row" th:if="${editMode == true}" th:each="ticket : ${ticketTypes}">
+                        <button class="remove-ticket" type="button" title="Quitar entrada">×</button>
+                        <input name="ticketId" type="hidden" th:value="${ticket.id}">
+                        <div class="ticket-row-grid">
+                            <label>Tipo de entrada
+                                <select class="search-input ticket-name" name="ticketName" required>
+                                    <option value="General" th:selected="${ticket.name == 'General'}">General</option>
+                                    <option value="Preferencial" th:selected="${ticket.name == 'Preferencial'}">Preferencial</option>
+                                    <option value="VIP" th:selected="${ticket.name == 'VIP'}">VIP</option>
+                                    <option value="Platinum" th:selected="${ticket.name == 'Platinum' || ticket.name == 'Platinium'}">Platinum</option>
+                                    <option value="Early Bird" th:selected="${ticket.name == 'Early Bird'}">Early Bird</option>
+                                    <option value="Platea" th:selected="${ticket.name == 'Platea'}">Platea</option>
+                                    <option value="Palco" th:selected="${ticket.name == 'Palco'}">Palco</option>
+                                    <option value="Corporativo" th:selected="${ticket.name == 'Corporativo'}">Corporativo</option>
+                                    <option value="Estudiante" th:selected="${ticket.name == 'Estudiante'}">Estudiante</option>
+                                    <option value="Meet &amp; Greet" th:selected="${ticket.name == 'Meet &amp; Greet'}">Meet &amp; Greet</option>
+                                </select>
+                            </label>
+                            <label>Precio S/<input class="search-input ticket-price" name="ticketPrice" type="number" min="0" step="0.01" th:value="${ticket.price}" required></label>
+                            <label>Cupos<input class="search-input ticket-quantity" name="ticketQuantity" type="number" th:min="${ticket.quantitySold != null && ticket.quantitySold > 0 ? ticket.quantitySold : 1}" th:value="${ticket.quantityAvailable}" required><small class="muted" th:if="${ticket.quantitySold != null && ticket.quantitySold > 0}" th:text="${ticket.quantitySold + ' ya vendida(s)'}">Vendidas</small></label>
+                            <label class="wide">Descripción<textarea class="search-input" name="ticketDescription" rows="3" th:text="${ticket.description}" required></textarea></label>
+                        </div>
+                    </article>
                 </div>
-                <datalist id="ticketPresets"><option value="General"></option><option value="VIP"></option><option value="Preferencial"></option><option value="Early Bird"></option><option value="Corporativo"></option><option value="Estudiante"></option><option value="Niños"></option><option value="Meet &amp; Greet"></option></datalist>
             </section>
 
             <section class="create-section">
-                <div class="create-section-heading"><h2>4. Enviar propuesta</h2><p class="section-note">El evento se guardará como <strong>PENDIENTE DE REVISIÓN</strong>. No será visible en Marketplace ni permitirá compras hasta que Administración lo publique.</p></div>
-                <div class="save-bar"><span class="muted small">Puedes editar entradas luego desde el detalle del evento.</span><button class="btn primary" type="submit">Crear evento y enviar a revisión</button></div>
+                <div class="create-section-heading">
+                    <h2 th:text="${editMode == true ? '4. Guardar y revisar' : '4. Enviar propuesta'}">4. Enviar propuesta</h2>
+                    <p class="section-note" th:if="${editMode != true}">El evento se guardará como <strong>PENDIENTE DE REVISIÓN</strong>. No será visible en Marketplace ni permitirá compras hasta que Administración lo publique.</p>
+                    <p class="section-note" th:if="${editMode == true}"><strong>Guardar</strong> conserva el trabajo como borrador. <strong>Ver en Marketplace</strong> abre la vista previa del organizador. <strong>Enviar a revisión</strong> entrega la versión completa a Administración.</p>
+                </div>
+                <div class="save-bar" th:if="${editMode != true}"><span class="muted small">Después podrás volver a editar todos los elementos desde Mis eventos.</span><button class="btn primary" type="submit">Crear evento y enviar a revisión</button></div>
+                <div class="save-bar edit-save-bar" th:if="${editMode == true}">
+                    <button class="btn secondary" type="submit" name="workflowAction" value="save">Guardar</button>
+                    <a class="btn secondary" th:href="@{/dashboard/organizer/events/{id}/preview(id=${event.id})}" target="_blank" rel="noopener">Ver en Marketplace</a>
+                    <button class="btn primary" type="submit" name="workflowAction" value="submit_review">Enviar a revisión</button>
+                </div>
             </section>
         </form>
 
         <aside class="summary-card summary-side">
-            <p class="badge">Resumen de creación</p><h2>Tu propuesta</h2>
+            <p class="badge" th:text="${editMode == true ? 'Resumen editable' : 'Resumen de creación'}">Resumen de creación</p><h2 th:text="${editMode == true ? 'Tu evento' : 'Tu propuesta'}">Tu propuesta</h2>
             <div class="summary-row"><span>Evento</span><strong id="eventTitleSummary">Sin título todavía</strong></div>
             <div class="summary-row"><span>Categoría</span><strong id="eventCategorySummary">Sin seleccionar</strong></div>
             <div class="summary-row"><span>Fecha</span><strong id="eventDateSummary">Por definir</strong></div>
@@ -133,7 +200,8 @@
             <div class="summary-row"><span>Variantes creadas</span><strong id="ticketCount">1</strong></div>
             <div class="summary-row"><span>Cupos configurados</span><strong id="ticketCapacity">0</strong></div>
             <div class="summary-row"><span>Precio mínimo</span><strong id="ticketPricePreview" class="price-preview">S/ —</strong></div>
-            <div class="summary-row"><span>Diseñador</span><strong id="designerState">No solicitado</strong></div>
+            <div class="summary-row"><span>Diseñador</span><strong id="designerState" th:text="${editMode == true && event.designEnabled ? 'Solicitud activa' : 'No solicitado'}">No solicitado</strong></div>
+            <div class="summary-row" th:if="${editMode == true}"><span>Estado actual</span><strong th:text="${event.status}">DRAFT</strong></div>
             <hr style="border:0;border-top:1px solid #edf0f5;margin:16px 0">
             <p class="muted small">La plantilla inicial pertenece al Organizador. El Diseñador podrá trabajarla como punto de partida si recibe una solicitud visual.</p>
         </aside>
@@ -195,10 +263,16 @@
     const eventDateSummary = document.getElementById('eventDateSummary');
     const eventCitySummary = document.getElementById('eventCitySummary');
 
-    function ticketRow(name = '', price = '', quantity = '', description = '') {
+    const ticketTypePresets = ['General', 'Preferencial', 'VIP', 'Platinum', 'Early Bird', 'Platea', 'Palco', 'Corporativo', 'Estudiante', 'Meet & Greet'];
+
+    function ticketOptions(selected) {
+        return ticketTypePresets.map(type => `<option value="${type}"${type === selected ? ' selected' : ''}>${type}</option>`).join('');
+    }
+
+    function ticketRow(name = 'General', price = '', quantity = '', description = '') {
         const row = document.createElement('article');
         row.className = 'ticket-row';
-        row.innerHTML = `<button class="remove-ticket" type="button" title="Quitar entrada">×</button><div class="ticket-row-grid"><label>Tipo de entrada<input class="search-input ticket-name" name="ticketName" list="ticketPresets" value="${name}" placeholder="General, VIP, Corporativo" required></label><label>Precio S/<input class="search-input ticket-price" name="ticketPrice" type="number" min="0" step="0.01" value="${price}" placeholder="49.00" required></label><label>Cupos<input class="search-input ticket-quantity" name="ticketQuantity" type="number" min="1" value="${quantity}" placeholder="100" required></label><label class="wide">Descripción<textarea class="search-input" name="ticketDescription" rows="3" placeholder="Beneficios, zona, acceso o restricciones." required>${description}</textarea></label></div>`;
+        row.innerHTML = `<button class="remove-ticket" type="button" title="Quitar entrada">×</button><input name="ticketId" type="hidden" value=""><div class="ticket-row-grid"><label>Tipo de entrada<select class="search-input ticket-name" name="ticketName" required>${ticketOptions(name)}</select></label><label>Precio S/<input class="search-input ticket-price" name="ticketPrice" type="number" min="0" step="0.01" value="${price}" placeholder="49.00" required></label><label>Cupos<input class="search-input ticket-quantity" name="ticketQuantity" type="number" min="1" value="${quantity}" placeholder="100" required></label><label class="wide">Descripción<textarea class="search-input" name="ticketDescription" rows="3" placeholder="Beneficios, zona, acceso o restricciones." required>${description}</textarea></label></div>`;
         return row;
     }
 
@@ -223,6 +297,7 @@
     ticketRows.addEventListener('click', event => { if (event.target.classList.contains('remove-ticket') && ticketRows.querySelectorAll('.ticket-row').length > 1) { event.target.closest('.ticket-row').remove(); syncTickets(); } });
     ticketRows.addEventListener('input', syncTickets);
     requestDesigner.addEventListener('change', () => { designBriefWrap.classList.toggle('open', requestDesigner.checked); designerState.textContent = requestDesigner.checked ? 'Solicitud incluida' : 'No solicitado'; });
+    designBriefWrap.classList.toggle('open', requestDesigner.checked);
 
     const templateNames = { CLASSIC: 'Clásico', CARD_GRID: 'Cards Marketplace', PROMO_DETAIL: 'Detalle promocional', POSTER_LANDING: 'Landing publicitaria', TICKET_PANEL: 'Venta con panel lateral', STAGE_MEDIA: 'Escenario + media', TOUR_SESSIONS: 'Gira por sesiones', IMMERSIVE: 'Inmersivo premium' };
     const designTemplateInput = document.getElementById('designTemplate');

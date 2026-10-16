@@ -165,6 +165,7 @@ public class EventController {
         if (value == null || value.isBlank()) return "";
         String normalized = value.trim();
         return normalized.startsWith("https://") || normalized.startsWith("http://") || normalized.startsWith("/uploads/")
+                || normalized.startsWith("/images/showcase/")
                 ? normalized.replace("'", "%27") : "";
     }
 
