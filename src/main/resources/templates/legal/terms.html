@@ -6,73 +6,173 @@
     <title>Términos y condiciones - Connectify</title>
     <link rel="stylesheet" th:href="@{/css/styles.css(v='terms-compact-1')}">
     <link rel="stylesheet" th:href="@{/css/ui.css}">
+    <link rel="stylesheet" th:href="@{/css/legal-terms.css(v='20261018')}">
 </head>
 <body>
 <header class="navbar marketplace-nav">
     <a class="brand brand-link" th:href="@{/events}"><span class="logo brand-mark">C</span><div><strong>Connectify</strong><small>Documento legal</small></div></a>
-    <nav class="top-actions legal-nav-actions"><a class="btn secondary" th:href="@{/events}">Marketplace</a><a class="btn secondary" th:href="@{/help}">Ayuda</a></nav>
+    <nav class="top-actions legal-nav-actions" aria-label="Navegación principal"><a class="btn secondary" th:href="@{/events}">Marketplace</a><a class="btn secondary" th:href="@{/help}">Ayuda</a></nav>
 </header>
 
 <main class="legal-page terms-page">
     <section class="legal-hero">
-        <p class="badge">Marco de uso</p>
+        <p class="badge">Condiciones del servicio · Perú</p>
         <h1>Términos y condiciones</h1>
-        <p>Condiciones generales para clientes, organizadores y usuarios que utilizan Connectify para publicar eventos, comprar entradas y validar tickets digitales.</p>
-        <span>Última actualización: julio de 2026</span>
+        <p>Información para publicar eventos, comprar entradas y utilizar los servicios de Connectify Solutions en showyouplay.com.</p>
+        <span>Última actualización: <time datetime="2026-10-18">18 de octubre de 2026</time></span>
     </section>
 
-    <section class="legal-layout">
-        <aside class="legal-index">
-            <a href="#servicio">Servicio</a>
-            <a href="#roles">Roles</a>
-            <a href="#compras">Compras</a>
-            <a href="#organizador">Organizadores</a>
-            <a href="#acceso">Control de acceso</a>
-            <a href="#responsabilidad">Responsabilidad</a>
-        </aside>
+    <div class="legal-layout">
+        <nav class="legal-index" aria-label="Índice de términos y condiciones">
+            <a href="#servicio">01 · Titular y servicio</a>
+            <a href="#aceptacion">02 · Aceptación</a>
+            <a href="#roles">03 · Usuarios y roles</a>
+            <a href="#cuentas">04 · Registro y cuentas</a>
+            <a href="#organizador">05 · Organizadores</a>
+            <a href="#compras">06 · Compra y carrito</a>
+            <a href="#precios">07 · Precios y cargos</a>
+            <a href="#pagos">08 · Pagos con IZIPay</a>
+            <a href="#acceso">09 · Entradas y acceso</a>
+            <a href="#devoluciones">10 · Cambios y devoluciones</a>
+            <a href="#comunicaciones">11 · Comunicaciones</a>
+            <a href="#propiedad">12 · Contenido y derechos</a>
+            <a href="#privacidad">13 · Datos personales</a>
+            <a href="#responsabilidad">14 · Responsabilidad</a>
+            <a href="#contacto">15 · Atención y reclamos</a>
+            <a href="#legislacion">16 · Legislación y cambios</a>
+        </nav>
 
-        <article class="legal-document">
+        <article class="legal-document" aria-label="Condiciones generales del marketplace">
             <section id="servicio">
-                <h2>1. Servicio de Connectify</h2>
-                <p>Connectify es un marketplace de eventos. La plataforma permite que un Organizador registre eventos, que un Administrador revise y publique propuestas, que un Cliente compre entradas y que un Agente de acceso valide tickets QR en la puerta.</p>
-                <p>El uso de la plataforma implica aceptar estas condiciones, junto con las políticas de privacidad y cookies publicadas en el sitio.</p>
+                <h2>1. Titular y servicio de Connectify</h2>
+                <p>CONNECTIFY SOLUTIONS S.A.C., con RUC N.° 10068064631, opera el marketplace Connectify Solutions a través de <a href="https://www.showyouplay.com">www.showyouplay.com</a> (en adelante, «Connectify» o «la plataforma»).</p>
+                <dl class="terms-identity">
+                    <div><dt>Domicilio</dt><dd>Avda. 1390 César Canevaro, Lince, Lima, Perú.</dd></div>
+                    <div><dt>Correo de atención</dt><dd><a href="mailto:contacto@connectify.com">contacto@connectify.com</a></dd></div>
+                </dl>
+                <p>La plataforma facilita la publicación de eventos y la venta de entradas digitales en Perú. El organizador identificado en cada evento se encarga de su realización. Connectify presta los servicios digitales de publicación, compra, emisión y consulta de entradas y control de acceso, según las funciones habilitadas.</p>
+                <p>Estas condiciones regulan el marketplace de eventos. Otros servicios distintos requieren condiciones específicas informadas antes de contratarlos.</p>
+            </section>
+
+            <section id="aceptacion">
+                <h2>2. Alcance y aceptación</h2>
+                <p>Revisa estas condiciones antes de registrarte, publicar un evento o efectuar una compra. Se aplican junto con la información y las restricciones del evento, el detalle de la operación y las políticas de <a th:href="@{/privacy}">privacidad</a> y <a th:href="@{/cookies}">cookies</a>.</p>
+                <p>La aceptación no implica renunciar a derechos reconocidos por la legislación peruana. Ninguna condición particular del evento puede limitar los derechos que la ley reconoce al consumidor.</p>
             </section>
 
             <section id="roles">
-                <h2>2. Roles y cuentas</h2>
-                <p>Las cuentas se separan por función: Cliente, Organizador, Administrador, Diseñador, Agente de acceso y Developer. Cada rol debe usar únicamente las funciones asignadas a su perfil.</p>
+                <h2>3. Usuarios, organizadores y roles</h2>
                 <ul>
-                    <li>El Cliente explora eventos, compra entradas, consulta tickets QR y escribe a soporte.</li>
-                    <li>El Organizador crea eventos, registra entradas y consulta métricas de sus publicaciones.</li>
-                    <li>El Administrador revisa, aprueba, observa, rechaza o publica eventos.</li>
-                    <li>El Agente de acceso valida tickets QR o códigos de control de puerta.</li>
+                    <li><strong>Cliente:</strong> persona que utiliza su cuenta para comprar entradas, consultar sus tickets y contactar con soporte de administración.</li>
+                    <li><strong>Organizador:</strong> persona natural o jurídica responsable de crear y realizar el evento, definir su oferta de entradas y atender las obligaciones que le corresponden frente a los asistentes.</li>
+                    <li><strong>Equipo de la plataforma:</strong> administración, diseño, desarrollo y agentes de acceso, con permisos delimitados para revisar publicaciones, asistir a usuarios, mantener el servicio o validar entradas.</li>
                 </ul>
+                <p>El registro público permite solicitar una cuenta de Cliente u Organizador. Los roles internos no se adquieren al crear una cuenta pública. Cada usuario debe utilizar únicamente las funciones autorizadas.</p>
             </section>
 
-            <section id="compras">
-                <h2>3. Compra de entradas</h2>
-                <p>La compra queda asociada a la cuenta Cliente autenticada. Las entradas digitales se generan con información del evento, tipo de entrada, titular y estado de validación.</p>
-                <p>El Cliente debe revisar fecha, ubicación, precio, cantidad y restricciones del evento antes de confirmar la compra. La disponibilidad puede cambiar según ventas registradas y capacidad configurada por el Organizador.</p>
+            <section id="cuentas">
+                <h2>4. Registro y seguridad de la cuenta</h2>
+                <p>Para contratar por cuenta propia debes ser mayor de edad y tener capacidad legal. Si actúas en nombre de una persona jurídica, debes contar con autorización suficiente. El registro de la cuenta no sustituye los requisitos de edad o ingreso propios de cada evento.</p>
+                <p>Proporciona datos veraces y actualizados, incluidos los de identificación y contacto solicitados para tu perfil. Conserva tu contraseña de forma segura, no compartas credenciales y comunica a soporte cualquier acceso o compra que no reconozcas.</p>
+                <p>Connectify puede solicitar correcciones o restringir justificadamente una cuenta ante indicios de fraude, suplantación, uso indebido o incumplimiento. La medida no elimina los derechos sobre compras válidas ni las obligaciones pendientes. Las solicitudes relativas a los datos de la cuenta se atienden conforme a la política de privacidad y a las obligaciones legales de conservación.</p>
             </section>
 
             <section id="organizador">
-                <h2>4. Obligaciones del Organizador</h2>
-                <p>El Organizador declara que la información enviada es veraz, que cuenta con autorización para realizar el evento y que respetará las condiciones publicadas para los asistentes.</p>
-                <p>Los cambios relevantes de fecha, aforo, ubicación, precio o tipos de entrada pueden requerir nueva revisión administrativa antes de volver a publicarse.</p>
+                <h2>5. Obligaciones del Organizador</h2>
+                <p>El Organizador debe contar con las autorizaciones necesarias, respetar el aforo permitido y publicar información cierta y suficiente sobre lugar, fecha, horario, programa, restricciones, precios y condiciones de ingreso.</p>
+                <p>Debe mantener coherencia entre la capacidad del evento y las cantidades ofrecidas en cada tipo de entrada, disponer de derechos sobre el material publicado y cumplir las condiciones anunciadas. Le corresponden la organización material, seguridad y atención de incidencias del evento, además de las devoluciones a su cargo conforme a la ley.</p>
+                <p>Las propuestas y sus cambios pueden pasar por revisión administrativa antes de publicarse. Esta revisión no constituye una certificación de permisos ni sustituye las obligaciones del Organizador o las que correspondan a Connectify por sus propios servicios.</p>
+                <p>Todo cambio relevante o cancelación debe comunicarse oportunamente a la plataforma y a los compradores, junto con las alternativas y el procedimiento de devolución aplicables.</p>
+            </section>
+
+            <section id="compras">
+                <h2>6. Compra de entradas y carrito</h2>
+                <p>Antes de pagar, revisa el evento, fecha, ubicación, tipo de entrada, cantidad, restricciones y total. Las variantes —por ejemplo, General, VIP o Platinum— corresponden a las zonas y prestaciones que describa el Organizador; su nombre no implica beneficios adicionales que no estén anunciados.</p>
+                <p>El carrito puede conservarse en tu cuenta para continuar más adelante. <strong>Añadir entradas al carrito no reserva cupos ni fija el precio.</strong> La disponibilidad y el importe se comprueban al continuar la compra; revisa cualquier cambio antes de autorizar el pago.</p>
+                <p>La compra y las entradas emitidas quedan asociadas a la cuenta utilizada. El resumen del pedido permite identificar los conceptos adquiridos y su importe.</p>
+            </section>
+
+            <section id="precios">
+                <h2>7. Precios y cargo de servicio</h2>
+                <p>Los importes se expresan en soles peruanos (PEN, S/). El checkout desglosa el subtotal de las entradas, el <strong>cargo de servicio del 5 % sobre ese subtotal</strong> y el total a pagar.</p>
+                <p>El importe presentado para autorizar el pago debe incluir los conceptos aplicables a la operación. No debes aceptar un cargo distinto del total informado. Si adviertes una diferencia o un cobro duplicado, comunícalo a soporte con la referencia de la operación.</p>
+                <p>Las promociones y sus restricciones deben informarse antes de la compra. Los cambios de precio posteriores no modifican por sí solos el importe de una compra ya confirmada.</p>
+            </section>
+
+            <section id="pagos">
+                <h2>8. Pagos y confirmación con IZIPay</h2>
+                <p>El pago se procesa mediante el formulario de IZIPay que se abre sobre el checkout. Los medios disponibles se muestran en esa pantalla y dependen de su habilitación para el comercio: tarjeta, Yape, Plin u opciones de QR cuando correspondan.</p>
+                <p>Introduce los datos de pago únicamente en el formulario habilitado por la pasarela. No envíes a soporte contraseñas bancarias, códigos de autorización ni datos completos de tu tarjeta.</p>
+                <div class="terms-note">
+                    <p><strong>Cerrar la ventana de pago no equivale a un pago aprobado ni anula una operación ya autorizada.</strong> Si no finalizaste el procedimiento, puedes retomarlo desde el checkout. Las entradas se emiten después de que la plataforma recibe y valida la confirmación del pago.</p>
+                </div>
+                <p>Un pedido pendiente o en revisión no acredita por sí solo una compra pagada. Si tu entidad muestra un cargo y aún no tienes entradas, contacta con soporte antes de autorizar un segundo pago, indicando la referencia del pedido. Los tiempos de procesamiento pueden depender de IZIPay y de la entidad financiera; la plataforma no garantiza una aprobación inmediata.</p>
             </section>
 
             <section id="acceso">
-                <h2>5. Tickets QR y validación</h2>
-                <p>El ticket QR es personal para efectos de control de acceso. El sistema puede marcar una entrada como usada después de una validación correcta. El Cliente debe cuidar su ticket digital y evitar compartirlo en canales públicos.</p>
+                <h2>9. Entradas digitales, QR y acceso</h2>
+                <p>Consulta tus entradas emitidas en <a th:href="@{/dashboard/client/tickets}">Mis entradas</a>. Cada ticket contiene un código de validación individual. La validación correcta puede marcarlo como utilizado e impedir un segundo ingreso con ese mismo código.</p>
+                <p>Protege los tickets y no publiques imágenes de sus QR. Una copia no genera una entrada adicional. Ante pérdida, duplicidad o uso no reconocido, solicita asistencia; la resolución depende de la comprobación de la compra y del estado de validación.</p>
+                <p>Las condiciones de identificación, edad, acompañamiento y horario deben figurar en la oferta del evento. Un plano de escenario o una imagen de referencia no supone la asignación de un asiento numerado, salvo que la entrada adquirida lo indique expresamente.</p>
+            </section>
+
+            <section id="devoluciones">
+                <h2>10. Cambios, cancelaciones y devoluciones</h2>
+                <p>La compra no establece una prohibición general de cambios o devoluciones. Se aplican los derechos del consumidor, la información ofrecida y las condiciones particulares que sean compatibles con la ley. Un cambio de preferencia personal se evalúa conforme a esas condiciones, sin afectar los derechos por incumplimiento.</p>
+                <div class="terms-note terms-note-refunds">
+                    <p><strong>Conciertos comprendidos en la Ley N.° 32415:</strong> si se cancelan, o cambia su lugar, fecha u objeto y no aceptas las nuevas condiciones o no las consideras adecuadas a tus intereses, corresponde la devolución del costo total de la entrada. El Organizador debe efectuarla en un plazo máximo de quince días hábiles desde tu solicitud.</p>
+                </div>
+                <p>La Ley N.° 32415 comprende conciertos con aforo de al menos 500 personas, según su definición legal; excluye los eventos teatrales y los organizados en el marco de los estímulos económicos del Ministerio de Cultura. Para los demás eventos se aplican el Código de Protección y Defensa del Consumidor y las demás normas pertinentes. No estás obligado a aceptar una reprogramación o un vale cuando legalmente te corresponde una devolución.</p>
+                <p>Puedes presentar tu solicitud a través de <a href="mailto:contacto@connectify.com">contacto@connectify.com</a> o del <a th:href="@{/communications}">buzón de soporte</a>, indicando el pedido, evento y motivo, sin datos bancarios sensibles. Connectify atenderá la incidencia de su servicio y canalizará lo que corresponda al Organizador, sin exigir que el consumidor renuncie a sus derechos.</p>
+                <p>El procedimiento y los conceptos de devolución, incluido el tratamiento del cargo de servicio, deben informarse conforme a la normativa y a las responsabilidades de cada proveedor. Estas condiciones no declaran ese cargo no reembolsable ni permiten descontar importes contrarios a la ley. La devolución requiere tramitar la solicitud; no se ejecuta automáticamente por cerrar el formulario de pago.</p>
+            </section>
+
+            <section id="comunicaciones">
+                <h2>11. Comunicaciones del servicio</h2>
+                <p>Podemos comunicarnos contigo por el correo registrado y el buzón de la plataforma para atender pedidos, tickets, seguridad, cambios del evento y solicitudes de soporte. Otros canales se utilizarán cuando estén habilitados y corresponda conforme a la normativa.</p>
+                <p>El uso de la plataforma no constituye por sí solo autorización para enviarte publicidad por cualquier medio. Las comunicaciones comerciales que requieran consentimiento deben contar con una autorización independiente y permitir su revocación.</p>
+            </section>
+
+            <section id="propiedad">
+                <h2>12. Contenidos y propiedad intelectual</h2>
+                <p>Las marcas, el diseño y el software de la plataforma pertenecen a sus titulares y están protegidos por la normativa aplicable. Utilizar el servicio no transfiere su propiedad ni autoriza su explotación ajena al uso del marketplace.</p>
+                <p>El Organizador conserva los derechos que le correspondan sobre sus imágenes, textos y piezas de presentación. Al publicarlos, autoriza a Connectify a utilizarlos en la medida necesaria para presentar y difundir su evento y prestar el servicio. Debe contar con autorización para cualquier contenido de terceros, incluidas imágenes y marcas.</p>
+                <p>No se permite publicar material ilícito, engañoso o que infrinja derechos de terceros. Las observaciones sobre contenido pueden enviarse al canal de atención, identificando el material y el motivo.</p>
+            </section>
+
+            <section id="privacidad">
+                <h2>13. Datos personales y cookies</h2>
+                <p>El tratamiento de datos personales se rige por la Ley N.° 29733, su reglamento vigente y la <a th:href="@{/privacy}">Política de privacidad</a>. Los datos se utilizan para los fines informados, como gestionar cuentas, compras, entradas y atención al usuario.</p>
+                <p>Consulta esa política para conocer el tratamiento y los canales para ejercer tus derechos. La información sobre cookies y las preferencias disponibles figura en la <a th:href="@{/cookies}">Política de cookies</a>. Aceptar estas condiciones no sustituye los consentimientos específicos exigibles.</p>
             </section>
 
             <section id="responsabilidad">
-                <h2>6. Responsabilidad y soporte</h2>
-                <p>Connectify facilita la operación digital del marketplace. La realización material del evento, condiciones de ingreso, horarios y cumplimiento operativo corresponden al Organizador, sin perjuicio de la revisión administrativa realizada en la plataforma.</p>
-                <p>Para incidencias de compra, tickets o acceso, el Cliente puede escribir desde el buzón de soporte disponible en su cuenta.</p>
+                <h2>14. Responsabilidad y continuidad del servicio</h2>
+                <p>El Organizador responde por la realización del evento y por sus obligaciones frente a los asistentes. Connectify responde por las obligaciones que le corresponden como prestador de sus servicios. La intermediación no excluye responsabilidades que la ley atribuya a cada proveedor.</p>
+                <p>Pueden producirse mantenimientos, interrupciones o incidencias de terceros. Se atenderán los efectos sobre las operaciones afectadas y se brindará información cuando corresponda. No se garantiza disponibilidad ininterrumpida ni se excluye de forma general la responsabilidad por fallas propias, seguridad, incumplimiento o derechos del consumidor.</p>
+                <p>Los usuarios deben abstenerse de suplantar identidades, alterar tickets, acceder a cuentas ajenas, manipular la disponibilidad o interferir con la seguridad del servicio.</p>
+            </section>
+
+            <section id="contacto">
+                <h2>15. Atención, solicitudes y reclamos</h2>
+                <p>Para consultas sobre compras, accesos o tu cuenta, utiliza <a th:href="@{/help}">Ayuda</a>, el <a th:href="@{/communications}">buzón de soporte</a> de tu cuenta o <a href="mailto:contacto@connectify.com">contacto@connectify.com</a>. El canal de WhatsApp indicado para atención es <a href="https://wa.me/51987614266">+51 987 614 266</a>.</p>
+                <p>Incluye los datos necesarios para localizar la operación y una descripción de lo ocurrido. La atención no requiere realizar una compra adicional. El buzón de soporte es un canal de asistencia y no sustituye el Libro de Reclamaciones exigible al proveedor.</p>
+                <p>Los reclamos y quejas formulados en el Libro de Reclamaciones deben responderse dentro del plazo legal de quince días hábiles, sin prórroga. Ese plazo de respuesta es distinto del plazo de devolución que resulte aplicable. Puedes acudir a Indecopi o a las autoridades competentes sin que estos términos impongan acudir exclusivamente al soporte interno.</p>
+            </section>
+
+            <section id="legislacion">
+                <h2>16. Legislación aplicable y actualización</h2>
+                <p>El servicio se rige por la legislación peruana, incluido el Código de Protección y Defensa del Consumidor y las normas aplicables a la venta de entradas. Las controversias pueden someterse a las autoridades administrativas o judiciales competentes conforme a la ley, sin restringir los derechos del consumidor mediante una elección exclusiva de tribunales.</p>
+                <p>Las actualizaciones se publicarán con su fecha. Los cambios relevantes se comunicarán cuando corresponda y no alterarán retroactivamente las condiciones de compras ya confirmadas ni reducirán derechos reconocidos por la ley.</p>
+                <ul class="terms-sources" aria-label="Normativa de referencia">
+                    <li><a href="https://www.gob.pe/institucion/indecopi/normas-legales/1244218-29571">Ley N.° 29571 · Protección y Defensa del Consumidor</a></li>
+                    <li><a href="https://leyes.congreso.gob.pe/Documentos/2021_2026/ADLP/Texto_Consolidado/32415-TXM.pdf">Ley N.° 32415 · Venta y devolución de entradas a conciertos</a></li>
+                    <li><a href="https://www.gob.pe/institucion/anpd/normas-legales/6554453-n-016-2024-jus">D. S. N.° 016-2024-JUS · Reglamento de protección de datos personales</a></li>
+                    <li><a href="https://consumidor.gob.pe/libro-de-reclamaciones/">Indecopi · Libro de Reclamaciones</a></li>
+                </ul>
             </section>
         </article>
-    </section>
+    </div>
 </main>
 
 <div th:replace="~{fragments/site-footer :: publicFooter}"></div>

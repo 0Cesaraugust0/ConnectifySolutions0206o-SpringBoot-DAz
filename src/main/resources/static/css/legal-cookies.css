@@ -1,0 +1,47 @@
+.cookies-page .cookies-table-wrap {
+    max-width: 100%;
+    overflow-x: auto;
+    margin: 16px 0;
+    border: 1px solid #e4e8f1;
+    border-radius: 12px;
+}
+.cookies-page .cookies-table-wrap:focus-visible {
+    outline: 2px solid #6355cc;
+    outline-offset: 3px;
+}
+.cookies-page .cookies-table {
+    width: 100%;
+    min-width: 560px;
+    border-collapse: collapse;
+    table-layout: fixed;
+    color: #475569;
+    font-size: .74rem;
+    line-height: 1.55;
+}
+.cookies-page .cookies-table caption {
+    padding: 12px;
+    background: #f8fafc;
+    color: #334155;
+    text-align: left;
+    font-weight: 600;
+}
+.cookies-page .cookies-table th,
+.cookies-page .cookies-table td {
+    padding: 12px 10px;
+    border-top: 1px solid #e4e8f1;
+    text-align: left;
+    vertical-align: top;
+    overflow-wrap: anywhere;
+}
+.cookies-page .cookies-table thead { background: #f3f4ff; color: #334155; }
+.cookies-page .cookies-table th { font-weight: 600; }
+.cookies-page .cookies-table tbody th { color: #334155; }
+.cookies-page .cookies-table code {
+    display: inline-block;
+    margin-top: 6px;
+    color: #64748b;
+    font-size: .68rem;
+    font-weight: 400;
+    white-space: normal;
+    overflow-wrap: anywhere;
+}

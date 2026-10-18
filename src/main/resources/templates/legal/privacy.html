@@ -6,55 +6,155 @@
     <title>Política de privacidad - Connectify</title>
     <link rel="stylesheet" th:href="@{/css/styles.css}">
     <link rel="stylesheet" th:href="@{/css/ui.css}">
+    <link rel="stylesheet" th:href="@{/css/legal-terms.css(v='20261018')}">
 </head>
 <body>
 <header class="navbar marketplace-nav">
     <a class="brand brand-link" th:href="@{/events}"><span class="logo brand-mark">C</span><div><strong>Connectify</strong><small>Privacidad</small></div></a>
-    <nav class="top-actions"><a class="btn secondary" th:href="@{/events}">Marketplace</a><a class="btn secondary" th:href="@{/cookies}">Cookies</a></nav>
+    <nav class="top-actions legal-nav-actions" aria-label="Navegación principal"><a class="btn secondary" th:href="@{/events}">Marketplace</a><a class="btn secondary" th:href="@{/cookies}">Cookies</a></nav>
 </header>
 
-<main class="legal-page">
+<main class="legal-page terms-page privacy-page">
     <section class="legal-hero">
         <p class="badge">Protección de datos</p>
         <h1>Política de privacidad</h1>
-        <p>Describe qué datos se registran en Connectify, para qué se usan y cómo se protegen dentro del flujo de eventos, compras y soporte.</p>
-        <span>Referencia: Ley N° 29733 - Protección de Datos Personales</span>
+        <p>Qué información utiliza Connectify Solutions para gestionar tu cuenta, compras, entradas y soporte en showyouplay.com, y cómo puedes ejercer tus derechos.</p>
+        <span>Última actualización: <time datetime="2026-10-18">18 de octubre de 2026</time></span>
     </section>
 
-    <article class="legal-document single">
-        <section>
-            <h2>1. Datos que se pueden registrar</h2>
-            <p>Connectify puede registrar nombres, apellidos, correo, DNI, teléfono, datos de organizador, RUC, eventos creados, compras, tickets, mensajes de soporte y registros de validación de acceso.</p>
-        </section>
+    <div class="legal-layout">
+        <nav class="legal-index" aria-label="Índice de política de privacidad">
+            <a href="#responsable">01 · Responsable</a>
+            <a href="#datos">02 · Información tratada</a>
+            <a href="#formularios">03 · Datos necesarios</a>
+            <a href="#finalidades">04 · Finalidades y base legal</a>
+            <a href="#publicidad">05 · Publicidad</a>
+            <a href="#destinatarios">06 · Acceso y destinatarios</a>
+            <a href="#proveedores">07 · Proveedores y países</a>
+            <a href="#conservacion">08 · Conservación</a>
+            <a href="#seguridad">09 · Seguridad</a>
+            <a href="#derechos">10 · Tus derechos</a>
+            <a href="#cookies">11 · Cookies y enlaces</a>
+            <a href="#menores">12 · Menores de edad</a>
+            <a href="#actualizaciones">13 · Normativa y cambios</a>
+        </nav>
 
-        <section>
-            <h2>2. Finalidades</h2>
-            <ul>
-                <li>Crear y autenticar cuentas por rol.</li>
-                <li>Procesar compras y generar tickets digitales.</li>
-                <li>Permitir revisión administrativa de eventos.</li>
-                <li>Registrar validaciones QR en puerta.</li>
-                <li>Atender consultas de soporte y comunicaciones internas.</li>
-                <li>Generar métricas operativas para organizadores y administradores.</li>
-            </ul>
-        </section>
+        <article class="legal-document" aria-label="Política de protección de datos personales">
+            <section id="responsable">
+                <h2>1. Responsable del tratamiento</h2>
+                <p>CONNECTIFY SOLUTIONS S.A.C., con RUC N.° 10068064631, es responsable del tratamiento de datos personales realizado para operar el marketplace <a href="https://www.showyouplay.com">www.showyouplay.com</a> (en adelante, «Connectify»).</p>
+                <dl class="terms-identity">
+                    <div><dt>Domicilio</dt><dd>Avda. 1390 César Canevaro, Lince, Lima, Perú.</dd></div>
+                    <div><dt>Consultas y derechos sobre tus datos</dt><dd><a href="mailto:contacto@connectify.com?subject=Protecci%C3%B3n%20de%20Datos%20Personales">contacto@connectify.com</a> · Asunto: Protección de Datos Personales.</dd></div>
+                </dl>
+                <p>Esta política explica el tratamiento de datos de clientes, organizadores y personas que contactan con la plataforma. Los datos se integran en los registros del servicio relativos a cuentas, eventos, carritos, compras, entradas, comunicaciones y auditoría de accesos.</p>
+            </section>
 
-        <section>
-            <h2>3. Acceso por roles</h2>
-            <p>El acceso a la información se limita según rol. Un Cliente no opera eventos de organizadores; un Organizador ve sus propios eventos; el Administrador revisa propuestas; el Agente de acceso solo valida tickets; y el Developer administra cuentas y permisos.</p>
-        </section>
+            <section id="datos">
+                <h2>2. Qué información tratamos y de dónde procede</h2>
+                <ul>
+                    <li><strong>Cuenta y perfil:</strong> nombres, apellidos, correo, contraseña protegida, rol, estado de la cuenta y, cuando corresponda, DNI, teléfono, razón social y RUC.</li>
+                    <li><strong>Compra y facturación:</strong> eventos, tipos de entrada, cantidades, importes, nombre del comprador, DNI, teléfono, correo y dirección de facturación, incluidos ciudad, departamento y código postal.</li>
+                    <li><strong>Carrito y pagos:</strong> selecciones guardadas, pedidos e intentos de pago, método elegido, referencia de transacción, importes, fecha y estado comunicado por la pasarela, incluso si la compra queda incompleta.</li>
+                    <li><strong>Entradas:</strong> comprador o asistente registrado, evento, tipo de ticket, código de validación QR y estado o momento de uso.</li>
+                    <li><strong>Publicaciones y atención:</strong> información e imágenes de eventos aportadas por organizadores, mensajes de soporte, solicitudes y actuaciones de revisión o gestión de cuentas.</li>
+                    <li><strong>Información técnica:</strong> identificadores de sesión, preferencias del navegador y registros técnicos de solicitudes o incidencias, que pueden incluir dirección IP y datos del navegador en la infraestructura de alojamiento.</li>
+                </ul>
+                <p>La información procede de los formularios y acciones del usuario, de los registros generados al prestar el servicio y de las confirmaciones de IZIPay. Los datos identificables siguen siendo personales aunque procedan de fuentes públicas; su acceso público no autoriza cualquier uso.</p>
+                <div class="terms-note"><p><strong>Los datos completos de tarjeta, CVV y claves bancarias se introducen en el formulario de la pasarela.</strong> La aplicación no los guarda como parte de la cuenta o del pedido. Sí conserva los datos de facturación y las referencias necesarias para relacionar el pago con tu compra.</p></div>
+            </section>
 
-        <section>
-            <h2>4. Conservación y seguridad</h2>
-            <p>Los datos se conservan mientras sean necesarios para la operación del marketplace, trazabilidad de compras, auditoría básica o cumplimiento de obligaciones académicas y administrativas del proyecto.</p>
-            <p>Las contraseñas se almacenan cifradas. Las sesiones y permisos se controlan desde Spring Security.</p>
-        </section>
+            <section id="formularios">
+                <h2>3. Datos necesarios y datos opcionales</h2>
+                <p>El registro requiere los datos de identificación de la cuenta, correo y contraseña solicitados por el formulario. Para el perfil de Organizador también se solicitan razón social y RUC. Algunos datos de perfil, como DNI o teléfono del Cliente, pueden ser opcionales al registrarse y necesarios posteriormente para pagar.</p>
+                <p>El checkout solicita datos de comprador y facturación necesarios para el procedimiento de pago habilitado. Si no proporcionas los datos requeridos o son inválidos, no podremos completar esa función. Puedes consultar los eventos públicos sin crear una cuenta.</p>
+                <p>No incluyas información sensible ni datos de otras personas en mensajes o imágenes si no son necesarios. Si facilitas datos de un tercero para una finalidad admitida, debes estar autorizado y comunicarle el tratamiento correspondiente.</p>
+            </section>
 
-        <section>
-            <h2>5. Derechos del usuario</h2>
-            <p>El usuario puede solicitar corrección o actualización de datos desde su panel o mediante soporte. Las consultas de clientes se envían al Administrador desde el buzón de soporte.</p>
-        </section>
-    </article>
+            <section id="finalidades">
+                <h2>4. Para qué utilizamos los datos</h2>
+                <ul>
+                    <li>Crear y autenticar la cuenta, mantener el perfil y aplicar los permisos correspondientes.</li>
+                    <li>Guardar el carrito, tramitar pagos, comprobar su confirmación, emitir entradas y atender incidencias de la operación.</li>
+                    <li>Publicar y revisar eventos, gestionar variantes de entradas y registrar la validación de acceso.</li>
+                    <li>Atender consultas, solicitudes sobre datos y controversias, y enviar comunicaciones operativas del servicio.</li>
+                    <li>Prevenir usos indebidos y conservar la trazabilidad de las operaciones y cambios de acceso.</li>
+                    <li>Mostrar métricas de eventos, ventas y registros necesarias para la gestión de cada rol, con datos agregados cuando la finalidad no requiera identificar personas.</li>
+                </ul>
+                <p>El tratamiento necesario para preparar o ejecutar el servicio solicitado y cumplir obligaciones legales se realiza bajo las excepciones al consentimiento que resulten aplicables. Para otras finalidades que lo requieran, solicitaremos consentimiento previo, informado y específico. La publicación de esta política no sustituye ese consentimiento.</p>
+            </section>
+
+            <section id="publicidad">
+                <h2>5. Publicidad y comunicaciones promocionales</h2>
+                <p>Crear una cuenta, comprar una entrada o cerrar el aviso de cookies no autoriza por sí solo el envío de publicidad. Cuando se habiliten campañas que requieran consentimiento, la opción será independiente del servicio solicitado.</p>
+                <p>Puedes retirar una autorización promocional escribiendo a <a href="mailto:contacto@connectify.com?subject=Retirar%20consentimiento%20publicitario">contacto@connectify.com</a>. Retirarla no impide recibir comunicaciones necesarias sobre compras, seguridad o solicitudes pendientes, ni afecta retroactivamente al tratamiento efectuado válidamente.</p>
+            </section>
+
+            <section id="destinatarios">
+                <h2>6. Quién puede acceder a la información</h2>
+                <p>Los permisos de la plataforma diferencian las cuentas de Cliente, Organizador y equipo interno. El personal autorizado puede tratar información para revisar eventos, atender soporte, administrar accesos o mantener el servicio, según las funciones asignadas.</p>
+                <p>El Organizador y los agentes de puerta pueden acceder a la información que las funciones habilitadas requieran para gestionar su evento, resolver incidencias y validar entradas. Esta participación no les autoriza a utilizar los datos para publicidad propia u otras finalidades sin la base legal correspondiente.</p>
+                <p>Los contenidos y datos de presentación que un Organizador publique en la ficha del evento son visibles al público. Los mensajes de soporte, datos privados de cuenta y detalles de facturación no forman parte de esa publicación.</p>
+                <p>También pueden recibir datos los proveedores indicados en el siguiente apartado y las autoridades cuando exista un requerimiento u obligación legal. Cada comunicación debe limitarse a la información y finalidad que la justifiquen.</p>
+            </section>
+
+            <section id="proveedores">
+                <h2>7. Proveedores y tratamiento internacional</h2>
+                <ul>
+                    <li><strong>IZIPay:</strong> procesa el pago y recibe la configuración de la operación y los datos del comprador y facturación necesarios para ello. Las entidades financieras o billeteras participantes intervienen según el medio que elijas.</li>
+                    <li><strong>Hostinger:</strong> proporciona la infraestructura del servidor donde funciona la web y se procesan solicitudes y archivos del servicio. El VPS está ubicado en Boston, Estados Unidos.</li>
+                    <li><strong>Supabase:</strong> proporciona la base de datos del servicio en producción. La región principal del proyecto está configurada en Canadá Central.</li>
+                </ul>
+                <p>El servidor de la aplicación en Estados Unidos y la base de datos en Canadá implican tratamiento fuera del Perú. Los proveedores de infraestructura pueden recurrir a subencargados para sus servicios. Puedes solicitar información adicional sobre destinatarios, ubicaciones y condiciones aplicables mediante el canal de privacidad.</p>
+                <p>Los encargos y transferencias deben respetar las finalidades informadas y las garantías exigidas por la normativa peruana. Esta política no constituye una autorización general para transferir datos a cualquier país o empresa. Cuando una transferencia requiera consentimiento, debe recabarse antes de realizarla.</p>
+            </section>
+
+            <section id="conservacion">
+                <h2>8. Conservación y cancelación</h2>
+                <p>Los datos de perfil se utilizan durante la relación de servicio. Los carritos y pagos incompletos pueden conservarse para permitir su recuperación y aclarar incidencias; abandonar o cerrar el checkout no elimina automáticamente esos registros.</p>
+                <p>Los datos de compras, tickets, pagos, soporte y auditoría se conservan durante el tiempo necesario para atender el evento, obligaciones legales y posibles responsabilidades o controversias. Las solicitudes de supresión se evalúan por categoría de datos: puede ser necesario conservar determinados registros, con acceso limitado, aunque dejes de utilizar la cuenta.</p>
+                <p>Una cuenta desactivada no equivale a la eliminación de sus datos. Cuando ya no exista una finalidad o una obligación que justifique conservarlos, corresponde su supresión o anonimización. La información agregada solo deja de ser personal si no permite identificar a sus titulares.</p>
+            </section>
+
+            <section id="seguridad">
+                <h2>9. Seguridad y confidencialidad</h2>
+                <p>La aplicación utiliza controles de acceso y permisos, almacenamiento protegido de contraseñas y registros de actuaciones sobre cuentas. Estas medidas no equivalen a una garantía de invulnerabilidad ni eliminan las obligaciones de Connectify frente a incidentes.</p>
+                <p>Protege tu contraseña y tus QR, utiliza equipos de confianza y comunica cualquier acceso o pago no reconocido. No envíes contraseñas, CVV ni códigos de autorización bancaria por soporte. Ante un incidente se evaluarán las medidas de contención y las comunicaciones a personas afectadas y autoridades que correspondan conforme a la normativa.</p>
+            </section>
+
+            <section id="derechos">
+                <h2>10. Cómo ejercer tus derechos</h2>
+                <p>Puedes solicitar acceso a tus datos; su actualización o rectificación; cancelación cuando proceda; oposición a determinados tratamientos; y revocar el consentimiento. También puedes solicitar información y portabilidad en los supuestos reconocidos por la normativa.</p>
+                <div class="terms-note"><p>Escribe a <a href="mailto:contacto@connectify.com?subject=Protecci%C3%B3n%20de%20Datos%20Personales">contacto@connectify.com</a> con el asunto <strong>«Protección de Datos Personales»</strong>. Indica tu nombre, correo vinculado al servicio, el derecho que deseas ejercer y la información necesaria para localizar tu solicitud.</p></div>
+                <p>Verificaremos tu identidad mediante medios proporcionados a la solicitud; si actúas por otra persona, deberás acreditar la representación. No envíes documentos de identidad ni datos adicionales innecesarios: se indicará el medio adecuado si hicieran falta para la verificación.</p>
+                <p>Los plazos ordinarios máximos de respuesta son ocho días hábiles para información, veinte para acceso y diez para rectificación, cancelación u oposición, contados desde el día siguiente de la presentación, conforme a las reglas del reglamento. Si corresponde subsanar una solicitud o aplicar una ampliación legal, se te informará.</p>
+                <p>Si no recibes respuesta o no estás conforme, puedes solicitar tutela ante la <a href="https://www.gob.pe/9269-iniciar-procedimiento-para-el-ejercicio-de-derechos-de-acceso-rectificacion-cancelacion-y-oposicion">Autoridad Nacional de Protección de Datos Personales</a>, sin perjuicio de los demás medios legales disponibles. El ejercicio de estos derechos no exige una nueva compra.</p>
+            </section>
+
+            <section id="cookies">
+                <h2>11. Cookies, almacenamiento del navegador y enlaces</h2>
+                <p>El sitio utiliza información de sesión y almacenamiento del navegador para funciones como recordar el aviso de cookies, el aviso de inicio de actividades o la referencia de un pago en curso. Consulta la <a th:href="@{/cookies}">Política de cookies</a> para conocer su gestión.</p>
+                <p>Borrar ese almacenamiento puede cerrar sesiones o volver a mostrar avisos; no borra por sí solo los carritos, compras u otros datos guardados en la cuenta. Los formularios de pago y enlaces externos pueden aplicar sus propias políticas. Si en el futuro se incorporan tecnologías opcionales que requieran consentimiento, deberá solicitarse antes de activarlas.</p>
+            </section>
+
+            <section id="menores">
+                <h2>12. Menores de edad</h2>
+                <p>El registro para contratar por cuenta propia está dirigido a personas mayores de edad, según los <a th:href="@{/terms}">Términos y condiciones</a>. Esto no implica que todos los eventos estén restringidos a adultos: cada oferta debe indicar sus requisitos de ingreso y acompañamiento.</p>
+                <p>Si detectas que se han proporcionado datos de un menor sin la autorización exigible, comunícalo al canal de privacidad para evaluar su tratamiento y adoptar las medidas correspondientes. No presumimos que el simple uso del sitio acredita la mayoría de edad.</p>
+            </section>
+
+            <section id="actualizaciones">
+                <h2>13. Normativa y cambios de esta política</h2>
+                <p>El tratamiento se rige por la Ley N.° 29733 y su reglamento aprobado por el D. S. N.° 016-2024-JUS. Se aplican criterios de finalidad, proporcionalidad, calidad, seguridad y transparencia.</p>
+                <p>Las versiones se publican con su fecha de actualización. Los cambios relevantes se comunicarán cuando corresponda; si una nueva finalidad requiere consentimiento, actualizar la política no sustituye su obtención. Las consultas pueden dirigirse a <a href="mailto:contacto@connectify.com">contacto@connectify.com</a>.</p>
+                <ul class="terms-sources" aria-label="Referencias oficiales sobre protección de datos">
+                    <li><a href="https://www.gob.pe/institucion/anpd/normas-legales/2018427-29733-2011">Ley N.° 29733 · Protección de Datos Personales</a></li>
+                    <li><a href="https://www.gob.pe/institucion/anpd/normas-legales/6554453-n-016-2024-jus">D. S. N.° 016-2024-JUS · Reglamento vigente</a></li>
+                    <li><a href="https://www.gob.pe/es/institucion/anpd/tema/641-derechos-arco">ANPD · Derechos ARCO</a></li>
+                </ul>
+            </section>
+        </article>
+    </div>
 </main>
 
 <div th:replace="~{fragments/site-footer :: publicFooter}"></div>

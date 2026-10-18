@@ -35,3 +35,7 @@ Thumbs.db
 # Secrets
 application-local.properties
 application-secret.properties
+
+# Local account records and Supabase CLI cache
+/Tabla de usuarios.txt
+/supabase/.temp/

@@ -6,41 +6,124 @@
     <title>Política de cookies - Connectify</title>
     <link rel="stylesheet" th:href="@{/css/styles.css}">
     <link rel="stylesheet" th:href="@{/css/ui.css}">
+    <link rel="stylesheet" th:href="@{/css/legal-terms.css(v='20261018')}">
+    <link rel="stylesheet" th:href="@{/css/legal-cookies.css(v='20261018')}">
 </head>
 <body>
 <header class="navbar marketplace-nav">
     <a class="brand brand-link" th:href="@{/events}"><span class="logo brand-mark">C</span><div><strong>Connectify</strong><small>Cookies</small></div></a>
-    <nav class="top-actions"><a class="btn secondary" th:href="@{/events}">Marketplace</a><a class="btn secondary" th:href="@{/privacy}">Privacidad</a></nav>
+    <nav class="top-actions legal-nav-actions" aria-label="Navegación principal"><a class="btn secondary" th:href="@{/events}">Marketplace</a><a class="btn secondary" th:href="@{/privacy}">Privacidad</a></nav>
 </header>
 
-<main class="legal-page">
+<main class="legal-page terms-page cookies-page">
     <section class="legal-hero">
         <p class="badge">Preferencias del navegador</p>
         <h1>Política de cookies</h1>
-        <p>Información sobre cookies esenciales, preferencias locales y datos técnicos usados para mantener la experiencia segura.</p>
+        <p>Qué guarda showyouplay.com en tu navegador, para qué se utiliza y cómo puedes gestionarlo.</p>
+        <span>Última actualización: <time datetime="2026-10-18">18 de octubre de 2026</time></span>
     </section>
 
-    <article class="legal-document single">
-        <section>
-            <h2>1. Qué son las cookies</h2>
-            <p>Las cookies son pequeños datos que el navegador conserva para que un sitio pueda recordar información necesaria, por ejemplo una sesión iniciada o una preferencia de visualización.</p>
-        </section>
+    <div class="legal-layout">
+        <nav class="legal-index" aria-label="Índice de política de cookies">
+            <a href="#responsable">01 · Responsable</a>
+            <a href="#tecnologias">02 · Qué son y para qué sirven</a>
+            <a href="#inventario">03 · Qué guarda la web</a>
+            <a href="#terceros">04 · Servicios externos</a>
+            <a href="#aviso">05 · Aviso y consentimiento</a>
+            <a href="#gestion">06 · Cómo gestionarlas</a>
+            <a href="#contacto">07 · Privacidad y contacto</a>
+        </nav>
 
-        <section>
-            <h2>2. Cookies esenciales</h2>
-            <p>Connectify puede usar cookies de sesión necesarias para autenticar usuarios, mantener la seguridad del acceso y aplicar permisos por rol. Sin estas cookies, funciones como carrito, dashboard, tickets o soporte no operarían correctamente.</p>
-        </section>
+        <article class="legal-document" aria-label="Cookies y almacenamiento del navegador">
+            <section id="responsable">
+                <h2>1. Responsable y alcance</h2>
+                <p>CONNECTIFY SOLUTIONS S.A.C., con RUC N.° 10068064631 y domicilio en Avda. 1390 César Canevaro, Lince, Lima, Perú, opera el marketplace <a href="https://www.showyouplay.com">www.showyouplay.com</a>.</p>
+                <p>Esta política explica las cookies y tecnologías de almacenamiento del navegador utilizadas para el servicio. Complementa la <a th:href="@{/privacy}">Política de privacidad</a> y los <a th:href="@{/terms}">Términos y condiciones</a>.</p>
+            </section>
 
-        <section>
-            <h2>3. Preferencias locales</h2>
-            <p>El aviso de cookies puede recordar en el navegador que el usuario ya aceptó la información. Esta preferencia se guarda localmente y no sustituye el control de sesión de Spring Security.</p>
-        </section>
+            <section id="tecnologias">
+                <h2>2. Qué son y para qué sirven</h2>
+                <p>Una cookie es un pequeño dato que el navegador guarda y puede enviar al sitio en visitas posteriores. Puede servir para reconocer una sesión iniciada. No es un programa ni necesariamente contiene tu nombre, pero un identificador puede relacionarse con una persona o su actividad.</p>
+                <p>El almacenamiento local y el de sesión guardan preferencias o referencias en el navegador. No son cookies: el sitio los consulta mediante sus funciones. El almacenamiento local puede persistir entre visitas; el de sesión se mantiene durante la sesión de la pestaña, con posibles restauraciones según el navegador.</p>
+                <p>En Connectify se utilizan para mantener el acceso a funciones de tu cuenta, recordar que viste un aviso y facilitar la continuidad de un pago. Los datos guardados en la base de datos, como compras y entradas, tienen un tratamiento distinto del almacenamiento del navegador.</p>
+            </section>
 
-        <section>
-            <h2>4. Gestión</h2>
-            <p>El usuario puede borrar cookies o almacenamiento local desde la configuración del navegador. Al hacerlo, puede cerrar sesiones activas o volver a mostrar avisos informativos.</p>
-        </section>
-    </article>
+            <section id="inventario">
+                <h2>3. Qué guarda esta versión de la web</h2>
+                <p>Los siguientes elementos corresponden al sitio y a sus funciones actuales. El dominio de primera parte es showyouplay.com; las pruebas en localhost utilizan un almacenamiento separado.</p>
+                <div class="cookies-table-wrap" role="region" aria-label="Inventario de cookies y almacenamiento propio; desplaza horizontalmente si es necesario" tabindex="0">
+                    <table class="cookies-table">
+                        <caption>Cookies y almacenamiento propios</caption>
+                        <thead><tr><th scope="col">Elemento</th><th scope="col">Uso</th><th scope="col">Tecnología</th><th scope="col">Duración</th></tr></thead>
+                        <tbody>
+                            <tr>
+                                <th scope="row">Sesión de acceso<br><code>JSESSIONID</code></th>
+                                <td>Identificar la sesión y permitir las funciones autenticadas de cuenta, carrito, entradas y soporte.</td>
+                                <td>Cookie necesaria del sitio.</td>
+                                <td>Sesión del navegador, sujeta a la caducidad de la sesión del servidor. El navegador puede restaurarla.</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Aviso informativo<br><code>connectify.cookies.accepted</code></th>
+                                <td>Recordar que cerraste el aviso. Su nombre técnico no significa que hayas autorizado publicidad.</td>
+                                <td>Almacenamiento local de preferencia.</td>
+                                <td>Sin vencimiento automático fijado por la aplicación; hasta su eliminación o limpieza por el navegador.</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Bienvenida<br><code>connectify.launch.2026-10-14.seen</code></th>
+                                <td>Evitar repetir automáticamente el aviso de inicio de actividades durante la misma sesión de pestaña.</td>
+                                <td>Almacenamiento de sesión de preferencia.</td>
+                                <td>Durante la sesión de la pestaña, salvo restauración del navegador o borrado anterior.</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Referencia de pago<br><code>connectify.izipay.pendingOrder</code></th>
+                                <td>Relacionar el checkout con una orden en curso. No contiene datos de tarjeta ni acredita que el pago esté aprobado.</td>
+                                <td>Almacenamiento de sesión para el pago solicitado.</td>
+                                <td>Durante la sesión de la pestaña; puede retirarse antes cuando el checkout resuelve o descarta la referencia.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p>La preferencia del aviso no guarda el contenido de tu carrito ni reemplaza la sesión de acceso. Las métricas de ventas y eventos se calculan a partir de operaciones registradas; no deben confundirse con el seguimiento publicitario de la navegación.</p>
+            </section>
+
+            <section id="terceros">
+                <h2>4. Servicios y contenidos externos</h2>
+                <ul>
+                    <li><strong>IZIPay:</strong> su formulario y los servicios del medio de pago elegido pueden utilizar tecnologías de sesión y seguridad para tramitar la operación.</li>
+                    <li><strong>YouTube y Spotify:</strong> algunas fichas de eventos incluyen reproductores de estos proveedores. Al cargar el contenido, pueden recibir información técnica del navegador y utilizar cookies o tecnologías propias según su configuración y tus preferencias.</li>
+                    <li><strong>Imágenes y QR externos:</strong> determinadas páginas cargan recursos desde otros dominios. Su carga comunica datos técnicos de la solicitud al proveedor; no toda comunicación de este tipo requiere o utiliza una cookie.</li>
+                </ul>
+                <p>Los elementos de terceros dependen del contenido de la página, la versión del proveedor y la configuración del navegador. Por ello, el inventario anterior identifica el almacenamiento propio y no atribuye nombres o vencimientos no comprobados a los servicios externos.</p>
+                <p>Consulta las políticas de <a href="https://policies.google.com/technologies/cookies?hl=es">Google y YouTube</a> y de <a href="https://www.spotify.com/legal/cookies-policy/">Spotify</a> para conocer sus tecnologías y controles. Los contenidos opcionales no se convierten en necesarios por estar incluidos en una ficha de evento.</p>
+            </section>
+
+            <section id="aviso">
+                <h2>5. Qué significa el aviso de cookies</h2>
+                <div class="terms-note"><p>El botón <strong>«Entendido»</strong> cierra el aviso y recuerda que lo viste. <strong>No autoriza publicidad, seguimiento opcional ni transferencias generales de datos.</strong> Seguir navegando tampoco sustituye un consentimiento que sea exigible.</p></div>
+                <p>La cookie de sesión permite prestar las funciones de acceso solicitadas. Las preferencias de aviso y bienvenida facilitan la presentación del sitio y pueden borrarse desde el navegador sin eliminar tu cuenta.</p>
+                <p>Cuando un tratamiento opcional requiera consentimiento, debe existir una elección previa, específica y revocable. El aviso informativo actual no es un panel de categorías ni bloquea por sí mismo los servicios externos descritos. La carga de un reproductor integrado puede contactar con su proveedor antes de que pulses reproducir.</p>
+            </section>
+
+            <section id="gestion">
+                <h2>6. Cómo gestionar cookies y almacenamiento</h2>
+                <ul>
+                    <li>En los ajustes de privacidad de tu navegador puedes consultar, bloquear o eliminar cookies y datos de sitios. Busca showyouplay.com para gestionar su almacenamiento y revisa también los dominios externos que aparezcan.</li>
+                    <li>Bloquear la cookie de sesión puede impedir iniciar sesión o utilizar funciones autenticadas. Para terminar el acceso, utiliza también «Cerrar sesión».</li>
+                    <li>Eliminar los datos del aviso o de bienvenida puede hacer que se muestren otra vez. El bloqueo de cookies de terceros puede afectar a reproductores o formularios externos.</li>
+                    <li>La navegación privada puede limitar la persistencia del almacenamiento, pero no evita que el servidor o el proveedor reciban solicitudes mientras utilizas sus servicios.</li>
+                </ul>
+                <p><strong>Borrar cookies no elimina compras, tickets o carritos conservados en tu cuenta ni cancela un pago autorizado.</strong> Si borras una referencia de pago y tienes dudas sobre un cargo, consulta tus compras o contacta con soporte antes de autorizar otro pago.</p>
+                <p>Para solicitar la supresión de datos personales guardados por el servicio, utiliza el canal de la <a th:href="@{/privacy#derechos}">Política de privacidad</a>. Las solicitudes se evalúan conforme a sus finalidades y a las obligaciones legales aplicables.</p>
+            </section>
+
+            <section id="contacto">
+                <h2>7. Privacidad, contacto y actualizaciones</h2>
+                <p>Puedes dirigir consultas sobre esta política a <a href="mailto:contacto@connectify.com?subject=Consulta%20sobre%20cookies">contacto@connectify.com</a>, con el asunto «Consulta sobre cookies».</p>
+                <p>El tratamiento de datos personales se rige por la Ley N.° 29733 y su reglamento vigente, aprobado por el D. S. N.° 016-2024-JUS. La información sobre proveedores, países de alojamiento y ejercicio de derechos figura en la <a th:href="@{/privacy}">Política de privacidad</a>.</p>
+                <p>Actualizaremos este documento cuando cambien las tecnologías o sus finalidades, indicando la fecha de revisión. Publicar una nueva versión no sustituye la obtención del consentimiento cuando corresponda.</p>
+            </section>
+        </article>
+    </div>
 </main>
 
 <div th:replace="~{fragments/site-footer :: publicFooter}"></div>
