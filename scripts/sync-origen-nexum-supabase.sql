@@ -19,5 +19,7 @@ FROM jsonb_populate_recordset(NULL::connectify.ticket_types, '[{"event_id":24,"n
 JOIN connectify.events e ON e.id = r.event_id AND e.title IN ('ORIGEN · Mesa del Pacífico', 'NEXUM · Ideas que conectan')
 WHERE NOT EXISTS (SELECT 1 FROM connectify.ticket_types existing WHERE existing.event_id = r.event_id AND existing.name = r.name);
 
+-- Son fichas ficticias: conservar las variantes para edición, sin ofrecerlas a la venta.
+UPDATE connectify.ticket_types SET active = false WHERE event_id IN (24, 25);
 SELECT setval(pg_get_serial_sequence('connectify.events', 'id'), GREATEST((SELECT COALESCE(MAX(id), 1) FROM connectify.events), (SELECT last_value FROM connectify.events_id_seq)), true);
 COMMIT;
