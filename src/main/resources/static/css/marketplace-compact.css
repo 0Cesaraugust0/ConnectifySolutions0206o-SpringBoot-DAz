@@ -1,11 +1,23 @@
 /* Compact marketplace layout, scoped to the events listing. */
 .marketplace-compact .hero-search-panel > .btn{align-self:center}
+.marketplace-compact .professional-hero .badge.glow{transform:translateY(-19px)}
+@media(min-width:961px){
+  .marketplace-compact .hero-search-panel{transform:translateY(40px)}
+  .marketplace-compact .hero-search-panel::after{content:"";position:absolute;left:0;right:0;bottom:-11px;height:6px;border-radius:999px;background:#9ca3af}
+}
 .marketplace-browse-header{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:28px;align-items:start;margin-top:24px}
 .marketplace-browse-filters .date-filter-strip{margin:0 0 16px;flex-wrap:wrap}
 .marketplace-browse-filters .category-strip{margin:0;flex-wrap:wrap}
 .marketplace-browse-copy{padding:0 0 0 8px}
 .marketplace-browse-copy h2{font-size:28px;line-height:1.2;letter-spacing:-.035em;margin:0 0 12px}
 .marketplace-browse-copy p{font-size:13px;line-height:1.6;margin:0;max-width:540px}
+.marketplace-compact .marketplace-nav .launch-welcome-trigger{display:inline-flex;align-items:center;gap:7px;flex:none;margin-right:5px;padding:7px 9px;border:1px solid #d9dfe9;border-radius:9px;background:rgba(255,255,255,.65);color:#344054;font-size:11px;font-weight:500;line-height:1.2;white-space:nowrap}
+.marketplace-compact .marketplace-nav .launch-welcome-trigger span{margin:0;font-size:12px}
+.marketplace-compact .marketplace-nav .launch-welcome-trigger:hover{border-color:#bfc8d9;background:#fff}
+.marketplace-compact .marketplace-browse-copy .browse-stats{position:static;display:flex;justify-content:flex-start;align-items:center;flex-wrap:wrap;gap:8px;width:auto;margin:12px 0 0;transform:translateX(-11px)}
+.marketplace-compact .marketplace-browse-copy .browse-stats span{min-height:25px;padding:4px 10px;background:#eef1f5;color:#4b5563;font-size:11px;font-weight:450;line-height:1.3}
+.marketplace-compact .marketplace-browse-copy .browse-stats strong{margin-right:4px;color:#253047;font-size:12px;font-weight:600;line-height:1}
+.marketplace-compact .marketplace-browse-copy .browse-stats .hero-commerce-note{background:#e8edf3;color:#4b5563}
 .marketplace-compact .marketplace-explore-heading{align-items:center;margin:20px 0 20px;padding-bottom:8px;border-bottom:2px solid #111827;gap:16px}
 .marketplace-explore-heading .badge{margin:0;padding:3px 9px;font-size:11px}
 .marketplace-explore-heading .btn{padding:6px 10px;font-size:11px}

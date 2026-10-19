@@ -7,7 +7,7 @@
     <link rel="stylesheet" th:href="@{/css/styles.css(v='marketplace-cards-regular-1')}">
     <link rel="stylesheet" th:href="@{/css/marketplace-presentation.css}">
     <link rel="stylesheet" th:href="@{/css/marketplace-account.css(v='nav-51')}">
-    <link rel="stylesheet" th:href="@{/css/marketplace-compact.css(v='5')}">
+    <link rel="stylesheet" th:href="@{/css/marketplace-compact.css(v='10')}">
     <link rel="stylesheet" th:href="@{/css/launch-welcome.css(v='1')}">
 </head>
 <body class="marketplace-compact">
@@ -17,6 +17,7 @@
         <div><strong>Connectify</strong><small>Marketplace</small></div>
     </a>
     <nav class="top-actions">
+        <button class="launch-welcome-trigger" type="button" data-launch-open>Nuestra apertura <span aria-hidden="true">↗</span></button>
         <a class="nav-link" th:href="@{/events}">Eventos</a>
         <a class="nav-link" href="#featured">Destacados</a>
         <a class="nav-link" th:href="@{/help}">Ayuda</a>
@@ -82,12 +83,6 @@
             <button class="btn primary" type="submit">Buscar</button>
         </form>
 
-        <div class="hero-stats professional-stats">
-            <span><strong th:text="${events.size()}">0</strong> eventos publicados</span>
-            <span><strong>6</strong> formatos disponibles</span>
-            <span class="hero-commerce-note">Compra en línea 24/7</span>
-            <button class="launch-welcome-trigger" type="button" data-launch-open>Nuestra apertura <span aria-hidden="true">↗</span></button>
-        </div>
     </section>
 
     <div class="marketplace-browse-header">
@@ -113,6 +108,11 @@
     <div class="marketplace-browse-copy">
             <h2>Eventos disponibles</h2>
             <p class="muted">Revisa eventos publicados, compara disponibilidad y compra tus entradas desde una cuenta Cliente.</p>
+            <div class="professional-stats browse-stats" aria-label="Datos del marketplace">
+                <span><strong th:text="${events.size()}">0</strong> eventos publicados</span>
+                <span><strong>6</strong> formatos disponibles</span>
+                <span class="hero-commerce-note">Compra en línea 24/7</span>
+            </div>
     </div>
     </div>
     <div id="marketplaceCards" class="marketplace-results" aria-live="polite">
