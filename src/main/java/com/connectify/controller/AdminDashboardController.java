@@ -15,7 +15,9 @@ import com.connectify.repository.EventPresentationSettingsRepository;
 import com.connectify.repository.EventRepository;
 import com.connectify.repository.TicketTypeRepository;
 import com.connectify.repository.UserAccountRepository;
+import com.connectify.service.EventDetailViewModel;
 import com.connectify.service.InternalMessageService;
+import com.connectify.service.EventGateAccessService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -42,19 +44,25 @@ public class AdminDashboardController {
     private final EventPresentationSettingsRepository presentationSettingsRepository;
     private final UserAccountRepository userAccountRepository;
     private final InternalMessageService messageService;
+    private final EventGateAccessService gateAccess;
+    private final EventDetailViewModel eventDetailViewModel;
 
     public AdminDashboardController(EventRepository eventRepository,
                                     TicketTypeRepository ticketTypeRepository,
                                     EventAdminRecordRepository recordRepository,
                                     EventPresentationSettingsRepository presentationSettingsRepository,
                                     UserAccountRepository userAccountRepository,
-                                    InternalMessageService messageService) {
+                                    InternalMessageService messageService,
+                                    EventGateAccessService gateAccess,
+                                    EventDetailViewModel eventDetailViewModel) {
         this.eventRepository = eventRepository;
         this.ticketTypeRepository = ticketTypeRepository;
         this.recordRepository = recordRepository;
         this.presentationSettingsRepository = presentationSettingsRepository;
         this.userAccountRepository = userAccountRepository;
         this.messageService = messageService;
+        this.gateAccess = gateAccess;
+        this.eventDetailViewModel = eventDetailViewModel;
     }
 
     @GetMapping("/{id}")
@@ -87,15 +95,16 @@ public class AdminDashboardController {
     public String preview(@PathVariable Long id, Model model) {
         Event event = findEvent(id);
         EventPresentationSettings presentation = presentationSettingsRepository.findByEventId(id).orElse(null);
-        model.addAttribute("event", event);
-        model.addAttribute("ticketTypes", safeActiveTicketTypes(id));
-        model.addAttribute("presentation", presentation);
-        model.addAttribute("coverImageUrl", firstText(presentation == null ? null : presentation.getCoverImageUrl(), event.getImageUrl()));
-        model.addAttribute("thumbnailImageUrl", firstText(presentation == null ? null : presentation.getThumbnailImageUrl(), event.getImageUrl()));
-        model.addAttribute("presentationStyle", styleFor(presentation));
+        eventDetailViewModel.addAttributes(event, presentation, model);
+        model.addAttribute("adminPreview", true);
         model.addAttribute("previewMode", true);
+        model.addAttribute("organizerPreview", false);
+        model.addAttribute("signedIn", true);
+        model.addAttribute("clientAccount", false);
+        model.addAttribute("favoriteSelected", false);
+        model.addAttribute("favoriteCount", 0L);
         model.addAttribute("adminReturnUrl", "/dashboard/admin/events/" + id);
-        return "events/detail";
+        return "events/marketplace-purchase";
     }
 
     private void addOrganizerDetails(Event event, Model model) {
@@ -136,6 +145,7 @@ public class AdminDashboardController {
         Event event = findEvent(id);
         if (!reviewable(event)) return denied(id);
         event.setStatus(EventStatus.APPROVED);
+        event.setGateAccessCode(gateAccess.ensureEventCode(id));
         event.setDesignEnabled(false);
         eventRepository.save(event);
         record(event, "Aprobado: " + note + " El evento queda bloqueado para edición.");
@@ -167,6 +177,7 @@ public class AdminDashboardController {
         Event event = findEvent(id);
         if (event.getStatus() != EventStatus.APPROVED) return "redirect:/dashboard/admin/events/" + id + "?publishDenied=true";
         event.setStatus(EventStatus.PUBLISHED);
+        event.setGateAccessCode(gateAccess.ensureEventCode(id));
         eventRepository.save(event);
         record(event, "Publicado en marketplace.");
         return "redirect:/dashboard/admin/events/" + id + "?published=true";
@@ -189,11 +200,6 @@ public class AdminDashboardController {
 
     private List<TicketType> safeTicketTypes(Long id) {
         try { return ticketTypeRepository.findByEventIdOrderByPriceAsc(id); }
-        catch (RuntimeException ex) { return new ArrayList<>(); }
-    }
-
-    private List<TicketType> safeActiveTicketTypes(Long id) {
-        try { return ticketTypeRepository.findByEventIdAndActiveTrueOrderByPriceAsc(id); }
         catch (RuntimeException ex) { return new ArrayList<>(); }
     }
 
@@ -238,15 +244,6 @@ public class AdminDashboardController {
         catch (RuntimeException ex) { return "Sin categoría"; }
     }
 
-    private String firstText(String preferred, String fallback) { return preferred != null && !preferred.isBlank() ? preferred : (fallback == null ? "" : fallback); }
-    private String styleFor(EventPresentationSettings presentation) {
-        if (presentation == null) return "";
-        return "--market-primary:" + safeColor(presentation.getPrimaryColor(), "#4338ca") + ";"
-                + "--market-accent:" + safeColor(presentation.getAccentColor(), "#7c3aed") + ";"
-                + "--market-cover-position:" + coverPosition(presentation.getCoverFocus()) + ";";
-    }
-    private String safeColor(String color, String fallback) { return color != null && color.matches("#[0-9a-fA-F]{6}") ? color : fallback; }
-    private String coverPosition(String value) { return "TOP".equals(value) ? "50% 18%" : "BOTTOM".equals(value) ? "50% 82%" : "50% 50%"; }
     private String formatDate(LocalDateTime date) { return date == null ? "Sin fecha" : DATE_FORMAT.format(date); }
     private String text(String value, String fallback) { return value == null || value.isBlank() ? fallback : value; }
     private String number(Integer value) { return String.valueOf(value == null ? 0 : value); }

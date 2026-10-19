@@ -3,99 +3,111 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Validar ticket - Connectify Solutions</title>
+    <title>Control de asistencia - Connectify Solutions</title>
     <link rel="stylesheet" th:href="@{/css/styles.css}">
-    <link rel="stylesheet" th:href="@{/css/cart.css}">
     <link rel="stylesheet" th:href="@{/css/ui.css}">
+    <link rel="stylesheet" th:href="@{/css/gate-access-manager.css(v='event-camera-2')}">
     <script th:src="@{/js/app.js}" defer></script>
+    <script th:if="${gateUnlocked}" type="module" th:src="@{/js/gate-scanner.js(v='camera-2')}"></script>
 </head>
-<body>
-<header class="navbar dashboard-nav">
+<body class="gate-interface">
+<header class="navbar dashboard-nav gate-nav">
     <a class="brand brand-link" th:href="@{/events}">
-        <span class="logo">✅</span>
-        <div><strong>Connectify</strong><small>Validación de tickets</small></div>
+        <span class="logo gate-brand-mark" aria-hidden="true">C</span>
+        <div><strong>Connectify</strong><small>Control de asistencia</small></div>
     </a>
     <nav class="top-actions">
         <a class="btn secondary" th:href="@{/events}">Marketplace</a>
-        <a class="btn secondary" th:href="@{/dashboard/gate-agent}">Panel auxiliar</a>
+        <form th:if="${gateUnlocked}" th:action="@{/tickets/validate/close}" method="post"><button class="btn secondary" type="submit">Cerrar acceso de puerta</button></form>
+        <a th:unless="${gateUnlocked}" class="btn secondary" th:href="@{/login}">Volver</a>
     </nav>
 </header>
 
-<main class="dashboard-page">
-    <section class="dashboard-hero">
-        <p class="badge">Control de acceso</p>
-        <h1>Validar ticket</h1>
-        <p class="muted">Primero desbloquea la operación con el código del evento y la contraseña del día asignada por el administrador.</p>
+<main class="dashboard-page gate-validator-page">
+    <section class="gate-page-heading">
+        <div>
+            <span class="gate-eyebrow">Control de ingreso</span>
+            <h1 th:text="${gateUnlocked ? selectedEvent.title : 'Asistencia a puerta'}">Asistencia a puerta</h1>
+            <p th:text="${gateUnlocked ? 'Consulta una entrada o confirma el ingreso de su asistente.' : 'Accede con el código del evento y la contraseña de tu puerta. No necesitas una cuenta personal.'}">Accede con el código del evento y la contraseña de tu puerta.</p>
+        </div>
+        <span th:if="${gateUnlocked}" class="gate-session-label"><span aria-hidden="true"></span><strong th:text="${gateName}">Puerta 1</strong></span>
     </section>
 
-    <section class="checkout-layout">
-        <div class="checkout-form">
-            <h2>1. Desbloquear operación</h2>
-            <form th:action="@{/tickets/validate/open}" method="post" class="auth-form">
-                <label>Código del evento</label>
-                <input class="search-input" name="eventCode" type="text" th:value="${eventCode}" placeholder="EVT-1" required>
+    <div th:if="${gateError != null}" class="gate-feedback error" role="alert" th:text="${gateError}">No se pudo abrir el acceso.</div>
+    <div th:if="${gateNotice != null}" class="gate-feedback notice" role="status" th:text="${gateNotice}">Aviso del acceso.</div>
 
-                <label>Contraseña del día</label>
-                <input class="search-input" name="gatePassword" type="password" th:value="${gatePassword}" placeholder="Clave asignada por administrador" required>
+    <section th:unless="${gateUnlocked}" class="gate-unlock-panel">
+        <div class="gate-panel-heading"><span class="gate-eyebrow">Acceso asignado por administración</span><h2>Abrir control de puerta</h2><p>El código identifica el evento. La contraseña identifica tu puerta.</p></div>
+        <form th:action="@{/tickets/validate/open}" method="post" class="gate-unlock-form">
+            <label for="eventCode">Código del evento</label>
+            <input id="eventCode" name="eventCode" type="text" placeholder="EVT-1" maxlength="40" autocomplete="off" autocapitalize="characters" spellcheck="false" required>
+            <label for="gatePassword">Contraseña de puerta</label>
+            <input id="gatePassword" name="gatePassword" type="password" placeholder="Asignada por el administrador" maxlength="72" autocomplete="current-password" required>
+            <button class="btn primary" type="submit">Abrir control de puerta</button>
+        </form>
+    </section>
 
-                <button class="btn primary full" type="submit">Desbloquear validación</button>
-            </form>
-
-            <div th:if="${gateError != null}" class="alert error" th:text="${gateError}">Error</div>
-
-            <div th:if="${gateUnlocked}" class="payment-box">
-                <h2>2. Validar entrada</h2>
-                <p class="muted">Evento activo: <strong th:text="${selectedEvent.title}">Evento</strong></p>
-                <p class="muted small">Código evento: <strong th:text="${selectedEvent.gateAccessCode}">EVT-1</strong></p>
-
-                <form method="post" class="auth-form">
-                    <input type="hidden" name="eventId" th:value="${selectedEvent.id}">
-                    <input type="hidden" name="eventCode" th:value="${eventCode}">
-                    <input type="hidden" name="gatePassword" th:value="${gatePassword}">
-
-                    <label>Código QR / ticket</label>
-                    <input class="search-input" data-gate-scan-input name="code" type="text" th:value="${code}" placeholder="CNF-1-ABC12345" required>
-
-                    <button class="btn secondary full" type="submit" th:formaction="@{/tickets/validate/consult}">Solo consultar</button>
-                    <button class="btn primary full" type="submit" th:formaction="@{/tickets/validate}" data-confirm="¿Validar y marcar este ticket como usado?">Validar y marcar como usado</button>
-                </form>
+    <section th:if="${gateUnlocked}" class="gate-validation-layout">
+        <section id="gateScanner" class="gate-scan-panel">
+            <div class="gate-panel-heading"><span class="gate-eyebrow">Validación de entradas QR</span><h2>Consultar o registrar asistencia</h2><p>Escanea el QR del comprador con tu teléfono o ingresa el código de su entrada.</p></div>
+            <div class="gate-current-event"><span>Código del evento</span><strong th:text="${selectedEvent.gateAccessCode}">EVT-1</strong></div>
+            <div class="gate-entry-methods" aria-label="Forma de leer la entrada">
+                <button id="gateScanStart" class="btn secondary gate-camera-trigger" type="button" aria-controls="gateCameraPanel" aria-expanded="false">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M8 5l1.5-2h5L16 5h3a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2z"/><circle cx="12" cy="12" r="4"/></svg>
+                    Escanear QR
+                </button>
             </div>
-        </div>
-
-        <aside class="summary-card">
-            <h2>Resultado</h2>
-
-            <div th:if="${!searched && result == null}" class="fake-payment">
-                <span>🔐</span>
-                <strong th:text="${gateUnlocked ? 'Operación desbloqueada' : 'Operación bloqueada'}">Operación bloqueada</strong>
-                <small th:text="${gateUnlocked ? 'Ingresa o escanea un código de ticket para consultar o validar.' : 'Ingresa código del evento y contraseña del día.'}">Estado</small>
-            </div>
-
-            <div th:if="${result != null}">
-                <div th:if="${result.status == 'VALID'}" class="alert success">✅ Acceso autorizado. Ticket marcado como usado.</div>
-                <div th:if="${result.status == 'USED'}" class="alert error">⚠️ Ticket ya fue usado anteriormente.</div>
-                <div th:if="${result.status == 'WRONG_EVENT'}" class="alert error">🚫 Ticket pertenece a otro evento.</div>
-                <div th:if="${result.status == 'NOT_FOUND'}" class="alert error">❌ Ticket no encontrado.</div>
-
-                <div class="summary-row"><span>Mensaje</span><strong th:text="${result.message}">Mensaje</strong></div>
-                <div class="summary-row"><span>Código</span><strong th:text="${result.code}">Código</strong></div>
-            </div>
-
-            <div th:if="${searched && result == null}">
-                <div th:if="${ticket == null}" class="alert error">Ticket no encontrado para el código ingresado.</div>
-                <div th:if="${ticketError != null}" class="alert error" th:text="${ticketError}">Error</div>
-                <div th:if="${ticket != null && ticketError == null}">
-                    <div th:if="${ticket.used}" class="alert error">Ticket encontrado. Estado actual: USADO.</div>
-                    <div th:if="${!ticket.used}" class="alert success">Ticket encontrado. Estado actual: DISPONIBLE.</div>
+            <section id="gateCameraPanel" class="gate-camera-panel" aria-label="Lector QR con cámara" hidden>
+                <div class="gate-camera-heading"><strong>Apunta al QR de la entrada</strong><button id="gateCameraClose" class="btn secondary" type="button">Cerrar cámara</button></div>
+                <div class="gate-camera-view"><video id="gateCameraVideo" playsinline webkit-playsinline muted disablepictureinpicture aria-label="Vista de la cámara para leer el QR"></video><div class="gate-camera-guide" aria-hidden="true"></div></div>
+                <p>Al leer el QR, la cámara se detendrá. Escanear no registra el ingreso.</p>
+            </section>
+            <p id="gateScannerStatus" class="gate-scanner-status" role="status" aria-live="polite">Escanea un QR o ingresa el código; luego elige una acción.</p>
+            <noscript><p class="gate-field-help">Activa JavaScript para usar la cámara. Puedes ingresar el código y utilizar los botones sin la cámara.</p></noscript>
+            <form id="gateTicketForm" th:action="@{/tickets/validate/consult}" method="post" class="gate-scan-form">
+                <label for="ticketCode">Código de entrada</label>
+                <input id="ticketCode" data-gate-scan-input name="code" type="text" th:value="${code}" placeholder="CNF-1-ABC12345" maxlength="255" autocomplete="off" autocapitalize="off" spellcheck="false" required>
+                <div class="gate-scan-actions">
+                    <button class="btn secondary" type="submit">Consultar</button>
+                    <button class="btn primary" type="submit" th:formaction="@{/tickets/validate}">Validar y registrar ingreso</button>
                 </div>
+                <p class="gate-field-help">Consultar no registra asistencia. Validar marca la entrada como utilizada y evita otro ingreso con el mismo QR.</p>
+            </form>
+        </section>
+
+        <aside id="gateResultPanel" class="gate-result-panel" th:attr="data-gate-result-code=${code}" aria-live="polite" aria-atomic="true">
+            <div class="gate-result-heading"><h2>Resultado de la entrada</h2><span th:text="${gateName}">Puerta 1</span></div>
+            <p id="gateResultStale" class="gate-result-message" hidden>Código cambiado. Pulsa Consultar o Validar y registrar ingreso para comprobar esta entrada en la base de datos.</p>
+            <div id="gateResultCurrent">
+            <div th:if="${!searched && result == null}" class="gate-result-empty"><span aria-hidden="true">QR</span><h3>Listo para consultar</h3><p>El resultado de cada entrada aparecerá aquí.</p></div>
+
+            <div th:if="${result != null}" class="gate-result-content">
+                <div class="gate-result-state" th:classappend="${result.status == 'VALID' || result.status == 'AVAILABLE' ? 'is-success' : 'is-error'}" th:switch="${result.status}">
+                    <strong th:case="'AVAILABLE'">Entrada disponible</strong>
+                    <strong th:case="'VALID'">Ingreso registrado</strong>
+                    <strong th:case="'USED'">Entrada ya utilizada</strong>
+                    <strong th:case="'WRONG_EVENT'">Corresponde a otro evento</strong>
+                    <strong th:case="'NOT_FOUND'">Entrada no encontrada</strong>
+                    <strong th:case="'NOT_PAID'">Compra sin pago confirmado</strong>
+                    <strong th:case="'EVENT_CLOSED'">Evento no habilitado</strong>
+                    <strong th:case="*">No se pudo validar</strong>
+                </div>
+                <p class="gate-result-message" th:text="${result.message}">Resultado de la validación.</p>
+                <dl class="gate-ticket-facts">
+                    <div><dt>Código consultado</dt><dd th:text="${result.code}">CNF-1</dd></div>
+                </dl>
             </div>
 
-            <div th:if="${ticket != null}">
-                <div class="summary-row"><span>Código</span><strong th:text="${ticket.code}">CNF</strong></div>
-                <div class="summary-row"><span>Evento</span><strong th:text="${ticket.event.title}">Evento</strong></div>
-                <div class="summary-row"><span>Asistente</span><strong th:text="${ticket.attendeeName}">Asistente</strong></div>
-                <div class="summary-row"><span>Email</span><strong th:text="${ticket.attendeeEmail}">email</strong></div>
-                <div class="summary-row"><span>Usado</span><strong th:text="${ticket.used ? 'Sí' : 'No'}">No</strong></div>
+            <div th:if="${searched && result == null}" class="gate-result-content">
+                <div class="gate-result-state is-error"><strong>Entrada no encontrada</strong></div>
+            </div>
+
+            <dl class="gate-ticket-facts" th:if="${ticket != null && result != null && (result.status == 'AVAILABLE' || result.status == 'VALID' || result.status == 'USED')}">
+                <div><dt>Asistente</dt><dd th:text="${ticket.attendeeName}">Asistente</dd></div>
+                <div><dt>Estado</dt><dd th:text="${ticket.used ? 'Ingreso registrado' : 'Sin ingreso registrado'}">Sin ingreso registrado</dd></div>
+                <div th:if="${ticket.used && ticket.usedAt != null}"><dt>Hora de ingreso</dt><dd th:text="${#temporals.format(ticket.usedAt.atZone(T(java.time.ZoneId).of('America/Lima')), 'dd/MM/yyyy HH:mm:ss')}">Fecha de ingreso</dd></div>
+                <div th:if="${ticket.used && ticket.usedGateName != null}"><dt>Puerta de ingreso</dt><dd th:text="${ticket.usedGateName}">Puerta 1</dd></div>
+            </dl>
             </div>
         </aside>
     </section>

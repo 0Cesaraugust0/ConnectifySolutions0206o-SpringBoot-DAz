@@ -11,6 +11,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 import java.time.LocalDateTime;
+import java.time.Instant;
 
 @Entity
 @Table(name = "tickets")
@@ -38,6 +39,10 @@ public class Ticket {
     private String attendeeEmail;
 
     private boolean used = false;
+
+    private Instant usedAt;
+    @Column(length = 60)
+    private String usedGateName;
 
     private LocalDateTime generatedAt = LocalDateTime.now();
 
@@ -92,6 +97,11 @@ public class Ticket {
     public void setUsed(boolean used) {
         this.used = used;
     }
+
+    public Instant getUsedAt() { return usedAt; }
+    public void setUsedAt(Instant usedAt) { this.usedAt = usedAt; }
+    public String getUsedGateName() { return usedGateName; }
+    public void setUsedGateName(String name) { usedGateName = name; }
 
     public LocalDateTime getGeneratedAt() {
         return generatedAt;

@@ -24,9 +24,4 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    const gateCodeInput = document.querySelector('[data-gate-scan-input]');
-    if (gateCodeInput) {
-        gateCodeInput.focus();
-        gateCodeInput.select();
-    }
 });

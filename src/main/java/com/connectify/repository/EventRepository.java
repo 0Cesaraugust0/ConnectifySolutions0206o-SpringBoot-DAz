@@ -29,4 +29,5 @@ public interface EventRepository extends JpaRepository<Event, Long> {
     List<Event> findByOrganizerEmailIgnoreCaseOrderByUpdatedAtDesc(String organizerEmail);
 
     Optional<Event> findByGateAccessCode(String gateAccessCode);
+    Optional<Event> findByGateAccessCodeIgnoreCase(String gateAccessCode);
 }

@@ -35,6 +35,7 @@
             </div>
         </div>
         <div class="review-hero-actions">
+            <a class="btn secondary compact" th:href="@{/admin/events/{id}/gate-access(id=${eventId})}">Configurar puertas</a>
             <a class="btn secondary compact" th:href="@{/dashboard/admin/events/{id}/preview(id=${eventId})}">Vista previa</a>
             <button class="btn secondary compact" type="button" data-open-modal="bitacoraModal">Bitácora</button>
             <a class="btn secondary compact" th:href="@{/dashboard/admin/events}">Volver</a>

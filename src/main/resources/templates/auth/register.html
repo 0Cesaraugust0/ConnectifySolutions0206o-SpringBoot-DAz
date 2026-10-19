@@ -6,7 +6,7 @@
     <title>Crear cuenta - Connectify</title>
     <link rel="stylesheet" th:href="@{/css/styles.css}">
     <link rel="stylesheet" th:href="@{/css/ui.css}">
-    <link rel="stylesheet" th:href="@{/css/auth-client.css(v='gate-assist-2')}">
+    <link rel="stylesheet" th:href="@{/css/auth-client.css(v='organizer-info-1')}">
 </head>
 <body>
 <header class="navbar dashboard-nav">
@@ -24,7 +24,7 @@
                 <div><span>01</span><strong>Cliente</strong><small>Marketplace, carrito, checkout y tickets QR personales.</small></div>
                 <div><span>02</span><strong>Organizador</strong><small>Eventos, entradas, métricas y solicitudes de publicación.</small></div>
                 <button class="auth-benefit-action" type="button" data-gate-modal-open>
-                    <span>03</span><strong>Asistencia a puerta</strong><small>Código de evento y contraseña para abrir validación.</small>
+                    <span>03</span><strong>Asistencia a puerta</strong><small>Código del evento y contraseña de tu puerta. Sin cuenta personal.</small>
                 </button>
             </div>
         </aside>
@@ -57,6 +57,10 @@
                 </div>
 
                 <section id="organizerFields" class="organizer-register-fields" aria-label="Datos de organizador">
+                    <details class="organizer-data-help">
+                        <summary aria-label="Ayuda sobre los datos de organizador">?</summary>
+                        <p>Usa tus datos personales (DNI) o comerciales (razón social o nombre comercial y RUC). Para crear una cuenta comercial se requieren los datos comerciales para facturar; puedes completar esos datos después en tu perfil.</p>
+                    </details>
                     <div class="register-subsection">
                         <strong>Datos de organizador</strong>
                         <span>Información usada para identificar al publicador del evento.</span>
@@ -85,13 +89,13 @@
             <div>
                 <span>Puerta</span>
                 <h2 id="gateAccessTitle">Asistencia a puerta</h2>
-                <p>Ingresa el código del evento y la contraseña asignada para desbloquear la validación QR.</p>
+                <p>Ingresa el código del evento y la contraseña de tu puerta, asignada por el administrador. No necesitas iniciar sesión con una cuenta.</p>
             </div>
             <button type="button" data-gate-modal-close aria-label="Cerrar">Cerrar</button>
         </div>
         <form class="gate-access-form" th:action="@{/tickets/validate/open}" method="post">
-            <label>Código del evento<input name="eventCode" type="text" placeholder="EVT-1" required></label>
-            <label>Contraseña de puerta<input name="gatePassword" type="password" placeholder="Clave diaria" required></label>
+            <label>Código del evento<input name="eventCode" type="text" placeholder="EVT-1" maxlength="40" autocomplete="off" autocapitalize="characters" spellcheck="false" required></label>
+            <label>Contraseña de puerta<input name="gatePassword" type="password" placeholder="Asignada por el administrador" maxlength="72" autocomplete="current-password" required></label>
             <button class="btn primary full" type="submit">Abrir validación</button>
         </form>
     </section>
@@ -133,7 +137,7 @@
             button.addEventListener('click', () => {
                 modal.classList.add('active');
                 modal.setAttribute('aria-hidden', 'false');
-                modal.querySelector('input').focus();
+                modal.querySelector('input[name="eventCode"]').focus();
             });
         });
         document.querySelectorAll('[data-gate-modal-close]').forEach(button => {
@@ -141,12 +145,6 @@
                 modal.classList.remove('active');
                 modal.setAttribute('aria-hidden', 'true');
             });
-        });
-        modal.addEventListener('click', event => {
-            if (event.target === modal) {
-                modal.classList.remove('active');
-                modal.setAttribute('aria-hidden', 'true');
-            }
         });
     })();
 </script>

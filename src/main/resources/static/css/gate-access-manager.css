@@ -1,0 +1,125 @@
+.gate-interface { background: #f4f6fa; color: #1b2940; }
+.gate-interface .gate-nav { min-height: 66px; padding-top: 10px; padding-bottom: 10px; }
+.gate-interface .gate-nav .brand strong { font-size: .92rem; }
+.gate-interface .gate-nav .brand small { font-size: .68rem; }
+.gate-interface .gate-brand-mark { width: 36px; height: 36px; background: #202c41; color: #fff; font-size: .95rem; }
+.gate-interface .top-actions { gap: 8px; }
+.gate-interface .top-actions form { margin: 0; }
+.gate-interface .btn { min-height: 35px; padding: 8px 12px; border-radius: 9px; font-size: .74rem; font-weight: 550; white-space: normal; }
+.gate-interface .top-actions .btn { min-height: 31px; padding: 7px 10px; font-size: .71rem; font-weight: 450; }
+.gate-manager-page, .gate-validator-page { width: min(1000px, calc(100% - 36px)); padding: 30px 0 45px; }
+.gate-page-heading { display: flex; align-items: center; justify-content: space-between; gap: 22px; margin-bottom: 22px; }
+.gate-page-heading > div { min-width: 0; }
+.gate-page-heading h1 { margin: 8px 0; font-size: clamp(1.55rem, 3.2vw, 2.1rem); line-height: 1.18; letter-spacing: -.035em; overflow-wrap: anywhere; }
+.gate-page-heading p { max-width: 680px; margin: 0; color: #617086; font-size: .79rem; line-height: 1.6; }
+.gate-page-heading > .btn { flex: 0 0 auto; }
+.gate-eyebrow { display: block; color: #62758c; font-size: .63rem; font-weight: 650; letter-spacing: .09em; text-transform: uppercase; }
+.gate-interface h2 { color: #203149; font-size: 1.02rem; line-height: 1.3; }
+.gate-interface h3 { font-size: .96rem; line-height: 1.3; }
+.gate-interface label { color: #34445a; font-size: .73rem; font-weight: 550; }
+.gate-interface input:not([type="checkbox"]):not([type="hidden"]) { width: 100%; min-height: 39px; padding: 10px 12px; border: 1px solid #d7deea; border-radius: 9px; outline: none; background: #fcfdff; color: #23364f; font-family: inherit; font-size: .79rem; box-sizing: border-box; }
+.gate-interface input:focus-visible { border-color: #5674c5; outline: 3px solid #5674c51c; }
+.gate-interface input::placeholder { color: #8692a5; opacity: 1; }
+.gate-feedback { padding: 12px 15px; margin-bottom: 16px; border: 1px solid; border-radius: 10px; font-size: .79rem; line-height: 1.5; }
+.gate-feedback.error { border-color: #eeced1; background: #fff5f5; color: #932f3d; }
+.gate-feedback.success { border-color: #c1e4d9; background: #effaf6; color: #1b6554; }
+.gate-feedback.notice { border-color: #d5e0ef; background: #edf3fb; color: #37577c; }
+.gate-event-code-panel { display: grid; grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr); align-items: center; gap: 32px; padding: 23px 25px; border: 1px solid #d8e0eb; border-radius: 16px; background: #fff; box-shadow: 0 8px 25px #182c4a04; }
+.gate-event-code-panel h2 { margin: 7px 0; }
+.gate-event-code-panel p { margin: 0; color: #68768c; font-size: .75rem; line-height: 1.6; }
+.gate-code-form { display: grid; gap: 7px; }
+.gate-code-input-row { display: flex; gap: 8px; }
+.gate-code-input-row .btn { flex: 0 0 auto; }
+.gate-code-form small { color: #748196; font-size: .65rem; line-height: 1.5; }
+.gate-section-heading { display: flex; align-items: center; justify-content: space-between; gap: 20px; margin: 29px 0 15px; }
+.gate-section-heading h2 { margin: 0 0 5px; }
+.gate-section-heading p { margin: 0; color: #68768c; font-size: .75rem; line-height: 1.5; }
+.gate-capacity-note { flex: 0 0 auto; padding: 6px 10px; border: 1px solid #dae1eb; border-radius: 20px; color: #65748a; background: #fff; font-size: .65rem; }
+.gate-slots-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.gate-slot-card { display: grid; gap: 8px; min-width: 0; margin: 0; padding: 23px; border: 1px solid #dce3ed; border-radius: 15px; background: #fff; box-shadow: 0 8px 25px #182c4a04; }
+.gate-slot-heading { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+.gate-slot-number { display: grid; place-items: center; width: 42px; height: 42px; border: 1px solid #dce5f3; border-radius: 12px; background: #f0f4fb; color: #465f8a; font-size: .85rem; font-weight: 650; font-variant-numeric: tabular-nums; }
+.gate-slot-heading h3 { margin: 0 0 4px; }
+.gate-state { color: #8a6a42; font-size: .65rem; }
+.gate-state.is-active { color: #21816b; }
+.gate-field-help { margin: 1px 0 4px; color: #748196; font-size: .67rem; line-height: 1.5; }
+.gate-slot-card label:not(.gate-enable-check) { margin-top: 5px; }
+.gate-enable-check { display: flex; align-items: center; gap: 8px; margin: 7px 0 8px; }
+.gate-enable-check input { width: 15px; height: 15px; margin: 0; accent-color: #365ba8; }
+.gate-slot-card > .btn { width: 100%; }
+.gate-operation-note { display: flex; align-items: flex-start; gap: 12px; margin-top: 21px; padding: 17px 19px; border: 1px solid #dce4ee; border-radius: 12px; background: #ecf1f8; }
+.gate-note-icon { display: grid; flex: 0 0 auto; place-items: center; width: 22px; height: 22px; border: 1px solid #9cabbe; border-radius: 50%; color: #576f8e; font-size: .78rem; font-weight: 650; }
+.gate-operation-note h2 { margin: 0 0 5px; font-size: .82rem; }
+.gate-operation-note p { margin: 0; color: #5d6f87; font-size: .72rem; line-height: 1.65; }
+.gate-operation-note a { color: #365ba8; text-decoration: underline; text-underline-offset: 2px; }
+.gate-session-label { display: inline-flex; flex: 0 0 auto; align-items: center; gap: 8px; padding: 10px 13px; border: 1px solid #cee5db; border-radius: 10px; background: #f0faf5; color: #2d725c; font-size: .76rem; }
+.gate-session-label > span { width: 6px; height: 6px; border-radius: 50%; background: #37916f; }
+.gate-unlock-panel { width: min(460px, 100%); margin: 30px auto; padding: 27px; border: 1px solid #dbe3ee; border-radius: 16px; background: #fff; box-sizing: border-box; box-shadow: 0 14px 35px #182c4a06; }
+.gate-panel-heading h2 { margin: 8px 0; }
+.gate-panel-heading p { margin: 0 0 18px; color: #6a7990; font-size: .75rem; line-height: 1.6; }
+.gate-unlock-form { display: grid; gap: 8px; }
+.gate-unlock-form label:not(:first-child) { margin-top: 7px; }
+.gate-unlock-form > .btn { margin-top: 9px; }
+.gate-validation-layout { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); align-items: start; gap: 20px; }
+.gate-scan-panel, .gate-result-panel { padding: 24px; border: 1px solid #dbe3ee; border-radius: 15px; background: #fff; }
+.gate-current-event { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 11px 12px; margin-bottom: 22px; border: 1px solid #e2e8f1; border-radius: 9px; background: #f7f9fc; font-size: .71rem; }
+.gate-current-event span { color: #75849a; }
+.gate-current-event strong { overflow-wrap: anywhere; }
+.gate-scan-form { display: grid; gap: 9px; }
+.gate-entry-methods { display: flex; gap: 9px; flex-wrap: wrap; }
+.gate-entry-methods .btn { flex: 1 1 auto; min-height: 41px; }
+.gate-camera-trigger { display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
+.gate-camera-trigger svg { width: 18px; height: 18px; flex: 0 0 auto; }
+.gate-interface .gate-entry-methods .btn:disabled { opacity: .6; cursor: wait; }
+.gate-camera-panel { margin-top: 15px; overflow: hidden; border: 1px solid #d8e2ef; border-radius: 12px; background: #f6f9fd; }
+.gate-camera-panel[hidden], #gateResultCurrent[hidden], #gateResultStale[hidden] { display: none; }
+.gate-camera-heading { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 10px 12px; }
+.gate-camera-heading strong { font-size: .72rem; font-weight: 550; }
+.gate-interface .gate-camera-heading .btn { padding: 6px 8px; min-height: 32px; font-size: .67rem; }
+.gate-camera-view { position: relative; aspect-ratio: 4 / 3; width: 100%; overflow: hidden; background: #132238; }
+.gate-camera-view video { display: block; width: 100%; height: 100%; object-fit: cover; }
+.gate-camera-guide { position: absolute; inset: 16.67%; border: 2px solid #e6f3ff; border-radius: 14px; box-shadow: 0 0 0 100vmax #101b354a; pointer-events: none; }
+.gate-camera-panel > p { margin: 0; padding: 10px 12px; color: #64788f; font-size: .69rem; line-height: 1.5; }
+.gate-scanner-status { margin: 12px 0 17px; color: #57718f; font-size: .73rem; line-height: 1.6; overflow-wrap: anywhere; }
+.gate-scanner-status.is-error { color: #963b48; }
+.gate-scanner-status.is-success { color: #236c58; }
+.gate-scan-form #ticketCode { min-height: 47px; font-size: .9rem; letter-spacing: .025em; }
+.gate-scan-actions { display: flex; gap: 8px; margin: 3px 0; }
+.gate-scan-actions .btn { flex: 1 1 auto; }
+.gate-result-heading { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding-bottom: 14px; border-bottom: 1px solid #edf0f5; }
+.gate-result-heading h2 { margin: 0; font-size: .9rem; }
+.gate-result-heading span { color: #7a8799; font-size: .65rem; }
+.gate-result-empty { padding: 32px 12px; text-align: center; }
+.gate-result-empty > span { display: grid; place-items: center; width: 50px; height: 50px; margin: 0 auto 13px; border: 1px solid #d7e1ee; border-radius: 13px; background: #f4f7fb; color: #7186a2; font-size: .78rem; font-weight: 650; letter-spacing: .06em; }
+.gate-result-empty h3 { margin: 0 0 7px; color: #53657f; font-size: .85rem; }
+.gate-result-empty p { margin: 0; color: #7b889b; font-size: .72rem; line-height: 1.6; }
+.gate-result-content { padding-top: 17px; }
+.gate-result-state { padding: 12px; border: 1px solid; border-radius: 9px; font-size: .8rem; }
+.gate-result-state.is-success { border-color: #c3e2d6; background: #eef9f3; color: #236b53; }
+.gate-result-state.is-error { border-color: #e9ccd0; background: #fff2f3; color: #933a45; }
+.gate-result-message { color: #66758b; font-size: .74rem; line-height: 1.65; }
+.gate-ticket-facts { display: grid; gap: 0; margin: 5px 0 0; }
+.gate-ticket-facts > div { display: grid; grid-template-columns: .9fr 1.1fr; gap: 12px; padding: 11px 0; border-bottom: 1px solid #edf0f5; font-size: .72rem; line-height: 1.5; }
+.gate-ticket-facts > div:last-child { border-bottom: 0; }
+.gate-ticket-facts dt { color: #7b8799; }
+.gate-ticket-facts dd { margin: 0; color: #34465f; font-weight: 550; text-align: right; overflow-wrap: anywhere; }
+@media (max-width: 760px) {
+    .gate-manager-page, .gate-validator-page { width: calc(100% - 24px); padding-top: 21px; }
+    .gate-page-heading { align-items: flex-start; gap: 14px; }
+    .gate-event-code-panel, .gate-validation-layout { grid-template-columns: 1fr; gap: 20px; }
+    .gate-event-code-panel { padding: 21px; }
+    .gate-page-heading h1 { font-size: 1.55rem; }
+    .gate-slot-card { padding: 19px; }
+}
+@media (max-width: 540px) {
+    .gate-interface .gate-nav { gap: 12px; padding: 10px 12px; }
+    .gate-interface .gate-nav .brand small { max-width: 95px; }
+    .gate-interface .top-actions { gap: 5px; }
+    .gate-interface .top-actions .btn { padding: 7px 8px; font-size: .65rem; }
+    .gate-page-heading, .gate-section-heading { flex-direction: column; align-items: flex-start; gap: 12px; }
+    .gate-slots-grid { grid-template-columns: 1fr; }
+    .gate-code-input-row { flex-direction: column; }
+    .gate-scan-panel, .gate-result-panel { padding: 20px; }
+    .gate-scan-actions { flex-direction: column; }
+    .gate-operation-note { padding: 16px; }
+}

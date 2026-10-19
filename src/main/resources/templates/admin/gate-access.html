@@ -3,51 +3,78 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Configurar puerta - Connectify Solutions</title>
+    <title>Configurar puertas - Connectify Solutions</title>
     <link rel="stylesheet" th:href="@{/css/styles.css}">
-    <link rel="stylesheet" th:href="@{/css/cart.css}">
+    <link rel="stylesheet" th:href="@{/css/ui.css}">
+    <link rel="stylesheet" th:href="@{/css/gate-access-manager.css(v='event-gates-1')}">
 </head>
-<body>
-<header class="navbar dashboard-nav">
+<body class="gate-interface">
+<header class="navbar dashboard-nav gate-nav">
     <a class="brand brand-link" th:href="@{/admin/events}">
-        <span class="logo">🚪</span>
-        <div><strong>Connectify</strong><small>Configurar puerta</small></div>
+        <span class="logo gate-brand-mark" aria-hidden="true">C</span>
+        <div><strong>Connectify</strong><small>Control de asistencia</small></div>
     </a>
     <nav class="top-actions">
-        <a class="btn secondary" th:href="@{/admin/events}">Volver</a>
+        <a class="btn secondary" th:href="@{/admin/events}">Eventos y puertas</a>
         <a class="btn secondary" th:href="@{/dashboard/admin}">Panel Admin</a>
     </nav>
 </header>
 
-<main class="dashboard-page">
-    <section class="dashboard-hero">
-        <p class="badge">Acceso de puerta</p>
-        <h1 th:text="${event.title}">Evento</h1>
-        <p class="muted">Define el código del evento y la contraseña del día. El agente de acceso usará estos datos para desbloquear la validación QR.</p>
+<main class="dashboard-page gate-manager-page">
+    <section class="gate-page-heading">
+        <div>
+            <span class="gate-eyebrow">Administración · Accesos del evento</span>
+            <h1 th:text="${event.title}">Evento</h1>
+            <p>Habilita de 1 a 4 puertas. Todas comparten el código del evento y cada una tiene su propia contraseña.</p>
+        </div>
+        <a class="btn secondary" th:href="@{/dashboard/admin/events/{id}(id=${event.id})}">Ver evento</a>
     </section>
 
-    <section class="checkout-layout">
-        <form class="checkout-form" th:action="@{/admin/events/{id}/gate-access(id=${event.id})}" method="post">
-            <h2>Datos de acceso</h2>
-            <div class="form-grid">
-                <label class="wide">Código del evento
-                    <input name="gateAccessCode" type="text" th:value="${event.gateAccessCode}" placeholder="EVT-1" required>
-                </label>
-                <label class="wide">Contraseña del día
-                    <input name="gatePassword" type="text" th:value="${event.gatePassword}" placeholder="PUERTA2026" required>
-                </label>
+    <div th:if="${gateError != null}" class="gate-feedback error" role="alert" th:text="${gateError}">No se pudieron guardar los cambios.</div>
+    <div th:if="${gateSuccess != null}" class="gate-feedback success" role="status" th:text="${gateSuccess}">Configuración guardada.</div>
+
+    <section class="gate-event-code-panel">
+        <div>
+            <span class="gate-eyebrow">Identificador de acceso</span>
+            <h2>Código del evento</h2>
+            <p>Entrega este código y la contraseña correspondiente a cada responsable de puerta.</p>
+        </div>
+        <form th:action="@{/admin/events/{id}/gate-code(id=${event.id})}" method="post" class="gate-code-form">
+            <label for="gateEventCode">Código compartido por las puertas</label>
+            <div class="gate-code-input-row">
+                <input id="gateEventCode" name="gateAccessCode" type="text" th:value="${event.gateAccessCode != null && !#strings.isEmpty(event.gateAccessCode) ? event.gateAccessCode : suggestedEventCode}" placeholder="EVT-1" minlength="3" maxlength="40" pattern="[A-Za-z0-9-]{3,40}" title="Entre 3 y 40 letras, números o guiones" autocomplete="off" autocapitalize="characters" spellcheck="false" required>
+                <button class="btn primary" type="submit">Guardar código</button>
             </div>
-            <button class="btn primary full" type="submit">Guardar acceso de puerta</button>
+            <small>Si cambias el código, comparte el nuevo con el personal de acceso.</small>
         </form>
-
-        <aside class="summary-card">
-            <h2>Uso por el agente</h2>
-            <div class="summary-row"><span>Evento #</span><strong th:text="${event.id}">1</strong></div>
-            <div class="summary-row"><span>Código</span><strong th:text="${event.gateAccessCode}">EVT-1</strong></div>
-            <div class="summary-row"><span>Clave</span><strong th:text="${event.gatePassword}">PUERTA2026</strong></div>
-            <p class="muted small">El agente entra con rol Auxiliar de Puerta y valida cada QR desde su pantalla de validación.</p>
-        </aside>
     </section>
+
+    <section class="gate-section-heading">
+        <div><h2>Puertas del evento</h2><p>Configura solo las que utilizarás. Puedes desactivar una puerta o cambiar su contraseña desde aquí.</p></div>
+        <span class="gate-capacity-note">Hasta 4 accesos</span>
+    </section>
+
+    <section class="gate-slots-grid" aria-label="Configuración de puertas">
+        <form class="gate-slot-card" th:each="gate : ${gateSlots}" th:action="@{/admin/events/{id}/gate-access(id=${event.id})}" method="post">
+            <input type="hidden" name="slot" th:value="${gate.slot}">
+            <div class="gate-slot-heading">
+                <div class="gate-slot-number" aria-hidden="true" th:text="${#numbers.formatInteger(gate.slot, 2)}">01</div>
+                <div><h3 th:text="${'Puerta ' + gate.slot}">Puerta 1</h3><span class="gate-state" th:classappend="${gate.configured && gate.active ? ' is-active' : ''}" th:text="${gate.configured ? (gate.active ? 'Habilitada' : 'Desactivada') : 'Sin configurar'}">Sin configurar</span></div>
+            </div>
+            <label th:for="${'gateLabel' + gate.slot}">Nombre de la puerta</label>
+            <input th:id="${'gateLabel' + gate.slot}" name="label" type="text" th:value="${gate.name}" placeholder="Ej. Acceso principal" maxlength="60" required>
+            <label th:for="${'gatePassword' + gate.slot}" th:text="${gate.configured ? 'Nueva contraseña (opcional)' : 'Contraseña de acceso'}">Contraseña de acceso</label>
+            <input th:id="${'gatePassword' + gate.slot}" name="gatePassword" type="password" minlength="10" maxlength="72" autocomplete="new-password" th:required="${!gate.configured}" th:placeholder="${gate.configured ? 'En blanco conserva la contraseña' : '10 caracteres como mínimo'}">
+            <p class="gate-field-help" th:text="${gate.configured ? 'La contraseña actual no se muestra. Introduce otra para reemplazarla.' : 'Asigna una contraseña diferente a la de las otras puertas.'}">Asigna una contraseña diferente.</p>
+            <label class="gate-enable-check"><input type="checkbox" name="active" value="true" th:checked="${gate.active}"><span>Habilitar esta puerta</span></label>
+            <button class="btn primary" type="submit" th:text="${gate.configured ? 'Guardar cambios' : 'Configurar puerta'}">Configurar puerta</button>
+        </form>
+    </section>
+
+    <aside class="gate-operation-note">
+        <div class="gate-note-icon" aria-hidden="true">i</div>
+        <div><h2>Ingreso sin cuenta personal</h2><p>El personal entra desde <a th:href="@{/login}">Asistencia a puerta</a> con el código del evento y su contraseña. Cada ingreso confirmado queda asociado a la puerta que lo registró. Las contraseñas se guardan protegidas y no se pueden volver a consultar.</p></div>
+    </aside>
 </main>
 </body>
 </html>

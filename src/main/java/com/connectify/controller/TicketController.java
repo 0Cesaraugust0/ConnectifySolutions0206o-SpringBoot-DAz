@@ -1,161 +1,119 @@
 package com.connectify.controller;
 
-import com.connectify.entity.Event;
-import com.connectify.entity.Ticket;
-import com.connectify.service.EventService;
+import com.connectify.security.GateLoginThrottle;
+import com.connectify.service.EventGateAccessService;
+import com.connectify.service.EventGateAccessService.GateContext;
+import com.connectify.service.EventGateAccessService.GateSession;
 import com.connectify.service.TicketService;
 import com.connectify.service.TicketService.GateValidationResult;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.util.Optional;
 
 @Controller
 @RequestMapping("/tickets")
 public class TicketController {
+    private final TicketService tickets;
+    private final EventGateAccessService gates;
+    private final GateLoginThrottle throttle;
 
-    private final TicketService ticketService;
-    private final EventService eventService;
-
-    public TicketController(TicketService ticketService, EventService eventService) {
-        this.ticketService = ticketService;
-        this.eventService = eventService;
+    public TicketController(TicketService tickets, EventGateAccessService gates, GateLoginThrottle throttle) {
+        this.tickets = tickets;
+        this.gates = gates;
+        this.throttle = throttle;
     }
 
     @GetMapping
-    public String ticketsHome() {
-        return "redirect:/tickets/validate";
-    }
+    public String ticketsHome() { return "redirect:/tickets/validate"; }
 
     @GetMapping("/validate")
-    public String validateForm(Model model) {
-        addDefaultModelAttributes(model);
+    public String validateForm(HttpSession session, Model model) {
+        populate(session, model);
         return "tickets/validate";
     }
 
     @PostMapping("/validate/open")
-    public String openValidation(@RequestParam String eventCode,
-                                 @RequestParam String gatePassword,
-                                 Model model) {
-        addDefaultModelAttributes(model);
-        model.addAttribute("eventCode", eventCode);
-        model.addAttribute("gatePassword", gatePassword);
-
-        Optional<Event> eventOptional = findEventByGateCode(eventCode);
-        if (eventOptional.isEmpty()) {
-            model.addAttribute("gateError", "Código de evento no encontrado.");
+    public String openValidation(@RequestParam String eventCode, @RequestParam String gatePassword,
+                                 HttpServletRequest request, Model model) {
+        HttpSession session = request.getSession();
+        session.removeAttribute(EventGateAccessService.SESSION_KEY);
+        String address = request.getRemoteAddr();
+        if (!throttle.allows(address)) {
+            model.addAttribute("gateError", "Demasiados intentos. Espera 15 minutos antes de volver a probar.");
+            populate(session, model);
             return "tickets/validate";
         }
-
-        Event event = eventOptional.get();
-        if (!isGatePasswordValid(event, gatePassword)) {
-            model.addAttribute("gateError", "Contraseña del día incorrecta.");
+        try {
+            GateSession grant = gates.open(eventCode, gatePassword);
+            request.changeSessionId();
+            session.setAttribute(EventGateAccessService.SESSION_KEY, grant);
+            throttle.succeeded(address);
+            return "redirect:/tickets/validate";
+        } catch (IllegalArgumentException exception) {
+            throttle.failed(address);
+            model.addAttribute("gateError", exception.getMessage());
+            populate(session, model);
             return "tickets/validate";
         }
-
-        model.addAttribute("selectedEvent", event);
-        model.addAttribute("gateUnlocked", true);
-        return "tickets/validate";
     }
 
     @PostMapping("/validate/consult")
-    public String consultTicket(@RequestParam Long eventId,
-                                @RequestParam String eventCode,
-                                @RequestParam String gatePassword,
-                                @RequestParam String code,
-                                Model model) {
-        addDefaultModelAttributes(model);
-        model.addAttribute("eventCode", eventCode);
-        model.addAttribute("gatePassword", gatePassword);
-        model.addAttribute("code", code);
-        model.addAttribute("searched", true);
-
-        Optional<Event> eventOptional = authorizeGate(eventId, eventCode, gatePassword, model);
-        if (eventOptional.isEmpty()) {
-            return "tickets/validate";
-        }
-
-        Optional<Ticket> ticket = ticketService.findByCode(code);
-        model.addAttribute("selectedEvent", eventOptional.get());
-        model.addAttribute("gateUnlocked", true);
-        model.addAttribute("ticket", ticket.orElse(null));
-
-        if (ticket.isPresent() && ticket.get().getEvent() != null && !ticket.get().getEvent().getId().equals(eventId)) {
-            model.addAttribute("ticketError", "El ticket existe, pero pertenece a otro evento.");
-        }
-
+    public String consultTicket(@RequestParam String code, HttpSession session, Model model) {
+        Optional<GateContext> context = populate(session, model);
+        if (context.isEmpty()) return expired(model);
+        showResult(model, code, tickets.consultTicketForEvent(code, context.get().event().getId()));
         return "tickets/validate";
     }
 
     @PostMapping("/validate")
-    public String validateTicket(@RequestParam Long eventId,
-                                 @RequestParam String eventCode,
-                                 @RequestParam String gatePassword,
-                                 @RequestParam String code,
-                                 Model model) {
-        addDefaultModelAttributes(model);
-        model.addAttribute("eventCode", eventCode);
-        model.addAttribute("gatePassword", gatePassword);
-        model.addAttribute("code", code);
-        model.addAttribute("searched", true);
-
-        Optional<Event> eventOptional = authorizeGate(eventId, eventCode, gatePassword, model);
-        if (eventOptional.isEmpty()) {
-            return "tickets/validate";
-        }
-
-        GateValidationResult result = ticketService.validateTicketForEvent(code, eventId);
-        model.addAttribute("selectedEvent", eventOptional.get());
-        model.addAttribute("gateUnlocked", true);
-        model.addAttribute("result", result);
-        model.addAttribute("ticket", result.getTicket());
+    public String validateTicket(@RequestParam String code, HttpSession session, Model model) {
+        Optional<GateContext> context = populate(session, model);
+        if (context.isEmpty()) return expired(model);
+        GateContext gate = context.get();
+        showResult(model, code, tickets.validateTicketForEvent(code, gate.event().getId(), gate.gate().getLabel()));
         return "tickets/validate";
     }
 
-    @GetMapping("/gate")
-    public String gateRedirect() {
+    @PostMapping("/validate/close")
+    public String closeGate(HttpSession session, RedirectAttributes redirect) {
+        session.removeAttribute(EventGateAccessService.SESSION_KEY);
+        redirect.addFlashAttribute("gateNotice", "Acceso de puerta cerrado.");
         return "redirect:/tickets/validate";
     }
 
-    private Optional<Event> authorizeGate(Long eventId, String eventCode, String gatePassword, Model model) {
-        Optional<Event> eventOptional = eventService.findById(eventId);
-        if (eventOptional.isEmpty()) {
-            model.addAttribute("gateError", "Evento no encontrado.");
-            return Optional.empty();
-        }
+    @GetMapping("/gate")
+    public String gateRedirect() { return "redirect:/tickets/validate"; }
 
-        Event event = eventOptional.get();
-        if (!eventCode.equalsIgnoreCase(event.getGateAccessCode()) || !isGatePasswordValid(event, gatePassword)) {
-            model.addAttribute("gateError", "Acceso de validación no autorizado.");
-            return Optional.empty();
-        }
-
-        return eventOptional;
-    }
-
-    private Optional<Event> findEventByGateCode(String eventCode) {
-        return eventService.findAll().stream()
-                .filter(event -> event.getGateAccessCode() != null && event.getGateAccessCode().equalsIgnoreCase(eventCode))
-                .findFirst();
-    }
-
-    private boolean isGatePasswordValid(Event event, String gatePassword) {
-        return event.getGatePassword() != null && event.getGatePassword().equals(gatePassword);
-    }
-
-    private void addDefaultModelAttributes(Model model) {
+    private Optional<GateContext> populate(HttpSession session, Model model) {
         model.addAttribute("searched", false);
-        model.addAttribute("gateUnlocked", false);
         model.addAttribute("result", null);
         model.addAttribute("ticket", null);
-        model.addAttribute("ticketError", null);
-        model.addAttribute("gateError", null);
-        model.addAttribute("eventCode", "");
-        model.addAttribute("gatePassword", "");
         model.addAttribute("code", "");
+        Object value = session.getAttribute(EventGateAccessService.SESSION_KEY);
+        Optional<GateContext> context = gates.resolve(value instanceof GateSession grant ? grant : null);
+        model.addAttribute("gateUnlocked", context.isPresent());
+        if (context.isPresent()) {
+            model.addAttribute("selectedEvent", context.get().event());
+            model.addAttribute("gateName", context.get().gate().getLabel());
+        } else {
+            session.removeAttribute(EventGateAccessService.SESSION_KEY);
+        }
+        return context;
+    }
+
+    private void showResult(Model model, String code, GateValidationResult result) {
+        model.addAttribute("searched", true);
+        model.addAttribute("code", code);
+        model.addAttribute("result", result);
+        model.addAttribute("ticket", result.getTicket());
+    }
+
+    private String expired(Model model) {
+        model.addAttribute("gateError", "Abre el acceso con el código del evento y la contraseña de tu puerta.");
+        return "tickets/validate";
     }
 }

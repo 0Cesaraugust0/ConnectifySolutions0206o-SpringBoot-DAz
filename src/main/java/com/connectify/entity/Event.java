@@ -56,6 +56,7 @@ public class Event {
 
     private boolean featured;
 
+    @Column(unique = true)
     private String gateAccessCode;
 
     private String gatePassword;

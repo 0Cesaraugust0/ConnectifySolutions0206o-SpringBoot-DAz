@@ -98,11 +98,6 @@ public class EventDemoDataInitializer implements CommandLineRunner {
                 changed = true;
             }
 
-            if (event.getGatePassword() == null || event.getGatePassword().isBlank()) {
-                event.setGatePassword("PUERTA2026");
-                changed = true;
-            }
-
             if (changed) {
                 eventRepository.save(event);
             }

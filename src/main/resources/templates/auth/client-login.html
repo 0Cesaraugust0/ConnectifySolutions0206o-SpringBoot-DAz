@@ -6,7 +6,7 @@
     <title>Ingresar - Connectify</title>
     <link rel="stylesheet" th:href="@{/css/styles.css}">
     <link rel="stylesheet" th:href="@{/css/ui.css}">
-    <link rel="stylesheet" th:href="@{/css/auth-client.css(v='login-density-1')}">
+    <link rel="stylesheet" th:href="@{/css/auth-client.css(v='login-help-2')}">
 </head>
 <body>
 <header class="navbar dashboard-nav">
@@ -18,12 +18,12 @@
         <aside class="auth-client-pitch register-pitch">
             <p class="badge glow">Acceso por cuenta</p>
             <h1>Tu cuenta define el espacio al que accedes.</h1>
-            <p>Cliente compra y consulta sus QR. Organizador publica eventos y revisa sus métricas. Developer, Admin, Diseñador y Auxiliar conservan accesos operativos separados.</p>
+            <p>Cliente compra y consulta sus QR. Organizador publica eventos y revisa sus métricas. Developer, Admin y Diseñador conservan sus accesos. El personal de puerta entra con el código del evento y su contraseña, sin cuenta personal.</p>
             <div class="auth-benefits">
                 <div><span>CL</span><strong>Cliente</strong><small>Marketplace, carrito, checkout y tickets personales.</small></div>
                 <div><span>OR</span><strong>Organizador</strong><small>Eventos, entradas, datos comerciales y revisión administrativa.</small></div>
                 <button class="auth-benefit-action" type="button" data-gate-modal-open>
-                    <span>AP</span><strong>Asistencia a puerta</strong><small>Código de evento y contraseña para abrir validación.</small>
+                    <span>AP</span><strong>Asistencia a puerta</strong><small>Código del evento y contraseña de tu puerta. Sin cuenta personal.</small>
                 </button>
             </div>
         </aside>
@@ -43,7 +43,11 @@
                 <button class="btn primary full" type="submit">Ingresar a mi cuenta</button>
             </form>
             <p class="auth-client-foot">¿Aún no tienes cuenta? <a th:href="@{/register}">Regístrate como Cliente u Organizador</a></p>
-            <div class="demo-box"><h3>Acceso técnico inicial</h3><p class="muted small">En una instalación nueva, configura la única cuenta Developer desde <a th:href="@{/setup}">/setup</a>.</p></div>
+            <aside class="demo-box login-access-help" aria-labelledby="loginAccessHelpTitle">
+                <h3 id="loginAccessHelpTitle">Ayuda para ingresar</h3>
+                <p class="muted small">Usa el correo con el que te registraste y revisa las mayúsculas de tu contraseña. Si necesitas orientación, consulta nuestro Centro de ayuda.</p>
+                <a class="login-help-link" th:href="@{/help}">Consultar ayuda <span aria-hidden="true">→</span></a>
+            </aside>
         </section>
     </section>
 </main>
@@ -53,13 +57,13 @@
             <div>
                 <span>Puerta</span>
                 <h2 id="gateAccessTitle">Asistencia a puerta</h2>
-                <p>Ingresa el código del evento y la contraseña asignada para desbloquear la validación QR.</p>
+                <p>Ingresa el código del evento y la contraseña de tu puerta, asignada por el administrador. No necesitas iniciar sesión con una cuenta.</p>
             </div>
             <button type="button" data-gate-modal-close aria-label="Cerrar">Cerrar</button>
         </div>
         <form class="gate-access-form" th:action="@{/tickets/validate/open}" method="post">
-            <label>Código del evento<input name="eventCode" type="text" placeholder="EVT-1" required></label>
-            <label>Contraseña de puerta<input name="gatePassword" type="password" placeholder="Clave diaria" required></label>
+            <label>Código del evento<input name="eventCode" type="text" placeholder="EVT-1" maxlength="40" autocomplete="off" autocapitalize="characters" spellcheck="false" required></label>
+            <label>Contraseña de puerta<input name="gatePassword" type="password" placeholder="Asignada por el administrador" maxlength="72" autocomplete="current-password" required></label>
             <button class="btn primary full" type="submit">Abrir validación</button>
         </form>
     </section>
@@ -71,7 +75,7 @@
             button.addEventListener('click', () => {
                 modal.classList.add('active');
                 modal.setAttribute('aria-hidden', 'false');
-                modal.querySelector('input').focus();
+                modal.querySelector('input[name="eventCode"]').focus();
             });
         });
         document.querySelectorAll('[data-gate-modal-close]').forEach(button => {
@@ -79,12 +83,6 @@
                 modal.classList.remove('active');
                 modal.setAttribute('aria-hidden', 'true');
             });
-        });
-        modal.addEventListener('click', event => {
-            if (event.target === modal) {
-                modal.classList.remove('active');
-                modal.setAttribute('aria-hidden', 'true');
-            }
         });
     })();
 </script>

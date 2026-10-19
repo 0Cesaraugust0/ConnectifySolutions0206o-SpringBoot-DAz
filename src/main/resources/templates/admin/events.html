@@ -11,7 +11,7 @@
 <body>
 <header class="navbar dashboard-nav">
     <a class="brand brand-link" th:href="@{/dashboard/admin}">
-        <span class="logo">🚪</span>
+        <span class="logo">C</span>
         <div><strong>Connectify</strong><small>Control de puerta</small></div>
     </a>
     <nav class="top-actions admin-gate-nav">
@@ -23,8 +23,8 @@
 <main class="dashboard-page admin-gate-page">
     <section class="dashboard-hero">
         <p class="badge">Administrador</p>
-        <h1>Eventos y acceso de puerta</h1>
-        <p class="muted">Configura el código del evento y la contraseña diaria que usará el agente de acceso para validar tickets QR.</p>
+        <h1>Eventos y puertas de acceso</h1>
+        <p class="muted">Asigna de 1 a 4 contraseñas por evento, una para cada puerta. El personal accede con el código del evento y su contraseña para registrar la asistencia.</p>
     </section>
 
     <section class="cart-items">
@@ -34,10 +34,10 @@
                 <h3 th:text="${event.title}">Evento</h3>
                 <p class="muted small">Ciudad: <strong th:text="${event.city}">Lima</strong></p>
                 <p class="muted small">Código puerta: <strong th:text="${event.gateAccessCode != null ? event.gateAccessCode : 'No asignado'}">EVT-1</strong></p>
-                <p class="muted small">Clave diaria: <strong th:text="${event.gatePassword != null ? event.gatePassword : 'No asignada'}">PUERTA2026</strong></p>
+                <p class="muted small">Puertas habilitadas: <strong th:text="${gateCounts[event.id] != null ? gateCounts[event.id] : 0}">0</strong><span> / 4</span></p>
             </div>
             <div class="cart-actions">
-                <a class="btn primary compact" th:href="@{/admin/events/{id}/gate-access(id=${event.id})}">Configurar puerta</a>
+                <a class="btn primary compact" th:href="@{/admin/events/{id}/gate-access(id=${event.id})}">Configurar puertas</a>
             </div>
         </article>
     </section>

@@ -177,12 +177,56 @@
 }
 
 .organizer-register-fields {
+    position: relative;
     display: grid;
     gap: 9px;
     padding: 12px;
     border: 1px solid #eadfca;
     border-radius: 14px;
     background: #fffaf0;
+}
+
+.organizer-data-help {
+    position: absolute;
+    top: 9px;
+    right: 10px;
+    z-index: 5;
+}
+
+.organizer-data-help summary {
+    display: grid;
+    place-items: center;
+    width: 23px;
+    height: 23px;
+    border: 1px solid #bcae91;
+    border-radius: 50%;
+    color: #77581a;
+    background: #fff;
+    font-size: .89rem;
+    font-weight: 600;
+    line-height: 1;
+    cursor: pointer;
+    list-style: none;
+}
+
+.organizer-data-help summary::-webkit-details-marker { display: none; }
+.organizer-data-help summary:focus-visible { outline: 2px solid #77581a; outline-offset: 2px; }
+
+.organizer-data-help p {
+    position: absolute;
+    top: 29px;
+    right: 0;
+    width: min(245px, calc(100vw - 72px));
+    margin: 0;
+    padding: 10px 12px;
+    border: 1px solid #eadfca;
+    border-radius: 10px;
+    background: #fff;
+    box-shadow: 0 10px 25px rgba(34, 39, 55, .14);
+    color: #404c69;
+    font-size: .73rem;
+    font-weight: 400;
+    line-height: 1.45;
 }
 
 .organizer-register-fields[hidden] {
@@ -463,3 +507,18 @@
 .login-page .demo-box p {
     font-size: .72rem;
 }
+
+.login-page .login-access-help h3 { margin: 0 0 7px; font-weight: 600; }
+.login-page .login-access-help p { margin: 0; line-height: 1.55; }
+.login-page .login-help-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 9px;
+    color: #5146e5;
+    font-size: .73rem;
+    font-weight: 550;
+    text-decoration: none;
+}
+.login-page .login-help-link:hover { text-decoration: underline; text-underline-offset: 3px; }
+.login-page .login-help-link:focus-visible { outline: 2px solid #6259e9; outline-offset: 4px; }

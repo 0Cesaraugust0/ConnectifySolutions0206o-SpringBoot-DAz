@@ -1,0 +1,35 @@
+/* Preview-only density. Shared Marketplace compositions retain their proportions. */
+.admin-event-preview .admin-preview-page {
+    zoom: .7;
+    width: min(1000px, calc(100% - 32px));
+    padding: 24px 0 36px;
+}
+.admin-event-preview .admin-preview-nav {
+    min-height: 54px;
+    padding: 9px 24px;
+}
+.admin-preview-nav .brand .logo { width: 32px; height: 32px; font-size: 18px; }
+.admin-preview-nav .brand strong { font-size: .84rem; }
+.admin-preview-nav .brand small { font-size: .64rem; }
+.admin-preview-nav .top-actions { gap: 7px; }
+.admin-event-preview .admin-preview-nav .btn {
+    min-height: 30px;
+    padding: 6px 10px;
+    border-radius: 7px;
+    font-family: inherit;
+    font-size: .71rem;
+    font-weight: 450;
+    line-height: 1.25;
+}
+.admin-event-preview .admin-preview-nav .btn.primary { font-weight: 600; }
+.admin-event-preview .stage-map-dialog { width: min(740px, calc(100vw - 28px)); }
+.admin-event-preview .stage-map-dialog-header { padding: 11px 14px; }
+.admin-event-preview .stage-map-dialog-header h2 { font-size: .9rem; }
+.admin-event-preview .stage-map-dialog-description { font-size: .73rem; }
+@media (max-width: 620px) {
+    .admin-event-preview .admin-preview-nav { padding: 9px 12px; gap: 10px; }
+    .admin-preview-nav .brand small { max-width: 115px; }
+    .admin-preview-nav .top-actions { gap: 5px; }
+    .admin-event-preview .admin-preview-nav .btn { padding: 6px 8px; font-size: .67rem; }
+    .admin-event-preview .admin-preview-page { width: calc(100% - 20px); }
+}

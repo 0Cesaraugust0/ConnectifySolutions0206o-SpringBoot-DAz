@@ -50,15 +50,6 @@ public class EventService {
         return eventRepository.save(event);
     }
 
-    @Transactional
-    public Event updateGateAccess(Long id, String gateAccessCode, String gatePassword) {
-        Event event = eventRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Evento no encontrado"));
-        event.setGateAccessCode(gateAccessCode);
-        event.setGatePassword(gatePassword);
-        return eventRepository.save(event);
-    }
-
     private boolean matchesQuery(Event event, String query) {
         if (!StringUtils.hasText(query)) return true;
         return contains(event.getTitle(), query)
