@@ -3,58 +3,120 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Información del servicio Connectify: confirmación de pagos, entradas digitales, control de acceso, revisión de eventos y atención de incidencias.">
     <title>Centro de ayuda - Connectify</title>
     <link rel="stylesheet" th:href="@{/css/styles.css(v='help-compact-2')}">
     <link rel="stylesheet" th:href="@{/css/ui.css}">
     <link rel="stylesheet" th:href="@{/css/marketplace-compact.css(v='12')}">
+    <link rel="stylesheet" th:href="@{/css/help-center.css(v='2')}">
 </head>
-<body class="marketplace-compact">
+<body class="marketplace-compact help-center">
 <header class="navbar marketplace-nav">
     <a class="brand brand-link" th:href="@{/events}"><span class="logo brand-mark">C</span><div><strong>Connectify</strong><small>Centro de ayuda</small></div></a>
-    <nav class="top-actions help-nav-actions"><a class="btn secondary" th:href="@{/events}">Marketplace</a><a class="btn primary compact" th:href="@{/communications}">Escribir a soporte</a></nav>
+    <nav class="top-actions help-nav-actions" aria-label="Navegación principal">
+        <a class="help-return" th:href="@{/events}"><span aria-hidden="true">←</span> Marketplace</a>
+    </nav>
 </header>
 
 <main class="help-page">
-    <section class="help-hero">
-        <p class="badge">Ayuda real</p>
-        <h1>Centro de ayuda</h1>
-        <p>Respuestas rápidas para comprar entradas, publicar eventos, revisar tickets QR y contactar soporte.</p>
-    </section>
-
-    <section class="help-quick-grid">
-        <a href="#comprar"><strong>Comprar entradas</strong><span>Cuenta Cliente, carrito y checkout.</span></a>
-        <a href="#organizador"><strong>Publicar eventos</strong><span>Cuenta Organizador, revisión y entradas.</span></a>
-        <a href="#tickets"><strong>Tickets QR</strong><span>Consulta, validación y acceso.</span></a>
-        <a href="#soporte"><strong>Soporte</strong><span>Incidencias y mensajes al Administrador.</span></a>
-    </section>
-
-    <section class="faq-list" id="comprar">
-        <div class="section-heading"><div><p class="badge">Cliente</p><h2>Comprar entradas</h2></div></div>
-        <details open><summary>¿Cómo compro una entrada?</summary><p>Entra al marketplace, elige un evento publicado, selecciona el tipo de entrada y agrégala al carrito. El checkout queda asociado a tu cuenta Cliente.</p></details>
-        <details><summary>¿Necesito imprimir mi ticket?</summary><p>No. El ticket se consulta desde tu cuenta y contiene un código QR para validación en puerta.</p></details>
-        <details><summary>¿Dónde veo mis compras?</summary><p>Desde el dashboard Cliente puedes revisar tickets QR, favoritos, carrito y consultas de soporte.</p></details>
-    </section>
-
-    <section class="faq-list" id="organizador">
-        <div class="section-heading"><div><p class="badge">Organizador</p><h2>Publicar eventos</h2></div></div>
-        <details open><summary>¿Cómo publico un evento?</summary><p>Regístrate como Organizador, completa tus datos de organizador, crea el evento y envíalo a revisión administrativa. El Administrador puede aprobar, observar o rechazar la propuesta.</p></details>
-        <details><summary>¿Puedo configurar varios tipos de entrada?</summary><p>Sí. Cada evento puede tener variantes como General, VIP, Estudiante u otra definida por el Organizador, con precio y cantidad disponible.</p></details>
-        <details><summary>¿Por qué piden RUC o razón social?</summary><p>Estos datos identifican al publicador del evento y ayudan al Administrador a revisar quién está detrás de la propuesta.</p></details>
-    </section>
-
-    <section class="faq-list" id="tickets">
-        <div class="section-heading"><div><p class="badge">Acceso</p><h2>Tickets QR</h2></div></div>
-        <details open><summary>¿Quién valida el QR?</summary><p>El Agente de acceso valida tickets desde su panel de puerta. El Administrador configura el evento, pero no reemplaza la función del agente.</p></details>
-        <details><summary>¿Qué pasa si el ticket ya fue usado?</summary><p>El sistema muestra el estado de validación para evitar doble ingreso con el mismo código.</p></details>
-    </section>
-
-    <section class="support-panel" id="soporte">
+    <header class="help-masthead">
         <div>
-            <p class="support-eyebrow">Soporte</p>
-            <h2>¿Necesitas ayuda con una compra o ticket?</h2>
-            <p>Si tienes una cuenta Cliente, escribe desde el buzón de soporte. Tu mensaje llega a la bandeja del Administrador.</p>
+            <p class="help-eyebrow">CONNECTIFY SOLUTIONS / INFORMACIÓN DEL SERVICIO</p>
+            <h1>Centro de ayuda</h1>
+            <p class="help-masthead-subtitle">Compras, entradas y publicación de eventos.</p>
         </div>
-        <a class="btn primary" th:href="@{/communications}">Escribir a soporte</a>
+        <p class="help-masthead-description">Conoce cómo se confirma una operación, qué acredita una entrada y cómo avanza una propuesta hasta su publicación.</p>
+    </header>
+
+    <div class="help-document">
+        <section class="help-chapter" id="comprar" aria-labelledby="comprar-title">
+            <header class="help-chapter-heading">
+                <p class="help-eyebrow">01 / COMPRA Y PAGO</p>
+                <h2 id="comprar-title">Confirmación de la operación</h2>
+                <p>El pago y la emisión de entradas forman parte de una misma compra, pero ocurren en momentos distintos.</p>
+            </header>
+            <div class="help-chapter-body">
+                <p>Antes de pagar, revisa la fecha, la ubicación, el tipo de entrada y la cantidad seleccionada. El resumen del checkout detalla el importe de las entradas y los cargos aplicables. Los medios de pago disponibles son los que aparecen habilitados para esa operación.</p>
+                <p>Abrir el formulario de IZIPay inicia el procedimiento de pago. <strong>Las entradas se emiten cuando Connectify recibe y valida la confirmación de la pasarela.</strong> Llegar al checkout o cerrar su ventana no acredita una compra.</p>
+                <dl class="help-definitions">
+                    <div><dt>Pago pendiente</dt><dd>La operación aún no tiene confirmación. Cerrar el formulario no confirma ni cancela el pago por sí mismo; puedes regresar al checkout para retomarlo.</dd></div>
+                    <div><dt>Pago confirmado</dt><dd>Se registra la compra y se generan las entradas correspondientes. La confirmación resume el pedido y sus importes.</dd></div>
+                    <div><dt>Cargo sin entradas</dt><dd>Si tu entidad financiera muestra un cargo y todavía no tienes tickets, conserva la referencia de la operación y solicita su revisión antes de realizar otro pago.</dd></div>
+                </dl>
+                <aside class="help-editorial-note"><strong>Eventos de demostración.</strong> La cinta «Suceso demostrativo» identifica ejemplos de presentación y configuración. Sus entradas no están a la venta.</aside>
+            </div>
+        </section>
+
+        <section class="help-chapter" id="tickets" aria-labelledby="tickets-title">
+            <header class="help-chapter-heading">
+                <p class="help-eyebrow">02 / ENTRADAS Y ACCESO</p>
+                <h2 id="tickets-title">Qué acredita tu ticket</h2>
+                <p>Cada entrada pertenece a un evento y dispone de un código para su control en puerta.</p>
+            </header>
+            <div class="help-chapter-body">
+                <p>La confirmación de compra muestra el resumen de la operación. En «Mis tickets» se conservan las entradas emitidas, su código QR y su estado. Son dos vistas de la misma compra: el detalle del pedido y las entradas que presentarás para ingresar.</p>
+                <p>El personal de puerta puede escanear el QR desde el teléfono o introducir el código. El resultado depende de la acción que realice:</p>
+                <div class="help-comparison">
+                    <div><h3>Consultar</h3><p>Comprueba si la entrada corresponde al evento habilitado y permite revisar su estado. Esta consulta no consume el ticket ni registra asistencia.</p></div>
+                    <div><h3>Validar y registrar ingreso</h3><p>Comprueba la validez del ticket y registra su uso. Una entrada que ya tiene un ingreso registrado no admite una segunda validación.</p></div>
+                </div>
+                <p class="help-secondary-copy">Un código de otro evento, una entrada ya utilizada o una compra sin confirmar pueden impedir el ingreso. Si ocurre, solicita al personal de puerta que revise el resultado mostrado. Evita compartir públicamente tu QR.</p>
+            </div>
+        </section>
+
+        <section class="help-chapter" id="organizador" aria-labelledby="organizador-title">
+            <header class="help-chapter-heading">
+                <p class="help-eyebrow">03 / ORGANIZADORES</p>
+                <h2 id="organizador-title">De la propuesta a la publicación</h2>
+                <p>Guardar, enviar a revisión y publicar tienen efectos diferentes sobre la visibilidad del evento.</p>
+            </header>
+            <div class="help-chapter-body">
+                <p>La propuesta reúne la información del evento, su presentación visual y las variantes de entrada. Define con precisión la fecha, el lugar, la descripción, los precios y las cantidades. Si incluyes un plano de escenario o zonas diferenciadas, deben corresponder con las entradas que ofreces.</p>
+                <p><strong>Guardar conserva la propuesta; enviarla a revisión solicita su evaluación administrativa.</strong> El estado permite distinguir qué parte del proceso está pendiente:</p>
+                <table class="help-status-table">
+                    <caption>Estados de la propuesta</caption>
+                    <thead><tr><th scope="col">Estado</th><th scope="col">Qué significa</th></tr></thead>
+                    <tbody>
+                        <tr><th scope="row"><span class="help-status-dot" aria-hidden="true"></span>Borrador</th><td>La propuesta está guardada y aún no se ha enviado a revisión.</td></tr>
+                        <tr><th scope="row"><span class="help-status-dot is-review" aria-hidden="true"></span>En revisión</th><td>La propuesta espera una evaluación de Administración.</td></tr>
+                        <tr><th scope="row"><span class="help-status-dot is-observed" aria-hidden="true"></span>Observado</th><td>Hay aspectos que corregir según las observaciones recibidas.</td></tr>
+                        <tr><th scope="row"><span class="help-status-dot is-approved" aria-hidden="true"></span>Aprobado</th><td>La revisión es conforme. Todavía no equivale a una publicación.</td></tr>
+                        <tr><th scope="row"><span class="help-status-dot is-published" aria-hidden="true"></span>Publicado</th><td>El evento está habilitado para mostrarse en el marketplace.</td></tr>
+                        <tr><th scope="row"><span class="help-status-dot is-rejected" aria-hidden="true"></span>Rechazado</th><td>La propuesta no fue aprobada. Revisa el motivo comunicado.</td></tr>
+                    </tbody>
+                </table>
+                <p class="help-secondary-copy">La aprobación puede restringir la edición de la propuesta. Para cambios posteriores, revisa las acciones habilitadas y los mensajes de Administración. La disponibilidad de entradas depende de las cantidades y ventas registradas para el evento.</p>
+            </div>
+        </section>
+
+        <section class="help-chapter" id="soporte" aria-labelledby="soporte-title">
+            <header class="help-chapter-heading">
+                <p class="help-eyebrow">04 / ATENCIÓN AL USUARIO</p>
+                <h2 id="soporte-title">Revisión de incidencias</h2>
+                <p>La información de la operación permite identificar el caso y revisar lo ocurrido.</p>
+            </header>
+            <div class="help-chapter-body">
+                <p>Describe qué estabas intentando hacer, qué resultado obtuviste y cuándo ocurrió. Incluye el mensaje que mostró el sistema y la información que corresponda a tu caso:</p>
+                <dl class="help-definitions help-case-details">
+                    <div><dt>Compras y pagos</dt><dd>Nombre del evento, número de orden o referencia de la operación, importe y fecha aproximada.</dd></div>
+                    <div><dt>Tickets y acceso</dt><dd>Evento, entrada afectada y resultado de la consulta o validación en puerta.</dd></div>
+                    <div><dt>Publicación</dt><dd>Nombre o código del evento, estado actual y observación que necesitas aclarar.</dd></div>
+                </dl>
+                <p>Las consultas de clientes se dirigen a Administración desde el centro de mensajes. Una solicitud sobre cancelaciones o devoluciones requiere revisar las condiciones del evento y el estado de la operación; el envío de un mensaje no ejecuta una devolución.</p>
+            </div>
+        </section>
+    </div>
+
+    <section class="help-contact" aria-label="Contacto con soporte">
+        <div>
+            <p class="help-eyebrow">SOPORTE</p>
+            <h2>Atención de tu caso</h2>
+            <p>Envía los detalles desde tu cuenta para que la consulta quede identificada.</p>
+        </div>
+        <div class="help-contact-action">
+            <a class="help-contact-button" th:href="@{/communications/new}">Enviar una consulta <span aria-hidden="true">↗</span></a>
+            <span>Requiere iniciar sesión</span>
+        </div>
     </section>
 </main>
 
