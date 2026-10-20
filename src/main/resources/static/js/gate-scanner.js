@@ -85,9 +85,11 @@ import QrScanner from './vendor/qr-scanner-1.4.2/qr-scanner.min.js';
                 maxScansPerSecond: 8,
                 onDecodeError(error) {
                     if (cycle !== generation) return;
-                    if (String(error) === String(QrScanner.NO_QR_CODE_FOUND)) return;
-                    stopCamera();
-                    message('No se pudo iniciar el lector QR. Recarga la página o ingresa el código manualmente.', 'error');
+                    // Native BarcodeDetector wraps an empty frame; the worker returns the plain message.
+                    const detail = String(error?.message || error).replace(/^Scanner error:\s*/i, '').trim();
+                    if (detail === String(QrScanner.NO_QR_CODE_FOUND)) return;
+                    // A frame error must not tear down a working camera while the operator aims the QR.
+                    message('No se pudo leer la imagen. Mantén el QR dentro del marco; si continúa, cierra y vuelve a abrir la cámara.', 'error');
                 }
             });
             scanner = instance;

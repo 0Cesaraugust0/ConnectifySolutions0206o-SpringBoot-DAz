@@ -172,7 +172,7 @@ class GateControllerTemplateTest {
         assertThat(scan).contains("formaction=\"/tickets/validate\"");
         assertThat(html).contains("Encuentro fixture", "Acceso norte", "Consultar", "Validar y registrar ingreso",
                         "id=\"gateScanStart\"", "id=\"gateCameraVideo\"", "playsinline",
-                        "/js/gate-scanner.js?v=camera-2")
+                        "/js/gate-scanner.js?v=camera-3")
                 .doesNotContain("gateManualEntry", "name=\"eventId\"", "name=\"gatePassword\"", LEGACY_SECRET, HASH, "fixture-door-password");
         Files.writeString(Path.of("target", "gate-scanner-preview.html"), html, StandardCharsets.UTF_8);
         verifyNoInteractions(tickets);

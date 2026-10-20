@@ -158,12 +158,32 @@ test('a new typed or scanned code hides the old attendee result until the server
     assert.equal(app.nodes.gateResultCurrent.hidden, true);
 });
 
-test('normal frames without QR keep scanning, but a decoder failure offers manual entry', async () => {
+for (const frameError of ['No QR code found', 'Scanner error: No QR code found',
+    new Error('Scanner error: No QR code found')]) {
+    test(`an empty frame (${String(frameError)}) keeps the camera open for a subsequent QR`, async () => {
+        const app = setup();
+        await app.click('gateScanStart');
+        app.instances[0].options.onDecodeError(frameError);
+        assert.equal(app.tracks[0].stopped, 0);
+        assert.equal(app.instances[0].destroyed, 0);
+        assert.equal(app.nodes.gateCameraPanel.hidden, false);
+        assert.match(app.nodes.gateScannerStatus.textContent, /Cámara lista/);
+        app.read('CNF-22-AFTER-EMPTY-FRAME');
+        assert.equal(app.nodes.ticketCode.value, 'CNF-22-AFTER-EMPTY-FRAME');
+        assert.match(app.nodes.gateScannerStatus.textContent, /QR leído/);
+    });
+}
+
+test('a frame processing failure keeps the preview open and permits a later successful read', async () => {
     const app = setup();
     await app.click('gateScanStart');
-    app.instances[0].options.onDecodeError('No QR code found');
+    app.instances[0].options.onDecodeError(new Error('Scanner error: timeout'));
     assert.equal(app.tracks[0].stopped, 0);
-    app.instances[0].options.onDecodeError(new Error('worker unavailable'));
+    assert.equal(app.instances[0].destroyed, 0);
+    assert.equal(app.nodes.gateCameraPanel.hidden, false);
+    assert.match(app.nodes.gateScannerStatus.textContent, /imagen.*cierra.*cámara/);
+    app.read('CNF-22-AFTER-RETRY');
+    assert.equal(app.nodes.ticketCode.value, 'CNF-22-AFTER-RETRY');
     assert.ok(app.tracks[0].stopped > 0);
-    assert.match(app.nodes.gateScannerStatus.textContent, /lector QR.*manualmente/);
+    assert.match(app.nodes.gateScannerStatus.textContent, /QR leído/);
 });
