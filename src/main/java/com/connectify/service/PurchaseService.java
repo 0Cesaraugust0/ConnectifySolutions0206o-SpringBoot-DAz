@@ -51,6 +51,7 @@ public class PurchaseService {
         for (CartItem item : items) {
             Event event = eventRepository.findById(item.getEventId())
                     .orElseThrow(() -> new IllegalArgumentException("Evento no encontrado"));
+            DemonstrationEventPolicy.requirePurchasable(event);
 
             for (int i = 0; i < item.getQuantity(); i++) {
                 Ticket ticket = new Ticket();

@@ -237,6 +237,7 @@ public class IzipayWebCheckoutService {
         Map<Long, Integer> quantities = new HashMap<>();
         for (IzipayWebLine line : lines) {
             Event event = eventMap.get(line.eventId());
+            DemonstrationEventPolicy.requirePurchasable(event);
             if (event.getStatus() != EventStatus.PUBLISHED || event.getEventDate() == null || event.getEventDate().isBefore(LocalDateTime.now()))
                 throw new IllegalArgumentException("El evento ya no está disponible para venta.");
             quantities.merge(line.eventId(), line.quantity(), Integer::sum);

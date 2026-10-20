@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 760" role="img" aria-labelledby="title description">
+  <title id="title">Festival Gastronómico Sabores del Perú · plano referencial</title>
+  <desc id="description">Diagrama ilustrativo de experiencia culinaria con stands, degustaciones, chefs y música. No indica ubicación ni aforo reales.</desc>
+  <defs>
+    <linearGradient id="surface" x2="1" y2="1"><stop stop-color="#fff1dc"/><stop offset="1" stop-color="#f9dfcb"/></linearGradient>
+    <linearGradient id="center" x2="1" y2="1"><stop stop-color="#db5d39"/><stop offset="1" stop-color="#a93632"/></linearGradient>
+    <pattern id="dots" width="24" height="24" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="2" fill="#bd8867" opacity=".18"/></pattern>
+  </defs>
+  <rect width="1200" height="760" fill="#faf5ed"/>
+  <rect x="32" y="30" width="1136" height="700" rx="30" fill="#fff" stroke="#eadfd2" stroke-width="2"/>
+  <text x="66" y="85" font-family="Arial,sans-serif" font-size="29" font-weight="700" fill="#3a2b25">SABORES DEL PERÚ</text>
+  <text x="67" y="116" font-family="Arial,sans-serif" font-size="17" fill="#7b675c">Una mirada de conjunto al festival y sus experiencias</text>
+  <rect x="937" y="57" width="194" height="38" rx="19" fill="#fff0db"/>
+  <text x="1034" y="82" text-anchor="middle" font-family="Arial,sans-serif" font-size="16" font-weight="700" fill="#9c5a24">PLANO REFERENCIAL</text>
+  <rect x="65" y="146" width="790" height="522" rx="28" fill="url(#surface)"/>
+  <rect x="65" y="146" width="790" height="522" rx="28" fill="url(#dots)"/>
+  <circle cx="460" cy="406" r="186" fill="#ffe8d6" stroke="#daae90" stroke-width="2" stroke-dasharray="8 9"/>
+  <circle cx="460" cy="406" r="118" fill="url(#center)"/>
+  <circle cx="460" cy="406" r="97" fill="none" stroke="#ffe2bf" stroke-width="2"/>
+  <text x="460" y="390" text-anchor="middle" font-family="Arial,sans-serif" font-size="22" font-weight="700" fill="#fff">EXPERIENCIA</text>
+  <text x="460" y="423" text-anchor="middle" font-family="Arial,sans-serif" font-size="25" font-weight="700" fill="#fff">CULINARIA</text>
+  <path d="M459 221V284M272 406H337M582 406H649M460 528V591" fill="none" stroke="#b77954" stroke-width="4" stroke-dasharray="7 9"/>
+  <rect x="320" y="174" width="280" height="62" rx="18" fill="#f7be89" stroke="#d88f55"/>
+  <text x="460" y="211" text-anchor="middle" font-family="Arial,sans-serif" font-size="21" font-weight="700" fill="#683b2b">CHEFS INVITADOS</text>
+  <rect x="94" y="370" width="204" height="74" rx="18" fill="#f2b19e" stroke="#db8c76"/>
+  <text x="196" y="414" text-anchor="middle" font-family="Arial,sans-serif" font-size="20" font-weight="700" fill="#6f332e">STANDS</text>
+  <rect x="622" y="370" width="204" height="74" rx="18" fill="#e6ba73" stroke="#ca994c"/>
+  <text x="724" y="414" text-anchor="middle" font-family="Arial,sans-serif" font-size="20" font-weight="700" fill="#694a27">DEGUSTACIÓN</text>
+  <rect x="324" y="577" width="272" height="62" rx="18" fill="#e5a2a0" stroke="#ce7878"/>
+  <text x="460" y="614" text-anchor="middle" font-family="Arial,sans-serif" font-size="21" font-weight="700" fill="#653238">MÚSICA EN VIVO</text>
+  <rect x="879" y="146" width="255" height="522" rx="26" fill="#fffcf8" stroke="#ecdfd3"/>
+  <text x="904" y="192" font-family="Arial,sans-serif" font-size="19" font-weight="700" fill="#49352d">Una feria para recorrer</text>
+  <text x="904" y="229" font-family="Arial,sans-serif" font-size="16" fill="#816d62">Los bloques muestran</text>
+  <text x="904" y="252" font-family="Arial,sans-serif" font-size="16" fill="#816d62">temas del festival, no</text>
+  <text x="904" y="275" font-family="Arial,sans-serif" font-size="16" fill="#816d62">puestos confirmados.</text>
+  <path d="M906 315H1108" stroke="#e6d4c0" stroke-width="2"/>
+  <circle cx="918" cy="350" r="12" fill="#d16b47"/><text x="941" y="356" font-family="Arial,sans-serif" font-size="16" fill="#553e34">Cocina y sabores</text>
+  <circle cx="918" cy="399" r="12" fill="#e7a059"/><text x="941" y="405" font-family="Arial,sans-serif" font-size="16" fill="#553e34">Degustaciones</text>
+  <circle cx="918" cy="448" r="12" fill="#d98f91"/><text x="941" y="454" font-family="Arial,sans-serif" font-size="16" fill="#553e34">Ambiente musical</text>
+  <rect x="904" y="513" width="205" height="96" rx="16" fill="#fbefe1"/>
+  <text x="920" y="548" font-family="Arial,sans-serif" font-size="14" fill="#745847">La organización definirá</text>
+  <text x="920" y="571" font-family="Arial,sans-serif" font-size="14" fill="#745847">el recorrido y la</text>
+  <text x="920" y="594" font-family="Arial,sans-serif" font-size="14" fill="#745847">ubicación final.</text>
+  <text x="66" y="703" font-family="Arial,sans-serif" font-size="15" fill="#84766e">Plano referencial · ilustración temática sin ubicación, capacidad ni acceso confirmados.</text>
+</svg>

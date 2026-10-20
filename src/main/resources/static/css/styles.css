@@ -1521,7 +1521,7 @@ h3 {
 .support-panel{
     gap:17px;
     margin-top:24px;
-    padding:22px;
+    padding:13px 22px;
     border-radius:19px;
 }
 
@@ -1531,6 +1531,14 @@ h3 {
 
 .support-panel p{
     font-size:.8rem;
+    line-height:1.5;
+}
+
+.support-panel .support-eyebrow{
+    margin:0 0 12px;
+    color:#cbd5e1;
+    font-size:.72rem;
+    font-weight:700;
     line-height:1.5;
 }
 

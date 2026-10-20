@@ -23,6 +23,8 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -45,6 +47,7 @@ import java.util.Objects;
 public class OrganizerDashboardController {
 
     private static final DateTimeFormatter BITACORA_DATE_FORMAT = DateTimeFormatter.ofPattern("dd MMM yyyy, HH:mm", new Locale("es", "PE"));
+    private static final String DEMO_ORGANIZER_EMAIL = "org@connectify.com";
 
     private final EventRepository eventRepository;
     private final CategoryRepository categoryRepository;
@@ -80,6 +83,60 @@ public class OrganizerDashboardController {
     public String newEvent(Model model) {
         model.addAttribute("categories", categoryRepository.findAll());
         return "dashboard/organizer/event-form";
+    }
+
+    @GetMapping("/creative-styles")
+    public String creativeStyles(Model model) {
+        List<Event> ownedEvents = eventRepository.findByOrganizerEmailIgnoreCaseOrderByUpdatedAtDesc(DEMO_ORGANIZER_EMAIL);
+        Map<Long, EventPresentationSettings> presentations = new LinkedHashMap<>();
+        if (!ownedEvents.isEmpty()) {
+            presentationSettingsRepository.findByEvent_IdIn(ownedEvents.stream().map(Event::getId).toList())
+                    .forEach(settings -> presentations.put(settings.getEvent().getId(), settings));
+        }
+        List<Event> examples = ownedEvents.stream().filter(event -> presentations.containsKey(event.getId())).toList();
+        Map<Long, String> images = new LinkedHashMap<>();
+        Map<String, Long> styleEventIds = new LinkedHashMap<>();
+        for (Event event : examples) {
+            EventPresentationSettings settings = presentations.get(event.getId());
+            images.put(event.getId(), firstText(settings.getThumbnailImageUrl(),
+                    firstText(settings.getCoverImageUrl(), event.getImageUrl())));
+            if (event.getDesignTemplate() != null) {
+                styleEventIds.putIfAbsent(event.getDesignTemplate().name(), event.getId());
+            }
+        }
+        Long fallbackId = examples.isEmpty() ? null : examples.getFirst().getId();
+        for (EventDesignTemplate style : EventDesignTemplate.values()) {
+            styleEventIds.putIfAbsent(style.name(), fallbackId);
+        }
+        model.addAttribute("examples", examples);
+        model.addAttribute("exampleImages", images);
+        model.addAttribute("styles", EventDesignTemplate.values());
+        model.addAttribute("styleEventIds", styleEventIds);
+        return "dashboard/organizer/creative-styles";
+    }
+
+    @GetMapping("/creative-styles/{id}")
+    public String creativeStylePreview(@PathVariable Long id,
+                                       @RequestParam(required = false) EventDesignTemplate template,
+                                       Model model) {
+        Event event = eventRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        EventPresentationSettings presentation = presentationSettingsRepository.findByEventId(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        if (event.getOrganizerEmail() == null || !DEMO_ORGANIZER_EMAIL.equalsIgnoreCase(event.getOrganizerEmail())) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+        addMarketplacePreviewModel(event, presentation, model);
+        model.addAttribute("previewTemplate", template != null ? template
+                : event.getDesignTemplate() != null ? event.getDesignTemplate() : EventDesignTemplate.CLASSIC);
+        model.addAttribute("previewTemplates", EventDesignTemplate.values());
+        model.addAttribute("organizerPreview", true);
+        model.addAttribute("creativeStylesPreview", true);
+        model.addAttribute("locked", true);
+        model.addAttribute("signedIn", true);
+        model.addAttribute("clientAccount", false);
+        model.addAttribute("favoriteCount", 0L);
+        return "events/marketplace-purchase";
     }
 
     @PostMapping

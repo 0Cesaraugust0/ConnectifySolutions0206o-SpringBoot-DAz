@@ -8,7 +8,8 @@
     function selectTemplate(option, updateUrl) {
         if (!option) return;
         layout.dataset.template = option.dataset.previewTemplate;
-        layout.querySelector('.template-badge').textContent = option.dataset.previewLabel;
+        const badge = layout.querySelector('.template-badge');
+        if (badge) badge.textContent = option.dataset.previewLabel;
         comparison.querySelector('[data-preview-current]').textContent = option.dataset.previewLabel;
         options.forEach(item => item.setAttribute('aria-current', String(item === option)));
         if (updateUrl) {

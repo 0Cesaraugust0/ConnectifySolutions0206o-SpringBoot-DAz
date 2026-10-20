@@ -13,6 +13,7 @@ import com.connectify.entity.UserAccount;
 import com.connectify.repository.TicketTypeRepository;
 import com.connectify.repository.UserAccountRepository;
 import com.connectify.service.CartService;
+import com.connectify.service.DemonstrationEventPolicy;
 import com.connectify.service.EventService;
 import com.connectify.service.IzipayPaymentException;
 import com.connectify.service.IzipayPaymentService;
@@ -146,10 +147,13 @@ public class CartController {
             clearIzipaySession(session);
             return "redirect:/cart/checkout?profileError=true";
         }
-        if (cartService.getItems(session).isEmpty()) {
+        var items = cartService.getItems(session);
+        if (items.isEmpty()) {
             clearIzipaySession(session);
             return "redirect:/cart";
         }
+        items.forEach(item -> DemonstrationEventPolicy.requirePurchasable(eventService.findById(item.getEventId())
+                .orElseThrow(() -> new IllegalArgumentException("Evento no encontrado"))));
         if (!izipayPaymentService.isReady()) {
             clearIzipaySession(session);
             return "redirect:/cart/checkout?paymentConfigError=true";
@@ -241,6 +245,7 @@ public class CartController {
         if (event.getStatus() != EventStatus.PUBLISHED) {
             return "redirect:/events";
         }
+        DemonstrationEventPolicy.requirePurchasable(event);
 
         TicketType ticketType = null;
         if (ticketTypeId != null) {

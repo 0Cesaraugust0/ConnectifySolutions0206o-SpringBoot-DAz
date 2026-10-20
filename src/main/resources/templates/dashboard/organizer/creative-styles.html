@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estilos creativos - Connectify</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <link rel="stylesheet" th:href="@{/css/ui.css}">
+    <link rel="stylesheet" th:href="@{/css/organizer.css(v='organizer-nav-shell-2')}">
+    <link rel="stylesheet" th:href="@{/css/organizer-creative-styles.css(v='1')}">
+</head>
+<body class="creative-styles-page">
+<header class="navbar dashboard-nav">
+    <a class="brand brand-link" th:href="@{/dashboard/organizer/events/new}">
+        <span class="logo organizer-brand-icon" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><path d="M7 3v3M17 3v3M4.5 9h15M6.5 5h11a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2h-11a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2Z"/><path d="m9 14 2 2 4-4"/></svg></span>
+        <div><strong>Connectify</strong><small>Organizador</small></div>
+    </a>
+    <nav class="top-actions organizer-create-nav" aria-label="Navegación del organizador">
+        <a class="btn secondary" th:href="@{/dashboard/organizer/events/new}">Crear evento</a>
+        <a class="btn secondary" th:href="@{/dashboard/organizer/events}">Mis eventos</a>
+        <a class="btn secondary" th:href="@{/dashboard/organizer}">Dashboard</a>
+    </nav>
+</header>
+
+<main class="creative-styles-shell">
+    <section class="creative-styles-hero">
+        <div>
+            <span class="creative-styles-eyebrow">Sala de demostraciones · Solo lectura</span>
+            <h1>Estilos creativos</h1>
+            <p>Explora cómo cambian la portada, el escenario, los contenidos y las entradas según el diseño. Usa estas propuestas como referencia para construir tu propio evento.</p>
+        </div>
+        <div class="creative-styles-count"><strong th:text="${#arrays.length(styles)}">8</strong><span>composiciones<br>para comparar</span></div>
+    </section>
+
+    <section class="creative-styles-section" aria-labelledby="styleTemplatesTitle">
+        <div class="creative-styles-section-heading"><div><span>01 · Composiciones</span><h2 id="styleTemplatesTitle">Una estructura para cada experiencia</h2></div><p>Abre un estilo y cambia entre las ocho opciones en la vista previa.</p></div>
+        <div class="creative-template-grid" th:if="${!examples.isEmpty()}">
+            <a class="creative-template-card" th:each="style, iteration : ${styles}"
+               th:href="@{/dashboard/organizer/events/creative-styles/{id}(id=${styleEventIds[style.name()]},template=${style.name()})}">
+                <span class="creative-template-number" th:text="${#numbers.formatInteger(iteration.count, 2)}">01</span>
+                <strong th:text="${style.label}">Clásico</strong>
+                <small th:text="${style.description}">Descripción del estilo.</small>
+                <span class="creative-template-action">Explorar estilo <span aria-hidden="true">↗</span></span>
+            </a>
+        </div>
+        <p class="creative-empty" th:if="${examples.isEmpty()}">Las propuestas visuales estarán disponibles próximamente.</p>
+    </section>
+
+    <section class="creative-styles-section" aria-labelledby="styleExamplesTitle">
+        <div class="creative-styles-section-heading"><div><span>02 · Ejemplos construidos</span><h2 id="styleExamplesTitle">Mira el diseño con contenido realista</h2></div><p>Estas propuestas son ficticias. La sala no permite editar eventos ni comprar entradas.</p></div>
+        <div class="creative-example-grid">
+            <a class="creative-example-card" th:each="event : ${examples}" th:href="@{/dashboard/organizer/events/creative-styles/{id}(id=${event.id})}">
+                <div class="creative-example-cover">
+                    <img th:if="${exampleImages[event.id] != null && !exampleImages[event.id].isBlank()}" th:src="${exampleImages[event.id]}" th:alt="${'Portada de ' + event.title}">
+                    <span th:unless="${exampleImages[event.id] != null && !exampleImages[event.id].isBlank()}" class="creative-example-placeholder">Connectify</span>
+                    <span class="creative-example-ribbon">Ejemplo</span>
+                </div>
+                <div class="creative-example-copy">
+                    <span th:text="${event.designTemplate != null ? event.designTemplate.label : 'Clásico'}">Clásico</span>
+                    <h3 th:text="${event.title}">Evento de ejemplo</h3>
+                    <p th:text="${event.description}">Descripción del evento.</p>
+                    <strong>Ver construcción <span aria-hidden="true">↗</span></strong>
+                </div>
+            </a>
+        </div>
+    </section>
+</main>
+</body>
+</html>

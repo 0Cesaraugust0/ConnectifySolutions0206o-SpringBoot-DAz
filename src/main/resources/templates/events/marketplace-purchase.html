@@ -13,7 +13,7 @@
     <link rel="stylesheet" th:href="@{/css/marketplace-showcase.css(v='showcase-1')}">
     <link th:if="${adminPreview == true}" rel="stylesheet" th:href="@{/css/admin-event-preview.css(v='review-70-1')}">
     <script th:src="@{/js/stage-map-modal.js(v='stage-modal-1')}" defer></script>
-    <script th:if="${organizerPreview == true}" th:src="@{/js/showcase/template-preview.js(v='showcase-1')}" defer></script>
+    <script th:if="${organizerPreview == true}" th:src="@{/js/showcase/template-preview.js(v='showcase-2')}" defer></script>
 </head>
 <body class="marketplace-event-detail" th:classappend="${adminPreview == true ? 'admin-event-preview' : ''}">
 <header th:if="${adminPreview == true}" class="navbar marketplace-nav admin-preview-nav">
@@ -35,7 +35,8 @@
             <a class="market-text-control" th:href="@{/cart}">Carrito</a>
             <a class="market-text-control" th:href="@{/dashboard/client/favorites}">Guardados<span class="market-icon-badge" th:if="${favoriteCount > 0}" th:text="${favoriteCount}">0</span></a>
         </div>
-        <a class="btn secondary compact" th:if="${organizerPreview == true}" th:href="@{/dashboard/organizer/events/{id}(id=${event.id})}">Administrar evento</a>
+        <a class="btn secondary compact" th:if="${creativeStylesPreview == true}" th:href="@{/dashboard/organizer/events/creative-styles}">Estilos creativos</a>
+        <a class="btn secondary compact" th:if="${organizerPreview == true && creativeStylesPreview != true}" th:href="@{/dashboard/organizer/events/{id}(id=${event.id})}">Administrar evento</a>
         <a class="btn secondary compact" th:if="${signedIn && !clientAccount && organizerPreview != true}" th:href="@{/dashboard}">Mi panel</a>
         <a class="btn secondary compact" th:unless="${signedIn}" th:href="@{/login}">Iniciar sesión</a>
         <a class="btn primary compact" th:unless="${signedIn}" th:href="@{/register}">Crear cuenta</a>
@@ -44,22 +45,24 @@
 
 <section class="organizer-market-preview" th:if="${organizerPreview == true}">
     <div>
-        <span class="organizer-preview-label">Vista privada del Organizador</span>
-        <strong>Esta es la presentación real del evento en Marketplace.</strong>
-        <small th:text="${event.status != null && event.status.name() == 'PUBLISHED' ? 'El evento está publicado.' : 'Todavía no es visible para clientes.'}">Vista previa</small>
+        <span class="organizer-preview-label" th:text="${creativeStylesPreview == true ? 'Sala de estilos creativos' : 'Vista privada del Organizador'}">Vista privada del Organizador</span>
+        <strong th:text="${creativeStylesPreview == true ? 'Ejemplo demostrativo de solo lectura.' : 'Esta es la presentación real del evento en Marketplace.'}">Esta es la presentación real del evento en Marketplace.</strong>
+        <small th:text="${creativeStylesPreview == true ? 'Compara diseños sin editar ni comprar entradas.' : event.status != null && event.status.name() == 'PUBLISHED' ? 'El evento está publicado.' : 'Todavía no es visible para clientes.'}">Vista previa</small>
     </div>
     <nav>
-        <a th:href="@{/dashboard/organizer/events}">Mis eventos</a>
-        <a th:href="@{/dashboard/organizer/events/{id}(id=${event.id})}">Administrar</a>
-        <a th:if="${!locked}" th:href="@{/dashboard/organizer/events/{id}/edit(id=${event.id})}">Editar datos</a>
-        <a th:href="@{/dashboard/organizer/events/{id}/ticket-types(id=${event.id})}">Gestionar entradas</a>
+        <a th:if="${creativeStylesPreview == true}" th:href="@{/dashboard/organizer/events/creative-styles}">Volver a la sala</a>
+        <a th:if="${creativeStylesPreview != true}" th:href="@{/dashboard/organizer/events}">Mis eventos</a>
+        <a th:if="${creativeStylesPreview != true}" th:href="@{/dashboard/organizer/events/{id}(id=${event.id})}">Administrar</a>
+        <a th:if="${creativeStylesPreview != true && !locked}" th:href="@{/dashboard/organizer/events/{id}/edit(id=${event.id})}">Editar datos</a>
+        <a th:if="${creativeStylesPreview != true}" th:href="@{/dashboard/organizer/events/{id}/ticket-types(id=${event.id})}">Gestionar entradas</a>
     </nav>
 </section>
 
 <section class="presentation-comparison" th:if="${organizerPreview == true}" aria-label="Comparar las ocho presentaciones">
-    <div class="comparison-heading"><div><span>Explora el diseño</span><h2>Un evento, ocho composiciones</h2><p>Cambia de presentación para comparar el mismo contenido. Para conservar una elección, selecciónala en Editar.</p></div><button type="button" class="comparison-mobile" data-preview-mobile aria-pressed="false">Vista móvil</button></div>
+    <div class="comparison-heading"><div><span>Explora el diseño</span><h2>Un evento, ocho composiciones</h2><p th:text="${creativeStylesPreview == true ? 'Cambia de presentación para comparar el mismo contenido. Este ejemplo no modifica tu cuenta.' : 'Cambia de presentación para comparar el mismo contenido. Para conservar una elección, selecciónala en Editar.'}">Cambia de presentación para comparar el mismo contenido.</p></div><button type="button" class="comparison-mobile" data-preview-mobile aria-pressed="false">Vista móvil</button></div>
     <nav class="comparison-options" aria-label="Plantillas disponibles">
-        <a th:each="design : ${previewTemplates}" th:href="@{/dashboard/organizer/events/{id}/preview(id=${event.id},template=${design.name()})}" th:attr="data-preview-template=${design.name()},data-preview-label=${design.label},aria-current=${previewTemplate == design ? 'true' : 'false'}" th:text="${design.label}">Clásico</a>
+        <a th:if="${creativeStylesPreview != true}" th:each="design : ${previewTemplates}" th:href="@{/dashboard/organizer/events/{id}/preview(id=${event.id},template=${design.name()})}" th:attr="data-preview-template=${design.name()},data-preview-label=${design.label},aria-current=${previewTemplate == design ? 'true' : 'false'}" th:text="${design.label}">Clásico</a>
+        <a th:if="${creativeStylesPreview == true}" th:each="design : ${previewTemplates}" th:href="@{/dashboard/organizer/events/creative-styles/{id}(id=${event.id},template=${design.name()})}" th:attr="data-preview-template=${design.name()},data-preview-label=${design.label},aria-current=${previewTemplate == design ? 'true' : 'false'}" th:text="${design.label}">Clásico</a>
     </nav>
     <p class="comparison-status" aria-live="polite">Comparando: <strong data-preview-current th:text="${previewTemplate.label}">Clásico</strong></p>
 </section>
@@ -124,8 +127,8 @@
                         <h2>Sesiones disponibles</h2>
                         <details th:each="eventSession : ${presentation.sessionText.split('\r?\n')}" th:if="${eventSession != null && !eventSession.isBlank()}">
                             <summary><span th:text="${eventSession}">Lima · 25 julio</span><b>+</b></summary>
-                            <p th:text="${adminPreview == true ? 'Sesión incluida en la propuesta del evento.' : 'Elige esta fecha y continúa con la compra desde las entradas disponibles.'}">Elige esta fecha y continúa con la compra desde las entradas disponibles.</p>
-                            <a th:unless="${adminPreview == true}" href="#ticketTypes">Comprar entrada</a>
+                            <p th:text="${adminPreview == true ? 'Sesión incluida en la propuesta del evento.' : demoEvent ? 'Sesión referencial de este evento demostrativo.' : 'Elige esta fecha y continúa con la compra desde las entradas disponibles.'}">Elige esta fecha y continúa con la compra desde las entradas disponibles.</p>
+                            <a th:if="${adminPreview != true && organizerPreview != true && !demoEvent}" href="#ticketTypes">Comprar entrada</a>
                         </details>
                     </section>
                     <section class="market-extra-block market-agenda" th:if="${presentation.showAgenda && presentation.agendaText != null && !presentation.agendaText.isBlank()}"><h2 class="market-section-title">Programa del evento</h2><ol><li th:each="item : ${presentation.agendaText.split('\r?\n')}" th:if="${!item.isBlank()}" th:text="${item}">Agenda</li></ol></section>
@@ -145,7 +148,7 @@
 
             <section id="ticketTypes" class="market-tickets table-card ticket-anchor" th:if="${ticketTypes != null && !ticketTypes.isEmpty()}">
                 <div class="ticket-section-heading">
-                    <div><h2>Tipos de entrada</h2><p class="muted small" th:text="${adminPreview == true ? 'Revisa precios y disponibilidad. Las compras están desactivadas en esta vista previa.' : 'Selecciona la cantidad de cada variante y agrégala a tu carrito.'}">Selecciona la cantidad de cada variante y agrégala a tu carrito.</p></div>
+                    <div><h2>Tipos de entrada</h2><p class="muted small" th:text="${adminPreview == true ? 'Revisa precios y disponibilidad. Las compras están desactivadas en esta vista previa.' : demoEvent ? 'Entradas de muestra: este evento demostrativo no admite compras.' : 'Selecciona la cantidad de cada variante y agrégala a tu carrito.'}">Selecciona la cantidad de cada variante y agrégala a tu carrito.</p></div>
                 </div>
                 <table class="table-modern">
                     <thead><tr><th>Entrada</th><th>Precio</th><th>Disponibles</th><th>Acción</th></tr></thead>
@@ -155,7 +158,7 @@
                         <td th:text="${'S/ ' + type.price}">S/ 0.00</td>
                         <td th:text="${type.remaining}">0</td>
                         <td>
-                            <form class="ticket-cart-form" th:if="${adminPreview != true && organizerPreview != true && clientAccount && type.remaining > 0}" th:action="@{/cart/add/{id}(id=${event.id})}" method="post">
+                            <form class="ticket-cart-form" th:if="${adminPreview != true && organizerPreview != true && !demoEvent && clientAccount && type.remaining > 0}" th:action="@{/cart/add/{id}(id=${event.id})}" method="post">
                                 <input type="hidden" name="ticketTypeId" th:value="${type.id}">
                                 <div class="quantity-stepper" th:attr="data-max=${type.remaining}">
                                     <button type="button" class="quantity-plus" aria-label="Aumentar cantidad">+</button>
@@ -164,11 +167,12 @@
                                 </div>
                                 <button class="btn primary compact" type="submit">Agregar al carrito</button>
                             </form>
-                            <span class="ticket-sold-out" th:if="${adminPreview != true && organizerPreview != true && clientAccount && type.remaining <= 0}">Agotado</span>
-                            <a class="btn secondary compact" th:if="${adminPreview != true && organizerPreview != true && !signedIn}" th:href="@{/login}">Iniciar sesión</a>
+                            <span class="ticket-sold-out" th:if="${adminPreview != true && organizerPreview != true && !demoEvent && clientAccount && type.remaining <= 0}">Agotado</span>
+                            <a class="btn secondary compact" th:if="${adminPreview != true && organizerPreview != true && !demoEvent && !signedIn}" th:href="@{/login}">Iniciar sesión</a>
+                            <span class="organizer-preview-ticket" th:if="${demoEvent && adminPreview != true && organizerPreview != true}">Solo demostración</span>
                             <span class="organizer-preview-ticket" th:if="${organizerPreview == true}">Vista previa</span>
                             <span class="organizer-preview-ticket" th:if="${adminPreview == true}">Vista de revisión</span>
-                            <span class="muted small" th:if="${adminPreview != true && organizerPreview != true && signedIn && !clientAccount}">Solo cuenta Cliente</span>
+                            <span class="muted small" th:if="${adminPreview != true && organizerPreview != true && !demoEvent && signedIn && !clientAccount}">Solo cuenta Cliente</span>
                         </td>
                     </tr>
                     </tbody>
@@ -179,7 +183,7 @@
                 <span>El Organizador aún no ha publicado variantes de entrada para este evento.</span>
             </section>
         </div>
-        <div th:unless="${adminPreview == true}" class="market-actions" style="padding:0 30px 30px"><a class="btn secondary" th:if="${organizerPreview == true}" th:href="@{/dashboard/organizer/events}">Volver a mis eventos</a><a class="btn secondary" th:if="${organizerPreview != true}" th:href="@{/events}">Seguir explorando</a><a class="btn primary" th:if="${organizerPreview != true && clientAccount}" th:href="@{/cart}">Ver mi carrito</a></div>
+        <div th:unless="${adminPreview == true}" class="market-actions" style="padding:0 30px 30px"><a class="btn secondary" th:if="${creativeStylesPreview == true}" th:href="@{/dashboard/organizer/events/creative-styles}">Volver a estilos creativos</a><a class="btn secondary" th:if="${organizerPreview == true && creativeStylesPreview != true}" th:href="@{/dashboard/organizer/events}">Volver a mis eventos</a><a class="btn secondary" th:if="${organizerPreview != true}" th:href="@{/events}">Seguir explorando</a><a class="btn primary" th:if="${organizerPreview != true && !demoEvent && clientAccount}" th:href="@{/cart}">Ver mi carrito</a></div>
     </section>
 </main>
 <dialog id="stageMapDialog" class="stage-map-dialog"

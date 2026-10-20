@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 760" role="img" aria-labelledby="title description">
+  <title id="title">Tech Summit Perú · plano referencial</title>
+  <desc id="description">Plano conceptual de una conferencia tecnológica con escenario, vista del público y temas de inteligencia artificial, nube y desarrollo web. No representa asientos ni distribución confirmada.</desc>
+  <defs>
+    <linearGradient id="panel" x2="1" y2="1"><stop stop-color="#092c3d"/><stop offset="1" stop-color="#071828"/></linearGradient>
+    <linearGradient id="display" x2="1" y2="0"><stop stop-color="#18bcc1"/><stop offset="1" stop-color="#4984ec"/></linearGradient>
+    <pattern id="grid" width="28" height="28" patternUnits="userSpaceOnUse"><path d="M28 0H0V28" fill="none" stroke="#5eaab6" stroke-opacity=".13"/></pattern>
+  </defs>
+  <rect width="1200" height="760" fill="#edf4f7"/>
+  <rect x="32" y="30" width="1136" height="700" rx="30" fill="#fff" stroke="#d8e6ea" stroke-width="2"/>
+  <text x="66" y="85" font-family="Arial,sans-serif" font-size="30" font-weight="700" fill="#102534">TECH SUMMIT PERÚ</text>
+  <text x="67" y="116" font-family="Arial,sans-serif" font-size="17" fill="#637988">Un espacio visual para las ideas que conectan tecnología y personas</text>
+  <rect x="937" y="57" width="194" height="38" rx="19" fill="#def5f4"/>
+  <text x="1034" y="82" text-anchor="middle" font-family="Arial,sans-serif" font-size="16" font-weight="700" fill="#087a81">PLANO REFERENCIAL</text>
+  <rect x="65" y="146" width="790" height="522" rx="28" fill="url(#panel)"/>
+  <rect x="65" y="146" width="790" height="522" rx="28" fill="url(#grid)"/>
+  <path d="M178 217H742L703 300H217Z" fill="#144f65" stroke="#54ccd4" stroke-width="2"/>
+  <path d="M247 234H673" stroke="url(#display)" stroke-width="7" stroke-linecap="round"/>
+  <text x="460" y="271" text-anchor="middle" font-family="Arial,sans-serif" font-size="29" font-weight="700" fill="#fff">ESCENARIO · CHARLAS</text>
+  <path d="M242 323H678L763 594H157Z" fill="#0b3549" stroke="#468c9e" stroke-width="2"/>
+  <path d="M270 365H650M248 426H672M226 492H694M202 561H718" fill="none" stroke="#3b7d91" stroke-opacity=".45" stroke-width="3"/>
+  <path d="M460 337V579" stroke="#32bfc4" stroke-opacity=".5" stroke-width="3" stroke-dasharray="8 10"/>
+  <rect x="329" y="430" width="262" height="72" rx="19" fill="#146075"/>
+  <text x="460" y="473" text-anchor="middle" font-family="Arial,sans-serif" font-size="25" font-weight="700" fill="#e8fcfc">PÚBLICO</text>
+  <g fill="#2db4c0"><circle cx="180" cy="292" r="8"/><circle cx="737" cy="292" r="8"/><circle cx="170" cy="625" r="7"/><circle cx="750" cy="625" r="7"/></g>
+  <g stroke="#6cd7dc" stroke-width="2" fill="none" opacity=".65"><path d="M180 292L248 339M737 292L672 339M170 625L242 576M750 625L677 576"/><circle cx="248" cy="339" r="5"/><circle cx="672" cy="339" r="5"/></g>
+  <text x="101" y="643" font-family="Arial,sans-serif" font-size="15" fill="#a6cbd1">Composición de auditorio ilustrativa</text>
+  <rect x="879" y="146" width="255" height="522" rx="26" fill="#f7fbfc" stroke="#deebee"/>
+  <text x="904" y="192" font-family="Arial,sans-serif" font-size="19" font-weight="700" fill="#123040">Ejes del encuentro</text>
+  <text x="904" y="229" font-family="Arial,sans-serif" font-size="16" fill="#607886">El arte visual destaca</text>
+  <text x="904" y="252" font-family="Arial,sans-serif" font-size="16" fill="#607886">los temas del evento.</text>
+  <rect x="904" y="297" width="205" height="70" rx="14" fill="#e2f7f6"/>
+  <text x="924" y="338" font-family="Arial,sans-serif" font-size="18" font-weight="700" fill="#0a747c">01  IA</text>
+  <rect x="904" y="380" width="205" height="70" rx="14" fill="#e4f1fa"/>
+  <text x="924" y="421" font-family="Arial,sans-serif" font-size="18" font-weight="700" fill="#1d658b">02  CLOUD</text>
+  <rect x="904" y="463" width="205" height="70" rx="14" fill="#e8ebfa"/>
+  <text x="924" y="504" font-family="Arial,sans-serif" font-size="18" font-weight="700" fill="#455a9f">03  WEB</text>
+  <text x="904" y="594" font-family="Arial,sans-serif" font-size="14" fill="#637b88">El recinto y la distribución</text>
+  <text x="904" y="616" font-family="Arial,sans-serif" font-size="14" fill="#637b88">se confirmarán aparte.</text>
+  <text x="66" y="703" font-family="Arial,sans-serif" font-size="15" fill="#74848d">Plano referencial · sin sectores, ubicaciones ni numeración de asientos confirmados.</text>
+</svg>

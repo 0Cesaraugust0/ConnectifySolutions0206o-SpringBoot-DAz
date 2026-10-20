@@ -4,10 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Centro de ayuda - Connectify</title>
-    <link rel="stylesheet" th:href="@{/css/styles.css(v='help-compact-1')}">
+    <link rel="stylesheet" th:href="@{/css/styles.css(v='help-compact-2')}">
     <link rel="stylesheet" th:href="@{/css/ui.css}">
+    <link rel="stylesheet" th:href="@{/css/marketplace-compact.css(v='12')}">
 </head>
-<body>
+<body class="marketplace-compact">
 <header class="navbar marketplace-nav">
     <a class="brand brand-link" th:href="@{/events}"><span class="logo brand-mark">C</span><div><strong>Connectify</strong><small>Centro de ayuda</small></div></a>
     <nav class="top-actions help-nav-actions"><a class="btn secondary" th:href="@{/events}">Marketplace</a><a class="btn primary compact" th:href="@{/communications}">Escribir a soporte</a></nav>
@@ -49,7 +50,7 @@
 
     <section class="support-panel" id="soporte">
         <div>
-            <p class="badge">Soporte</p>
+            <p class="support-eyebrow">Soporte</p>
             <h2>¿Necesitas ayuda con una compra o ticket?</h2>
             <p>Si tienes una cuenta Cliente, escribe desde el buzón de soporte. Tu mensaje llega a la bandeja del Administrador.</p>
         </div>

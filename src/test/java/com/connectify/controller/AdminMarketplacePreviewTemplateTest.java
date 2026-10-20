@@ -204,7 +204,8 @@ class AdminMarketplacePreviewTemplateTest {
                         "https://open.spotify.com/embed/playlist/fixturePlaylist12?utm_source=generator");
         assertThat(attribute(openingTagWithClass(previewHtml, "section", "market-layout"), "style"))
                 .isEqualTo(attribute(openingTagWithClass(publicHtml, "section", "market-layout"), "style"));
-        assertThat(publicHtml).contains("action=\"/cart/add/12\"", "Agregar al carrito");
+        assertThat(publicHtml).doesNotContain("action=\"/cart/add/12\"", "Agregar al carrito")
+                .contains("Solo demostración");
         assertReviewOnlyControls(previewHtml);
         assertThat(context.getBeanNamesForType(DataSource.class)).isEmpty();
         assertThat(context.getBeanNamesForType(jakarta.persistence.EntityManagerFactory.class)).isEmpty();

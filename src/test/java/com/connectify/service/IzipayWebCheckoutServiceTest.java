@@ -38,11 +38,11 @@ class IzipayWebCheckoutServiceTest {
         properties.setPaymentMethods("CARD,YAPE_CODE,PAGO_PUSH,QR");
         service = new IzipayWebCheckoutService(properties, attempts, users, events, types, purchases, gateway,
                 signatures, new IzipayWebPaymentValidator(), mapper);
-        event = new Event(); ReflectionTestUtils.setField(event, "id", 1L);
+        event = new Event(); ReflectionTestUtils.setField(event, "id", 101L);
         event.setTitle("Test Event"); event.setPrice(new BigDecimal("100.00")); event.setCapacity(100); event.setSold(0);
         event.setStatus(EventStatus.PUBLISHED); event.setEventDate(LocalDateTime.now().plusDays(3));
-        when(events.findById(1L)).thenReturn(Optional.of(event));
-        when(events.findLockedById(1L)).thenReturn(Optional.of(event));
+        when(events.findById(101L)).thenReturn(Optional.of(event));
+        when(events.findLockedById(101L)).thenReturn(Optional.of(event));
         when(users.findLockedByEmail(email)).thenReturn(Optional.of(new UserAccount("Test Client", email, "fixture", Role.CLIENT)));
         when(signatures.verificationToken(anyString(), anyString())).thenReturn("fixture-token");
         when(signatures.sameHash(eq("fixture-token"), anyString())).thenReturn(true);
@@ -55,7 +55,7 @@ class IzipayWebCheckoutServiceTest {
         attempt.setBuyerEmail(email); attempt.setMerchantCode("1234567");
         attempt.setPaymentMethod("CARD");
         attempt.setAmount(new BigDecimal("105.00")); attempt.setSubtotal(new BigDecimal("100.00")); attempt.setServiceFee(new BigDecimal("5.00"));
-        attempt.setSnapshotJson(mapper.writeValueAsString(List.of(new IzipayWebLine(1L, null, "Test Event", "General", 1, new BigDecimal("100.00")))));
+        attempt.setSnapshotJson(mapper.writeValueAsString(List.of(new IzipayWebLine(101L, null, "Test Event", "General", 1, new BigDecimal("100.00")))));
         attempt.setBillingJson(mapper.writeValueAsString(buyer().billing(email)));
         attempt.setVerificationTokenHash("stored-hash");
         when(attempts.findLocked(attempt.getOrderNumber())).thenReturn(Optional.of(attempt));
@@ -109,6 +109,25 @@ class IzipayWebCheckoutServiceTest {
     }
 
     @Test
+    void demonstrationEventCannotStartIzipayPaymentEvenWithAStaleCart() {
+        event.setOrganizerEmail("ORG@connectify.com");
+
+        assertThatThrownBy(() -> service.start(email, buyer(), cart(), "CARD"))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("demostrativo");
+        verifyNoInteractions(gateway, purchases);
+    }
+
+    @Test
+    void alreadyAuthorizedPaymentForAnEventNowMarkedAsDemoGoesToReview() {
+        event.setOrganizerEmail("org@connectify.com");
+
+        assertThat(service.notification(mapper.createObjectNode()).get("status")).isEqualTo("REVIEW");
+        verifyNoInteractions(purchases);
+        assertThat(event.getSold()).isZero();
+    }
+
+    @Test
     void pendingOrderIsReplacedWhenCustomerRetakesPayment() throws Exception {
         Map<String, Object> first = service.start(email, buyer(), cart(), "CARD");
         var capture = org.mockito.ArgumentCaptor.forClass(IzipayWebAttempt.class);
@@ -153,6 +172,6 @@ class IzipayWebCheckoutServiceTest {
         verifyNoInteractions(purchases);
     }
 
-    private List<CartItem> cart() { return new ArrayList<>(List.of(new CartItem(1L, null, "General", "Test Event", "", "Lima", 1, new BigDecimal("100.00")))); }
+    private List<CartItem> cart() { return new ArrayList<>(List.of(new CartItem(101L, null, "General", "Test Event", "", "Lima", 1, new BigDecimal("100.00")))); }
     private IzipayWebBuyer buyer() { return new IzipayWebBuyer("Test", "Client", "12345678", "999999999", "Avenida Peru 100", "Lima", "Lima", "15001"); }
 }

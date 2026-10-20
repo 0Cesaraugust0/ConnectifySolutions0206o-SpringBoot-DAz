@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 760" role="img" aria-labelledby="title description">
+  <title id="title">Final Copa Interbarrios · plano referencial</title>
+  <desc id="description">Ilustración de campo de juego y ambiente de tribuna. No muestra entradas, accesos, aforo ni ubicaciones de público confirmadas.</desc>
+  <defs>
+    <linearGradient id="night" x2="1" y2="1"><stop stop-color="#0c2530"/><stop offset="1" stop-color="#153e37"/></linearGradient>
+    <linearGradient id="field" x2="1" y2="1"><stop stop-color="#32825e"/><stop offset="1" stop-color="#176044"/></linearGradient>
+    <pattern id="stripe" width="72" height="72" patternUnits="userSpaceOnUse"><rect width="36" height="72" fill="#fff" opacity=".035"/></pattern>
+  </defs>
+  <rect width="1200" height="760" fill="#eef3ef"/>
+  <rect x="32" y="30" width="1136" height="700" rx="30" fill="#fff" stroke="#dde7e0" stroke-width="2"/>
+  <text x="66" y="85" font-family="Arial,sans-serif" font-size="30" font-weight="700" fill="#1e322c">FINAL COPA INTERBARRIOS</text>
+  <text x="67" y="116" font-family="Arial,sans-serif" font-size="17" fill="#687d72">La emoción del partido expresada en un mapa de referencia</text>
+  <rect x="937" y="57" width="194" height="38" rx="19" fill="#e3f2e6"/>
+  <text x="1034" y="82" text-anchor="middle" font-family="Arial,sans-serif" font-size="16" font-weight="700" fill="#28734e">PLANO REFERENCIAL</text>
+  <rect x="65" y="146" width="790" height="522" rx="28" fill="url(#night)"/>
+  <path d="M126 233Q460 105 795 233M111 583Q460 714 809 583" fill="none" stroke="#7dad9c" stroke-opacity=".42" stroke-width="17" stroke-linecap="round"/>
+  <path d="M137 256Q460 143 783 256M126 560Q460 678 794 560" fill="none" stroke="#a9cfc0" stroke-opacity=".3" stroke-width="3" stroke-dasharray="9 12"/>
+  <text x="460" y="208" text-anchor="middle" font-family="Arial,sans-serif" font-size="17" font-weight="700" fill="#c9e3d6">AMBIENTE DE TRIBUNA</text>
+  <rect x="180" y="250" width="560" height="315" rx="14" fill="url(#field)" stroke="#b4e0c2" stroke-width="5"/>
+  <rect x="180" y="250" width="560" height="315" rx="14" fill="url(#stripe)"/>
+  <rect x="201" y="270" width="518" height="275" rx="3" fill="none" stroke="#eef9ed" stroke-width="3"/>
+  <path d="M460 270V545M201 361H266V453H201M719 361H654V453H719" stroke="#eef9ed" stroke-width="3" fill="none"/>
+  <circle cx="460" cy="408" r="47" fill="none" stroke="#eef9ed" stroke-width="3"/>
+  <circle cx="460" cy="408" r="4" fill="#eef9ed"/>
+  <text x="460" y="602" text-anchor="middle" font-family="Arial,sans-serif" font-size="18" fill="#e1f1e6">CAMPO DE JUEGO · ESQUEMA ILUSTRATIVO</text>
+  <rect x="879" y="146" width="255" height="522" rx="26" fill="#f8fbf8" stroke="#e0eae2"/>
+  <text x="904" y="192" font-family="Arial,sans-serif" font-size="19" font-weight="700" fill="#263e32">Concepto deportivo</text>
+  <text x="904" y="232" font-family="Arial,sans-serif" font-size="16" fill="#667e70">El campo ocupa el centro</text>
+  <text x="904" y="255" font-family="Arial,sans-serif" font-size="16" fill="#667e70">de esta representación.</text>
+  <rect x="904" y="305" width="205" height="72" rx="14" fill="#e1f3e5"/>
+  <circle cx="931" cy="341" r="13" fill="#28865c"/><text x="956" y="347" font-family="Arial,sans-serif" font-size="16" font-weight="700" fill="#2b6244">Juego</text>
+  <rect x="904" y="389" width="205" height="72" rx="14" fill="#e8f0e9"/>
+  <circle cx="931" cy="425" r="13" fill="#79a78b"/><text x="956" y="431" font-family="Arial,sans-serif" font-size="16" font-weight="700" fill="#43674f">Público</text>
+  <rect x="904" y="485" width="205" height="121" rx="16" fill="#f0f5ee"/>
+  <text x="920" y="524" font-family="Arial,sans-serif" font-size="14" fill="#617367">La ubicación de tribunas,</text>
+  <text x="920" y="548" font-family="Arial,sans-serif" font-size="14" fill="#617367">accesos y sectores se</text>
+  <text x="920" y="572" font-family="Arial,sans-serif" font-size="14" fill="#617367">confirmará por separado.</text>
+  <text x="66" y="703" font-family="Arial,sans-serif" font-size="15" fill="#728176">Plano referencial · no representa el recinto ni asigna tribunas o lugares reales.</text>
+</svg>
