@@ -7,7 +7,7 @@
     <link rel="stylesheet" th:href="@{/css/styles.css(v='marketplace-cards-regular-1')}">
     <link rel="stylesheet" th:href="@{/css/marketplace-presentation.css}">
     <link rel="stylesheet" th:href="@{/css/marketplace-account.css(v='nav-51')}">
-    <link rel="stylesheet" th:href="@{/css/marketplace-compact.css(v='10')}">
+    <link rel="stylesheet" th:href="@{/css/marketplace-compact.css(v='11')}">
     <link rel="stylesheet" th:href="@{/css/launch-welcome.css(v='1')}">
 </head>
 <body class="marketplace-compact">
@@ -122,7 +122,7 @@
     </section>
 
     <section class="event-grid" th:if="${!events.isEmpty()}">
-        <article class="event-card professional-event-card" th:each="event : ${events}" th:with="presentation=${presentationByEventId[event.id]}">
+        <article class="event-card professional-event-card" th:each="event : ${events}" th:with="presentation=${presentationByEventId[event.id]},demoEvent=${(event.id != null && event.id >= 1 && event.id <= 12) || (event.organizerEmail != null && (#strings.toLowerCase(event.organizerEmail) == 'org@connectify.com' || #strings.endsWith(#strings.toLowerCase(event.organizerEmail), '@connectify.local'))) || (event.description != null && #strings.contains(event.description, 'Propuesta ficticia de demostración'))}">
             <form class="favorite-card-form" th:if="${clientAccount}" th:action="@{/dashboard/client/favorites/toggle/{id}(id=${event.id})}" method="post">
                 <input type="hidden" name="redirectTo" value="/events">
                 <button class="favorite-card-button" th:classappend="${favoriteEventIds.contains(event.id)} ? ' saved' : ''" type="submit" th:title="${favoriteEventIds.contains(event.id)} ? 'Quitar de seleccionados' : 'Guardar en seleccionados'" th:aria-label="${favoriteEventIds.contains(event.id)} ? 'Quitar de seleccionados' : 'Guardar en seleccionados'" th:text="${favoriteEventIds.contains(event.id)} ? 'Guardado' : 'Guardar'">Guardar</button>
@@ -134,7 +134,8 @@
                         <span th:text="${event.category != null ? event.category.name : 'Evento'}">Evento</span>
                     </div>
                     <span class="event-status" th:text="${event.featured ? 'Destacado' : 'Disponible'}">Disponible</span>
-                    <span class="event-thumbnail-template" th:if="${presentation != null}" th:text="${event.designTemplate != null ? event.designTemplate.label : 'Clásico'}">Clásico</span>
+                    <span class="event-thumbnail-template" th:if="${presentation != null && !demoEvent}" th:text="${event.designTemplate != null ? event.designTemplate.label : 'Clásico'}">Clásico</span>
+                    <span class="event-demo-ribbon" th:if="${demoEvent}">Suceso demostrativo</span>
                 </div>
                 <div class="event-body">
                     <div class="event-category" th:text="${event.category != null ? event.category.name : 'Evento'}">Categoría</div>

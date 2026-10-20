@@ -35,6 +35,23 @@
     max-width:min(760px,calc(100% - 68px));
 }
 
+.market-cover-title .demo-event-ribbon{
+    display:inline-flex;
+    align-items:center;
+    min-height:29px;
+    margin-bottom:9px;
+    padding:6px 22px 6px 12px;
+    clip-path:polygon(0 0,100% 0,calc(100% - 9px) 50%,100% 100%,0 100%);
+    background:linear-gradient(105deg,#991b1b,#dc2626 72%,#ef4444);
+    color:#fff;
+    font-size:11px;
+    font-weight:750;
+    letter-spacing:.045em;
+    line-height:1.2;
+    text-transform:uppercase;
+    text-shadow:0 1px 1px rgba(60,0,0,.35);
+}
+
 .market-cover-title h1{
     max-width:720px;
     overflow-wrap:anywhere;

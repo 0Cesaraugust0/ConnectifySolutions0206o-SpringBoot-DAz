@@ -8,7 +8,7 @@
     <link rel="stylesheet" th:href="@{/css/ui.css}">
     <link rel="stylesheet" th:href="@{/css/marketplace-presentation.css(v='templates-2')}">
     <link rel="stylesheet" th:href="@{/css/marketplace-account.css(v='detail-nav-1')}">
-    <link rel="stylesheet" th:href="@{/css/marketplace-purchase.css(v='organizer-preview-1')}">
+    <link rel="stylesheet" th:href="@{/css/marketplace-purchase.css(v='demo-ribbon-1')}">
     <link rel="stylesheet" th:href="@{/css/marketplace-showcase.css(v='showcase-1')}">
     <link th:if="${adminPreview == true}" rel="stylesheet" th:href="@{/css/admin-event-preview.css(v='review-70-1')}">
     <script th:src="@{/js/stage-map-modal.js(v='stage-modal-1')}" defer></script>
@@ -63,13 +63,14 @@
     <p class="comparison-status" aria-live="polite">Comparando: <strong data-preview-current th:text="${previewTemplate.label}">Clásico</strong></p>
 </section>
 
-<main class="dashboard-page market-stage market-detail-page" th:classappend="${adminPreview == true ? 'admin-preview-page' : ''}" th:with="effectiveTemplate=${organizerPreview == true && previewTemplate != null ? previewTemplate : event.designTemplate}">
+<main class="dashboard-page market-stage market-detail-page" th:classappend="${adminPreview == true ? 'admin-preview-page' : ''}" th:with="effectiveTemplate=${organizerPreview == true && previewTemplate != null ? previewTemplate : event.designTemplate},demoEvent=${(event.id != null && event.id >= 1 && event.id <= 12) || (event.organizerEmail != null && (#strings.toLowerCase(event.organizerEmail) == 'org@connectify.com' || #strings.endsWith(#strings.toLowerCase(event.organizerEmail), '@connectify.local'))) || (event.description != null && #strings.contains(event.description, 'Propuesta ficticia de demostración'))}">
     <section class="market-layout" th:classappend="${backgroundImageUrl != null && !backgroundImageUrl.isBlank()} ? ' has-background' : ''" th:attr="data-template=${effectiveTemplate != null ? effectiveTemplate.name() : 'CLASSIC'},data-focus=${presentation != null ? presentation.contentFocus : 'BALANCED'},data-info-position=${presentation != null ? presentation.infoPosition : 'STANDARD'}" th:style="${presentationStyle}">
         <div class="market-cover">
             <img th:if="${coverImageUrl != null && !coverImageUrl.isBlank()}" th:src="${coverImageUrl}" alt="Portada del evento">
             <div class="market-cover-empty" th:unless="${coverImageUrl != null && !coverImageUrl.isBlank()}">Connectify</div>
             <div class="market-cover-title">
-                <span class="badge template-badge" th:text="${effectiveTemplate != null ? effectiveTemplate.label : 'Clásico'}">Clásico</span>
+                <span class="badge template-badge" th:if="${!demoEvent}" th:text="${effectiveTemplate != null ? effectiveTemplate.label : 'Clásico'}">Clásico</span>
+                <span class="demo-event-ribbon" th:if="${demoEvent}">Suceso demostrativo</span>
                 <h1 th:text="${event.title}">Evento</h1>
                 <p th:text="${event.category != null ? event.category.name : 'Evento'}">Categoría</p>
             </div>

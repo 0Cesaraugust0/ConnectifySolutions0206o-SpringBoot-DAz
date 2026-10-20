@@ -19,6 +19,7 @@
 .marketplace-compact .marketplace-browse-copy .browse-stats strong{margin-right:4px;color:#253047;font-size:12px;font-weight:600;line-height:1}
 .marketplace-compact .marketplace-browse-copy .browse-stats .hero-commerce-note{background:#e8edf3;color:#4b5563}
 .marketplace-compact .marketplace-explore-heading{align-items:center;margin:20px 0 20px;padding-bottom:8px;border-bottom:2px solid #111827;gap:16px}
+@media(min-width:901px){.marketplace-compact .marketplace-explore-heading{margin-top:-3px}}
 .marketplace-explore-heading .badge{margin:0;padding:3px 9px;font-size:11px}
 .marketplace-explore-heading .btn{padding:6px 10px;font-size:11px}
 .marketplace-compact .event-grid{grid-template-columns:repeat(auto-fill,minmax(min(100%,310px),310px));gap:20px;justify-content:start}
@@ -28,6 +29,7 @@
 .marketplace-compact .event-cover-fallback span{font-size:10px}
 .marketplace-compact .professional-event-card .event-cover .event-status{position:absolute;top:13px;right:13px;left:auto;z-index:3;font-size:10px;padding:6px 10px}
 .marketplace-compact .event-thumbnail-template{font-size:9px;left:14px;bottom:11px}
+.marketplace-compact .event-demo-ribbon{position:absolute;left:0;bottom:11px;z-index:3;display:inline-flex;align-items:center;min-height:27px;padding:5px 20px 5px 13px;clip-path:polygon(0 0,100% 0,calc(100% - 9px) 50%,100% 100%,0 100%);background:linear-gradient(105deg,#991b1b,#dc2626 72%,#ef4444);color:#fff;font-size:10px;font-weight:750;letter-spacing:.045em;text-transform:uppercase;text-shadow:0 1px 1px rgba(60,0,0,.35)}
 .marketplace-compact .event-body{padding:18px;gap:11px}
 .marketplace-compact .event-body h3{font-size:18px;line-height:1.25}
 .marketplace-compact .event-description{font-size:13px}
