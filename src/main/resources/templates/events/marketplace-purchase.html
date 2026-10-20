@@ -9,12 +9,13 @@
     <link rel="stylesheet" th:href="@{/css/marketplace-presentation.css(v='templates-2')}">
     <link rel="stylesheet" th:href="@{/css/marketplace-account.css(v='detail-nav-1')}">
     <link rel="stylesheet" th:href="@{/css/marketplace-purchase.css(v='demo-ribbon-1')}">
+    <link rel="stylesheet" th:href="@{/css/marketplace-compact.css(v='12')}">
     <link rel="stylesheet" th:href="@{/css/marketplace-showcase.css(v='showcase-1')}">
     <link th:if="${adminPreview == true}" rel="stylesheet" th:href="@{/css/admin-event-preview.css(v='review-70-1')}">
     <script th:src="@{/js/stage-map-modal.js(v='stage-modal-1')}" defer></script>
     <script th:if="${organizerPreview == true}" th:src="@{/js/showcase/template-preview.js(v='showcase-1')}" defer></script>
 </head>
-<body th:classappend="${adminPreview == true ? 'admin-event-preview' : ''}">
+<body class="marketplace-event-detail" th:classappend="${adminPreview == true ? 'admin-event-preview' : ''}">
 <header th:if="${adminPreview == true}" class="navbar marketplace-nav admin-preview-nav">
     <a class="brand brand-link" th:href="${adminReturnUrl}"><span class="logo brand-mark">C</span><div><strong>Connectify</strong><small>Vista previa · Administrador</small></div></a>
     <nav class="top-actions" aria-label="Acciones de revisión del evento">
