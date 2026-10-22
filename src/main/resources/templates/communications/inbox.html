@@ -7,14 +7,18 @@
     <link rel="stylesheet" th:href="@{/css/styles.css}">
     <link rel="stylesheet" th:href="@{/css/ui.css}">
     <link rel="stylesheet" th:href="@{/css/communications-center.css(v='organizer-nav-2')}">
+    <link rel="stylesheet" th:href="@{/css/communications-inbox-nav.css(v='organizer-match-2')}">
     <script th:src="@{/js/communications-filters.js(v='sent-chip-1')}" defer></script>
 </head>
 <body>
-<header class="navbar dashboard-nav communications-nav" th:classappend="${!supportMode and currentRole.name() == 'ORGANIZER'} ? ' organizer-role-nav' : ''">
-    <a class="brand brand-link" th:href="@{/dashboard}"><span class="logo organizer-brand-icon" aria-hidden="true" th:if="${!supportMode and currentRole.name() == 'ORGANIZER'}"><svg viewBox="0 0 24 24" focusable="false"><path d="M7 3v3M17 3v3M4.5 9h15M6.5 5h11a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2h-11a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2Z"/><path d="m9 14 2 2 4-4"/></svg></span><span class="logo" th:unless="${!supportMode and currentRole.name() == 'ORGANIZER'}">💬</span><div><strong>Connectify</strong><small>Mensajería</small></div></a>
-    <nav class="top-actions">
-        <a class="btn secondary" th:href="@{/communications/new}" th:text="${supportMode} ? 'Escribir a soporte' : 'Nuevo mensaje'">Nuevo mensaje</a>
-        <a class="btn primary compact" th:href="@{/dashboard}">Dashboard</a>
+<header class="navbar dashboard-nav communications-inbox-nav">
+    <a class="brand brand-link" th:href="@{/dashboard}">
+        <span class="logo organizer-brand-icon" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><path d="M7 3v3M17 3v3M4.5 9h15M6.5 5h11a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2h-11a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2Z"/><path d="m9 14 2 2 4-4"/></svg></span>
+        <div><strong>Connectify</strong><small th:switch="${currentRole.name()}"><span th:case="'ADMIN'">Administrador</span><span th:case="'ORGANIZER'">Organizador</span><span th:case="'DESIGNER'">Diseñador</span><span th:case="'DEVELOPER'">Developer</span><span th:case="'CLIENT'">Cliente</span><span th:case="*">Mensajería</span></small></div>
+    </a>
+    <nav class="top-actions" aria-label="Acciones del centro de mensajes">
+        <a class="btn secondary" th:href="@{/dashboard}">Dashboard</a>
+        <a class="btn primary compact" th:href="@{/communications/new}" th:text="${supportMode} ? 'Escribir a soporte' : 'Nuevo mensaje'">Nuevo mensaje</a>
     </nav>
 </header>
 

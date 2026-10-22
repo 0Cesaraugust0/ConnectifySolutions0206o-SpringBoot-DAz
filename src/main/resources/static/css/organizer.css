@@ -656,6 +656,7 @@
     padding: 7px 9px;
     border-radius: 9px;
     font-size: .68rem;
+    font-weight: 400;
 }
 
 @media (max-width: 860px) {

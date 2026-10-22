@@ -183,6 +183,15 @@ public class CommunicationController {
         model.addAttribute("currentRole", currentRole);
         model.addAttribute("message", message);
         model.addAttribute("statuses", MessageStatus.values());
+        model.addAttribute("senderRoleLabel", actorLabel(message.getSenderRole()));
+        model.addAttribute("targetRoleLabel", actorLabel(message.getTargetRole()));
+        model.addAttribute("messageTypeLabel", messageTypeLabel(message.getType()));
+        model.addAttribute("priorityLabel", switch (message.getPriority()) {
+            case LOW -> "Baja";
+            case NORMAL -> "Normal";
+            case HIGH -> "Alta";
+            case URGENT -> "Urgente";
+        });
         return "communications/detail";
     }
 
@@ -293,6 +302,19 @@ public class CommunicationController {
             case GATE_AGENT -> "Equipo de puerta";
             case CLIENT -> "Cliente";
             case DEVELOPER -> "Desarrollo";
+        };
+    }
+
+    private String messageTypeLabel(MessageType type) {
+        return switch (type) {
+            case EVENT_REVIEW -> "Revisión de evento";
+            case DESIGN_REQUEST -> "Solicitud de diseño";
+            case DESIGN_FEEDBACK -> "Comentarios de diseño";
+            case GATE_ACCESS -> "Control de acceso";
+            case PAYMENT_SUPPORT -> "Consulta de pago";
+            case TICKET_SUPPORT -> "Consulta de entradas";
+            case CUSTOMER_SUPPORT -> "Atención al cliente";
+            case GENERAL_COORDINATION -> "Coordinación general";
         };
     }
 

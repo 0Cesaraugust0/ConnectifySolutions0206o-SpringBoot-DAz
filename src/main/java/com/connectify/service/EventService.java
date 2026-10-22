@@ -1,6 +1,7 @@
 package com.connectify.service;
 
 import com.connectify.entity.Event;
+import com.connectify.entity.Category;
 import com.connectify.entity.EventStatus;
 import com.connectify.repository.EventRepository;
 import org.springframework.stereotype.Service;
@@ -32,8 +33,7 @@ public class EventService {
         return eventRepository.findByStatusAndEventDateAfterOrderByEventDateAsc(EventStatus.PUBLISHED, now).stream()
                 .filter(event -> matchesQuery(event, query))
                 .filter(event -> matchesText(event.getCity(), city))
-                .filter(event -> !StringUtils.hasText(category)
-                        || (event.getCategory() != null && event.getCategory().getName().equalsIgnoreCase(category.trim())))
+                .filter(event -> matchesCategory(event.getCategory(), category))
                 .filter(event -> endDate == null || !event.getEventDate().isAfter(endDate))
                 .toList();
     }
@@ -55,6 +55,13 @@ public class EventService {
         return contains(event.getTitle(), query)
                 || contains(event.getDescription(), query)
                 || contains(event.getOrganizerName(), query);
+    }
+
+    private boolean matchesCategory(Category category, String expected) {
+        if (!StringUtils.hasText(expected)) return true;
+        if (category == null) return false;
+        if ("Música".equalsIgnoreCase(expected.trim())) return category.isMusic();
+        return category.getName() != null && category.getName().equalsIgnoreCase(expected.trim());
     }
 
     private boolean matchesText(String value, String expected) {

@@ -108,6 +108,13 @@ public class OrganizerDashboardController {
         for (EventDesignTemplate style : EventDesignTemplate.values()) {
             styleEventIds.putIfAbsent(style.name(), fallbackId);
         }
+        Map<EventDesignTemplate, String> directionExamples = Map.of(
+                EventDesignTemplate.ATELIER, "ORIGEN",
+                EventDesignTemplate.FESTIVAL, "PULSO",
+                EventDesignTemplate.FORUM, "NEXUM");
+        directionExamples.forEach((style, title) -> examples.stream()
+                .filter(event -> event.getTitle() != null && event.getTitle().toUpperCase(Locale.ROOT).contains(title))
+                .findFirst().ifPresent(event -> styleEventIds.put(style.name(), event.getId())));
         model.addAttribute("examples", examples);
         model.addAttribute("exampleImages", images);
         model.addAttribute("styles", EventDesignTemplate.values());

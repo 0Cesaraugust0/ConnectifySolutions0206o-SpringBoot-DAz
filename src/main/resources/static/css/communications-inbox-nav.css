@@ -1,0 +1,45 @@
+/* Same navigation dimensions, icon and typography as Organizer > Mis eventos. */
+.communications-inbox-nav {
+    min-height:62px;
+    padding:7px 28px;
+}
+.communications-inbox-nav .brand,
+.communications-inbox-nav .brand-link {
+    gap:9px;
+}
+.communications-inbox-nav .brand strong {
+    font-size:.82rem;
+}
+.communications-inbox-nav .brand small {
+    font-size:.66rem;
+}
+.communications-inbox-nav .top-actions {
+    gap:6px;
+}
+.communications-inbox-nav .top-actions .btn {
+    padding:6px 10px;
+    border-radius:9px;
+    font-size:.67rem;
+    font-weight:500;
+}
+.communications-inbox-nav .organizer-brand-icon {
+    width:34px;
+    height:34px;
+    border-radius:10px;
+    background:linear-gradient(145deg,#101827,#334155);
+    border:1px solid rgba(255,255,255,.15);
+    box-shadow:0 6px 14px rgba(15,23,42,.18);
+    color:#f8fafc;
+}
+.communications-inbox-nav .organizer-brand-icon svg {
+    width:18px;
+    height:18px;
+    fill:none;
+    stroke:currentColor;
+    stroke-width:1.8;
+    stroke-linecap:round;
+    stroke-linejoin:round;
+}
+@media(max-width:640px) {
+    .communications-inbox-nav { padding:8px 13px; }
+}

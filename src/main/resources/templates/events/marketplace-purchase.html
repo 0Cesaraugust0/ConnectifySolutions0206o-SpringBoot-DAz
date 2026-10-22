@@ -11,6 +11,7 @@
     <link rel="stylesheet" th:href="@{/css/marketplace-purchase.css(v='demo-ribbon-1')}">
     <link rel="stylesheet" th:href="@{/css/marketplace-compact.css(v='12')}">
     <link rel="stylesheet" th:href="@{/css/marketplace-showcase.css(v='showcase-1')}">
+    <link rel="stylesheet" th:href="@{/css/event-art-directions.css(v='1')}">
     <link th:if="${adminPreview == true}" rel="stylesheet" th:href="@{/css/admin-event-preview.css(v='review-70-1')}">
     <script th:src="@{/js/stage-map-modal.js(v='stage-modal-1')}" defer></script>
     <script th:if="${organizerPreview == true}" th:src="@{/js/showcase/template-preview.js(v='showcase-2')}" defer></script>
@@ -58,8 +59,8 @@
     </nav>
 </section>
 
-<section class="presentation-comparison" th:if="${organizerPreview == true}" aria-label="Comparar las ocho presentaciones">
-    <div class="comparison-heading"><div><span>Explora el diseño</span><h2>Un evento, ocho composiciones</h2><p th:text="${creativeStylesPreview == true ? 'Cambia de presentación para comparar el mismo contenido. Este ejemplo no modifica tu cuenta.' : 'Cambia de presentación para comparar el mismo contenido. Para conservar una elección, selecciónala en Editar.'}">Cambia de presentación para comparar el mismo contenido.</p></div><button type="button" class="comparison-mobile" data-preview-mobile aria-pressed="false">Vista móvil</button></div>
+<section class="presentation-comparison" th:if="${organizerPreview == true}" aria-label="Comparar presentaciones">
+    <div class="comparison-heading"><div><span>Explora el diseño</span><h2>Un evento, distintas identidades</h2><p th:text="${creativeStylesPreview == true ? 'Cambia de presentación para comparar el mismo contenido. Este ejemplo no modifica tu cuenta.' : 'Cambia de presentación para comparar el mismo contenido. Para conservar una elección, selecciónala en Editar.'}">Cambia de presentación para comparar el mismo contenido.</p></div><button type="button" class="comparison-mobile" data-preview-mobile aria-pressed="false">Vista móvil</button></div>
     <nav class="comparison-options" aria-label="Plantillas disponibles">
         <a th:if="${creativeStylesPreview != true}" th:each="design : ${previewTemplates}" th:href="@{/dashboard/organizer/events/{id}/preview(id=${event.id},template=${design.name()})}" th:attr="data-preview-template=${design.name()},data-preview-label=${design.label},aria-current=${previewTemplate == design ? 'true' : 'false'}" th:text="${design.label}">Clásico</a>
         <a th:if="${creativeStylesPreview == true}" th:each="design : ${previewTemplates}" th:href="@{/dashboard/organizer/events/creative-styles/{id}(id=${event.id},template=${design.name()})}" th:attr="data-preview-template=${design.name()},data-preview-label=${design.label},aria-current=${previewTemplate == design ? 'true' : 'false'}" th:text="${design.label}">Clásico</a>
@@ -68,7 +69,7 @@
 </section>
 
 <main class="dashboard-page market-stage market-detail-page" th:classappend="${adminPreview == true ? 'admin-preview-page' : ''}" th:with="effectiveTemplate=${organizerPreview == true && previewTemplate != null ? previewTemplate : event.designTemplate},demoEvent=${(event.id != null && event.id >= 1 && event.id <= 12) || (event.organizerEmail != null && (#strings.toLowerCase(event.organizerEmail) == 'org@connectify.com' || #strings.endsWith(#strings.toLowerCase(event.organizerEmail), '@connectify.local'))) || (event.description != null && #strings.contains(event.description, 'Propuesta ficticia de demostración'))}">
-    <section class="market-layout" th:classappend="${backgroundImageUrl != null && !backgroundImageUrl.isBlank()} ? ' has-background' : ''" th:attr="data-template=${effectiveTemplate != null ? effectiveTemplate.name() : 'CLASSIC'},data-focus=${presentation != null ? presentation.contentFocus : 'BALANCED'},data-info-position=${presentation != null ? presentation.infoPosition : 'STANDARD'}" th:style="${presentationStyle}">
+    <section class="market-layout art-direction" th:classappend="${backgroundImageUrl != null && !backgroundImageUrl.isBlank()} ? ' has-background' : ''" th:attr="data-template=${effectiveTemplate != null ? effectiveTemplate.name() : 'CLASSIC'},data-focus=${presentation != null ? presentation.contentFocus : 'BALANCED'},data-info-position=${presentation != null ? presentation.infoPosition : 'STANDARD'}" th:style="${presentationStyle}">
         <div class="market-cover">
             <img th:if="${coverImageUrl != null && !coverImageUrl.isBlank()}" th:src="${coverImageUrl}" alt="Portada del evento">
             <div class="market-cover-empty" th:unless="${coverImageUrl != null && !coverImageUrl.isBlank()}">Connectify</div>

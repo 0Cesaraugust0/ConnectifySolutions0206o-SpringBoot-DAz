@@ -1,0 +1,139 @@
+/* Only the three new compositions. Existing templates, including TICKET_PANEL,
+   retain their own rules. The editor uses the same cover composition. */
+.art-direction:is([data-template='ATELIER'],[data-template='FESTIVAL'],[data-template='FORUM']) {
+    --direction-paper:#f4efe5; --direction-ink:#252d23;
+    border-radius:2px; background:var(--direction-paper); border-color:#d8d5cc;
+}
+.art-direction:is([data-template='ATELIER'],[data-template='FESTIVAL'],[data-template='FORUM']) :is(.market-cover,.template-preview-cover) {
+    display:grid; grid-template-columns:1fr 1fr; align-items:stretch;
+    height:auto; min-height:420px; overflow:hidden; background:var(--direction-paper);
+}
+.art-direction:is([data-template='ATELIER'],[data-template='FESTIVAL'],[data-template='FORUM']) :is(.market-cover,.template-preview-cover)::after { display:none; }
+.art-direction:is([data-template='ATELIER'],[data-template='FESTIVAL'],[data-template='FORUM']) :is(.market-cover,.template-preview-cover)>img {
+    position:relative; inset:auto; grid-column:2; grid-row:1; width:100%; height:100%; min-height:0;
+    object-fit:cover; object-position:var(--market-cover-position,center);
+}
+.art-direction:is([data-template='ATELIER'],[data-template='FESTIVAL'],[data-template='FORUM']) :is(.market-cover-title,.template-preview-title) {
+    position:relative; inset:auto; grid-column:1; grid-row:1; display:flex; flex-direction:column;
+    align-items:flex-start; justify-content:center; max-width:none; padding:38px; color:var(--direction-ink);
+}
+.art-direction:is([data-template='ATELIER'],[data-template='FESTIVAL'],[data-template='FORUM']) :is(.market-cover-title,.template-preview-title) :is(h1,h3) {
+    margin:26px 0; max-width:100%; font-size:clamp(2rem,4.4vw,3.6rem); line-height:1.03; overflow-wrap:anywhere; text-wrap:balance;
+}
+.art-direction:is([data-template='ATELIER'],[data-template='FESTIVAL'],[data-template='FORUM']) :is(.market-cover-title,.template-preview-title)>p {
+    margin:0; font-size:.65rem; font-weight:500; letter-spacing:.14em; text-transform:uppercase; opacity:1;
+}
+.art-direction:is([data-template='ATELIER'],[data-template='FESTIVAL'],[data-template='FORUM']) :is(.template-badge,.template-preview-title>span) {
+    padding:0 0 8px; background:none; color:inherit; border:0; border-bottom:1px solid currentColor;
+    border-radius:0; font-size:.64rem; font-weight:500; backdrop-filter:none;
+}
+.art-direction:is([data-template='ATELIER'],[data-template='FESTIVAL'],[data-template='FORUM']) .market-cover-empty,
+.art-direction:is([data-template='ATELIER'],[data-template='FESTIVAL'],[data-template='FORUM']) .template-preview-fallback {
+    position:relative; inset:auto; grid-column:2; grid-row:1; display:grid; place-items:center;
+    color:var(--direction-ink); font-size:2rem; opacity:.55;
+    background:repeating-linear-gradient(135deg,transparent,transparent 18px,#8882 18px,#8882 19px);
+}
+.art-direction:is([data-template='ATELIER'],[data-template='FESTIVAL'],[data-template='FORUM']) [hidden] { display:none; }
+.market-detail-page .art-direction:is([data-template='ATELIER'],[data-template='FESTIVAL'],[data-template='FORUM']) .market-content {
+    display:block; padding:32px; background:var(--direction-paper); backdrop-filter:none;
+}
+.market-detail-page .art-direction:is([data-template='ATELIER'],[data-template='FESTIVAL'],[data-template='FORUM']) .market-tickets {
+    position:relative; top:auto; margin:30px 0 0; box-shadow:none; border:1px solid #d6dbdf; border-radius:3px; background:#fff;
+}
+.market-detail-page .art-direction:is([data-template='ATELIER'],[data-template='FESTIVAL'],[data-template='FORUM']) .market-meta {
+    grid-template-columns:repeat(3,minmax(0,1fr)); gap:0; border-top:1px solid #aaa7; border-bottom:1px solid #aaa7;
+}
+.market-detail-page .art-direction:is([data-template='ATELIER'],[data-template='FESTIVAL'],[data-template='FORUM']) .market-meta>div {
+    padding:15px 12px; border:0; border-radius:0; background:transparent;
+}
+.market-detail-page .art-direction:is([data-template='ATELIER'],[data-template='FESTIVAL'],[data-template='FORUM']) .market-extra-block {
+    border-radius:0; box-shadow:none; background:transparent;
+}
+.market-detail-page .art-direction:is([data-template='ATELIER'],[data-template='FESTIVAL'],[data-template='FORUM']) .market-agenda ol { counter-reset:program; }
+.market-detail-page .art-direction:is([data-template='ATELIER'],[data-template='FESTIVAL'],[data-template='FORUM']) .market-agenda li { padding:14px 0 14px 40px; counter-increment:program; }
+.market-detail-page .art-direction:is([data-template='ATELIER'],[data-template='FESTIVAL'],[data-template='FORUM']) .market-agenda li::before {
+    content:counter(program,decimal-leading-zero); width:26px; height:auto; top:14px;
+    background:transparent; border-radius:0; color:inherit; font-size:.72rem;
+}
+/* ATELIER: the cover reads like a magazine spread, with a framed photograph. */
+.art-direction[data-template='ATELIER'] :is(.market-cover,.template-preview-cover) { padding:18px; border-bottom:1px solid #c8c4b7; }
+.art-direction[data-template='ATELIER'] :is(.market-cover-title,.template-preview-title) { padding:28px 32px 28px 15px; }
+.art-direction[data-template='ATELIER'] :is(.market-cover-title,.template-preview-title) :is(h1,h3) {
+    font-family:Georgia,'Times New Roman',serif; font-weight:400; font-style:normal; letter-spacing:-.055em;
+}
+.art-direction[data-template='ATELIER'] :is(.market-cover,.template-preview-cover)>img { border-radius:48% 48% 0 0; min-height:360px; }
+.market-detail-page .art-direction[data-template='ATELIER'] .market-intro { max-width:760px; font-family:Georgia,serif; font-size:1rem; line-height:1.75; color:#3c4638; }
+.market-detail-page .art-direction[data-template='ATELIER'] .market-intro::first-letter { float:left; font-family:Georgia,serif; font-size:3.6rem; line-height:.9; margin:6px 9px 0 0; }
+.market-detail-page .art-direction[data-template='ATELIER'] .market-highlight { padding:18px 0; border:0; border-top:1px solid #b8b4a8; background:transparent; color:#4d5b40; font-family:Georgia,serif; font-style:italic; font-size:1.25rem; }
+.market-detail-page .art-direction[data-template='ATELIER'] .market-section-title { font-family:Georgia,serif; font-size:1.3rem; font-weight:400; color:#35432c; }
+.market-detail-page .art-direction[data-template='ATELIER'] .market-gallery img { height:300px; }
+.market-detail-page .art-direction[data-template='ATELIER'] .market-gallery figure { border:0; border-radius:0; }
+.market-detail-page .art-direction[data-template='ATELIER'] .market-gallery figcaption { background:#e9e4d8; color:#52594a; }
+/* PULSO: poster typography and an angular photograph, followed by ink-black content. */
+.art-direction[data-template='FESTIVAL'] { --direction-paper:#d8ef62; --direction-ink:#17211a; border-color:#17211a; }
+.art-direction[data-template='FESTIVAL'] :is(.market-cover,.template-preview-cover) { grid-template-columns:1.1fr 1fr; }
+.art-direction[data-template='FESTIVAL'] :is(.market-cover-title,.template-preview-title) { padding:36px 20px 36px 32px; }
+.art-direction[data-template='FESTIVAL'] :is(.market-cover-title,.template-preview-title) :is(h1,h3) {
+    font-family:Impact,'Arial Narrow',sans-serif; font-weight:400; text-transform:uppercase; letter-spacing:-.035em; font-size:clamp(2.6rem,5.4vw,4.7rem); line-height:.98;
+}
+.art-direction[data-template='FESTIVAL'] :is(.market-cover,.template-preview-cover)>img { clip-path:polygon(17% 0,100% 0,100% 100%,0 100%); filter:saturate(.85); }
+.market-detail-page .art-direction[data-template='FESTIVAL'] .market-content { background:#17211a; --market-muted:#d8ded6; --market-ink:#f2f5ec; }
+.market-detail-page .art-direction[data-template='FESTIVAL'] .market-meta :is(strong,span,em) { color:#e9efdb; }
+.market-detail-page .art-direction[data-template='FESTIVAL'] .market-highlight { background:transparent; border:0; padding:12px 0; color:#d8ef62; font-size:1.2rem; font-weight:500; }
+.market-detail-page .art-direction[data-template='FESTIVAL'] .market-section-title { color:#d8ef62; text-transform:uppercase; letter-spacing:.07em; }
+.market-detail-page .art-direction[data-template='FESTIVAL'] .market-extra-block { border-color:#4b5548; }
+.market-detail-page .art-direction[data-template='FESTIVAL'] :is(.market-agenda li,.market-benefits li) { border-color:#4b5548; }
+.market-detail-page .art-direction[data-template='FESTIVAL'] .market-agenda li::before { color:#d8ef62; }
+.market-detail-page .art-direction[data-template='FESTIVAL'] .market-extra-blocks { grid-template-columns:repeat(2,minmax(0,1fr)); }
+.market-detail-page .art-direction[data-template='FESTIVAL'] :is(.market-gallery-section,.market-media-strip,.sponsor-block,.market-tour-sessions) { grid-column:1/-1; }
+.market-detail-page .art-direction[data-template='FESTIVAL'] .market-tickets { --market-muted:#546176; --market-ink:#182337; }
+.market-detail-page .art-direction[data-template='FESTIVAL'] .market-tour-sessions :is(h2,summary) { color:#17211a; }
+.market-detail-page .art-direction[data-template='FESTIVAL'] .market-tour-sessions h2 { color:#d8ef62; }
+/* FORO: an architectural grid, large light type and an indexed programme. */
+.art-direction[data-template='FORUM'] { --direction-paper:#eef3f6; --direction-ink:#e7f4f6; border-color:#1e3a4a; }
+.art-direction[data-template='FORUM'] :is(.market-cover,.template-preview-cover) {
+    padding:28px; gap:26px; background-color:#143445;
+    background-image:linear-gradient(#d5f4ff0c 1px,transparent 1px),linear-gradient(90deg,#d5f4ff0c 1px,transparent 1px); background-size:42px 42px;
+}
+.art-direction[data-template='FORUM'] :is(.market-cover-title,.template-preview-title) { padding:8px; border-top:1px solid #8ab4c3; border-bottom:1px solid #8ab4c3; }
+.art-direction[data-template='FORUM'] :is(.market-cover-title,.template-preview-title) :is(h1,h3) { font-family:Arial,sans-serif; font-weight:400; letter-spacing:-.055em; line-height:1.08; }
+.art-direction[data-template='FORUM'] :is(.market-cover,.template-preview-cover)>img { align-self:center; height:310px; border-bottom:12px solid #a8dce5; border-radius:0 70px 0 0; }
+.market-detail-page .art-direction[data-template='FORUM'] .market-story { display:grid; grid-template-columns:1.2fr 1fr; gap:24px; align-items:start; }
+.market-detail-page .art-direction[data-template='FORUM'] .market-intro { margin:0; font-size:.88rem; }
+.market-detail-page .art-direction[data-template='FORUM'] .market-meta { grid-column:2; grid-row:1 / span 2; grid-template-columns:repeat(2,minmax(0,1fr)); margin:0; border-color:#b5c7d0; background:#e1eaee; }
+.market-detail-page .art-direction[data-template='FORUM'] .market-highlight { grid-column:1; border:0; border-top:2px solid #276579; border-radius:0; padding:14px 0; margin:0; background:transparent; color:#225269; }
+.market-detail-page .art-direction[data-template='FORUM'] :is(.stage-plan-access,.market-extra-blocks) { grid-column:1/-1; width:100%; }
+.market-detail-page .art-direction[data-template='FORUM'] .market-extra-blocks { margin-top:0; grid-template-columns:repeat(2,minmax(0,1fr)); }
+.market-detail-page .art-direction[data-template='FORUM'] .market-agenda { order:-1; grid-column:1/-1; padding:22px; background:#143445; color:#eff8fa; border:0; }
+.market-detail-page .art-direction[data-template='FORUM'] .market-agenda :is(h2,li) { color:#eff8fa; border-color:#476473; }
+.market-detail-page .art-direction[data-template='FORUM'] .market-agenda li::before { color:#a8dce5; }
+.market-detail-page .art-direction[data-template='FORUM'] :is(.market-gallery-section,.market-media-strip,.market-tour-sessions,.sponsor-block) { grid-column:1/-1; }
+.market-detail-page .art-direction[data-template='FORUM'] .market-section-title { font-weight:500; letter-spacing:-.025em; }
+/* The editor preview carries the same art direction at a smaller scale. */
+.template-preview.art-direction:is([data-template='ATELIER'],[data-template='FESTIVAL'],[data-template='FORUM']) :is(.template-preview-cover) { min-height:290px; }
+.template-preview.art-direction:is([data-template='ATELIER'],[data-template='FESTIVAL'],[data-template='FORUM']) .template-preview-title { padding:20px; }
+.template-preview.art-direction:is([data-template='ATELIER'],[data-template='FESTIVAL'],[data-template='FORUM']) .template-preview-title h3 { font-size:2rem; margin:18px 0; }
+.template-preview.art-direction:is([data-template='ATELIER'],[data-template='FESTIVAL'],[data-template='FORUM']) .template-preview-cover>img { min-height:240px; }
+.template-preview.art-direction[data-template='ATELIER'] .template-preview-body { background:#f4efe5; }
+.template-preview.art-direction[data-template='ATELIER'] .template-preview-description { font-family:Georgia,serif; }
+.template-preview.art-direction[data-template='ATELIER'] .template-preview-highlight { border:0; border-top:1px solid #b8b4a8; border-radius:0; background:none; color:#4d5b40; }
+.template-preview.art-direction[data-template='FESTIVAL'] .template-preview-body { background:#17211a; }
+.template-preview.art-direction[data-template='FESTIVAL'] :is(.template-preview-description,.template-preview-meta,.template-preview-ticket b,.template-preview-ticket small) { color:#e9efdb; }
+.template-preview.art-direction[data-template='FESTIVAL'] .template-preview-highlight { color:#d8ef62; background:none; border:0; }
+.template-preview.art-direction[data-template='FORUM'] .template-preview-highlight { background:#143445; color:#eff8fa; border:0; border-radius:0; }
+.template-preview.art-direction[data-template='FORUM'] .template-preview-cover>img { height:220px; }
+.template-preview.art-direction:is([data-template='ATELIER'],[data-template='FESTIVAL'],[data-template='FORUM']).mobile .template-preview-cover { display:flex; flex-direction:column; }
+.template-preview.art-direction:is([data-template='ATELIER'],[data-template='FESTIVAL'],[data-template='FORUM']).mobile .template-preview-cover>img { height:200px; min-height:0; order:2; clip-path:none; }
+.template-preview.art-direction:is([data-template='ATELIER'],[data-template='FESTIVAL'],[data-template='FORUM']).mobile .template-preview-title { order:1; }
+/* Container query also covers the organizer's simulated phone view. */
+@container (max-width:680px) {
+    .market-detail-page .art-direction:is([data-template='ATELIER'],[data-template='FESTIVAL'],[data-template='FORUM']) .market-cover { display:flex; flex-direction:column; height:auto!important; min-height:0; padding:16px; gap:12px; }
+    .market-detail-page .art-direction:is([data-template='ATELIER'],[data-template='FESTIVAL'],[data-template='FORUM']) .market-cover-title { order:1; padding:20px 10px; inset:auto!important; }
+    .market-detail-page .art-direction:is([data-template='ATELIER'],[data-template='FESTIVAL'],[data-template='FORUM']) .market-cover-title h1 { font-size:2.5rem; margin:20px 0; }
+    .market-detail-page .art-direction:is([data-template='ATELIER'],[data-template='FESTIVAL'],[data-template='FORUM']) .market-cover>img { order:2; height:240px; min-height:0; flex-shrink:0; clip-path:none; }
+    .market-detail-page .art-direction:is([data-template='ATELIER'],[data-template='FESTIVAL'],[data-template='FORUM']) .market-content { padding:20px; }
+    .market-detail-page .art-direction:is([data-template='ATELIER'],[data-template='FESTIVAL'],[data-template='FORUM']) .market-meta { grid-template-columns:repeat(2,minmax(0,1fr)); }
+    .market-detail-page .art-direction:is([data-template='ATELIER'],[data-template='FESTIVAL'],[data-template='FORUM']) .market-extra-blocks { grid-template-columns:1fr; }
+    .market-detail-page .art-direction[data-template='FORUM'] .market-story { display:block; }
+    .market-detail-page .art-direction[data-template='FORUM'] :is(.market-meta,.market-highlight,.market-extra-blocks) { margin-top:22px; }
+}

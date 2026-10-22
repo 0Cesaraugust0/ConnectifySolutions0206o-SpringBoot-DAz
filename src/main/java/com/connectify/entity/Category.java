@@ -41,6 +41,18 @@ public class Category {
         return name;
     }
 
+    public boolean isMusic() {
+        return isMusicName(name);
+    }
+
+    public static boolean isMusicName(String name) {
+        if (name == null) return false;
+        String value = name.trim();
+        return "Música".equalsIgnoreCase(value)
+                || "Artistas Cover".equalsIgnoreCase(value)
+                || "Artistas Yo Soy".equalsIgnoreCase(value);
+    }
+
     public void setName(String name) {
         this.name = name;
     }

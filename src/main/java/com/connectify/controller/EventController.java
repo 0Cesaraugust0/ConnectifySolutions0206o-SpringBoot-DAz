@@ -1,6 +1,7 @@
 package com.connectify.controller;
 
 import com.connectify.entity.ClientFavorite;
+import com.connectify.entity.Category;
 import com.connectify.entity.Event;
 import com.connectify.entity.EventPresentationSettings;
 import com.connectify.entity.EventStatus;
@@ -70,6 +71,7 @@ public class EventController {
         model.addAttribute("q", q);
         model.addAttribute("city", city);
         model.addAttribute("category", category);
+        model.addAttribute("musicSelected", Category.isMusicName(category));
         model.addAttribute("dateRange", dateRange);
         return "events/marketplace-list";
     }

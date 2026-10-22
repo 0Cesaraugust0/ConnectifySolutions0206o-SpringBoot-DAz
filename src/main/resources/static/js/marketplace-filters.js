@@ -9,6 +9,12 @@
             if (!nextLink) return;
             link.href = nextLink.href;
             link.classList.toggle('active', nextLink.classList.contains('active'));
+            link.hidden = nextLink.hidden;
+            if (nextLink.hasAttribute('aria-current')) {
+                link.setAttribute('aria-current', nextLink.getAttribute('aria-current'));
+            } else {
+                link.removeAttribute('aria-current');
+            }
         });
     }
 

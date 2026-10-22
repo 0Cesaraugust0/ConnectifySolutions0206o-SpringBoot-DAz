@@ -7,7 +7,7 @@
     <link rel="stylesheet" th:href="@{/css/styles.css}">
     <link rel="stylesheet" th:href="@{/css/ui.css}">
     <link rel="stylesheet" th:href="@{/css/organizer.css(v='organizer-nav-shell-2')}">
-    <link rel="stylesheet" th:href="@{/css/organizer-creative-styles.css(v='1')}">
+    <link rel="stylesheet" th:href="@{/css/organizer-creative-styles.css(v='directions-2')}">
 </head>
 <body class="creative-styles-page">
 <header class="navbar dashboard-nav">
@@ -27,15 +27,34 @@
         <div>
             <span class="creative-styles-eyebrow">Sala de demostraciones · Solo lectura</span>
             <h1>Estilos creativos</h1>
-            <p>Explora cómo cambian la portada, el escenario, los contenidos y las entradas según el diseño. Usa estas propuestas como referencia para construir tu propio evento.</p>
+            <p>Una revista cultural, un afiche musical o una agenda de congreso. Compara formas distintas de contar tu evento y elige la que mejor represente su carácter.</p>
         </div>
         <div class="creative-styles-count"><strong th:text="${#arrays.length(styles)}">8</strong><span>composiciones<br>para comparar</span></div>
     </section>
 
+    <section class="creative-styles-section" aria-labelledby="newDirectionsTitle">
+        <div class="creative-styles-section-heading"><div><span>Nuevas direcciones visuales</span><h2 id="newDirectionsTitle">Tres maneras de salir del mismo molde</h2></div><p>Estas maquetas muestran la composición. En la vista previa se aplicará el contenido del evento de ejemplo.</p></div>
+        <div class="creative-direction-grid" th:if="${!examples.isEmpty()}">
+            <a class="direction-card" th:href="@{/dashboard/organizer/events/creative-styles/{id}(id=${styleEventIds['ATELIER']},template='ATELIER')}">
+                <div class="direction-art direction-atelier" aria-hidden="true"><span class="direction-kicker">Cultura · Cocina · Encuentro</span><div class="direction-art-title">El arte<br>de estar<br><em>juntos.</em></div><img th:src="@{/images/showcase/origen-cover.png}" alt=""><span class="direction-edition">ATELIER / 01</span></div>
+                <div class="direction-copy"><small>01 / Revista cultural</small><h3>Atelier</h3><p>Fotografía enmarcada, papel cálido y titulares de revista. Para experiencias que merecen una lectura pausada.</p><span>Ver composición <b aria-hidden="true">↗</b></span></div>
+            </a>
+            <a class="direction-card" th:href="@{/dashboard/organizer/events/creative-styles/{id}(id=${styleEventIds['FESTIVAL']},template='FESTIVAL')}">
+                <div class="direction-art direction-festival" aria-hidden="true"><span class="direction-kicker">El encuentro es en vivo</span><div class="direction-art-title">PULSO<br>EN VIVO.</div><img th:src="@{/images/showcase/pulso-lima-cover.png}" alt=""><span class="direction-edition">MÚSICA / ESCENA / NOCHE</span></div>
+                <div class="direction-copy"><small>02 / Afiche musical</small><h3>Pulso</h3><p>Tipografía de cartel, fotografía recortada y contraste lima y tinta. Una identidad que se reconoce desde la portada.</p><span>Ver composición <b aria-hidden="true">↗</b></span></div>
+            </a>
+            <a class="direction-card" th:href="@{/dashboard/organizer/events/creative-styles/{id}(id=${styleEventIds['FORUM']},template='FORUM')}">
+                <div class="direction-art direction-forum" aria-hidden="true"><span class="direction-kicker">Diseño / Tecnología / Conversación</span><div class="direction-art-title">Ideas que<br>mueven<br>el mundo<span>↗</span></div><img th:src="@{/images/showcase/nexum-cover.png}" alt=""><span class="direction-edition">FORO — CONECTAR PARA CREAR</span></div>
+                <div class="direction-copy"><small>03 / Agenda de ideas</small><h3>Foro</h3><p>Retícula arquitectónica, imagen geométrica y programa numerado. Para congresos, talleres y encuentros profesionales.</p><span>Ver composición <b aria-hidden="true">↗</b></span></div>
+            </a>
+        </div>
+        <p class="creative-empty" th:if="${examples.isEmpty()}">Puedes seleccionar estas tres plantillas en Crear evento. Las vistas con eventos de ejemplo estarán disponibles cuando se incorporen a la sala.</p>
+    </section>
+
     <section class="creative-styles-section" aria-labelledby="styleTemplatesTitle">
-        <div class="creative-styles-section-heading"><div><span>01 · Composiciones</span><h2 id="styleTemplatesTitle">Una estructura para cada experiencia</h2></div><p>Abre un estilo y cambia entre las ocho opciones en la vista previa.</p></div>
+        <div class="creative-styles-section-heading"><div><span>También disponibles</span><h2 id="styleTemplatesTitle">Las composiciones de la colección</h2></div><p>Conservas las opciones anteriores, incluida la venta con panel lateral.</p></div>
         <div class="creative-template-grid" th:if="${!examples.isEmpty()}">
-            <a class="creative-template-card" th:each="style, iteration : ${styles}"
+            <a class="creative-template-card" th:each="style, iteration : ${styles}" th:if="${!style.artDirected}"
                th:href="@{/dashboard/organizer/events/creative-styles/{id}(id=${styleEventIds[style.name()]},template=${style.name()})}">
                 <span class="creative-template-number" th:text="${#numbers.formatInteger(iteration.count, 2)}">01</span>
                 <strong th:text="${style.label}">Clásico</strong>

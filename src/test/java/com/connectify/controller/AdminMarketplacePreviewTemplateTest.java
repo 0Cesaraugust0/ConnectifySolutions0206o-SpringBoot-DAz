@@ -154,6 +154,19 @@ class AdminMarketplacePreviewTemplateTest {
     }
 
     @Test
+    void artistChipsAreStableOutsideTheCardsAndPreserveTheOtherFilters() throws Exception {
+        when(events.findPublished("tributo", "Lima", "Artistas Cover", "week")).thenReturn(List.of());
+        String html = mvc.perform(get("/events").param("q", "tributo").param("city", "Lima")
+                        .param("category", "Artistas Cover").param("dateRange", "week"))
+                .andExpect(status().isOk()).andExpect(model().attribute("musicSelected", true))
+                .andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
+        assertThat(html).contains("Artistas Cover", "Artistas Yo Soy", "aria-current=\"true\"",
+                "q=tributo&amp;city=Lima&amp;category=Artistas%20Yo%20Soy&amp;dateRange=week");
+        assertThat(html.indexOf("marketplace-music-types")).isLessThan(html.indexOf("id=\"marketplaceCards\""));
+        assertThat(html).contains("No encontramos eventos con esos filtros");
+    }
+
+    @Test
     void previewRendersTheSameMarketplacePresentationWithoutPurchaseControls() throws Exception {
         MvcResult marketplace = mvc.perform(get("/events/12").with(user(CLIENT_EMAIL).roles("CLIENT")))
                 .andExpect(status().isOk()).andExpect(view().name("events/marketplace-purchase"))

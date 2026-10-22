@@ -7,7 +7,7 @@
     <link rel="stylesheet" th:href="@{/css/styles.css(v='marketplace-cards-regular-1')}">
     <link rel="stylesheet" th:href="@{/css/marketplace-presentation.css}">
     <link rel="stylesheet" th:href="@{/css/marketplace-account.css(v='nav-51')}">
-    <link rel="stylesheet" th:href="@{/css/marketplace-compact.css(v='12')}">
+    <link rel="stylesheet" th:href="@{/css/marketplace-compact.css(v='artist-glow-14')}">
     <link rel="stylesheet" th:href="@{/css/launch-welcome.css(v='1')}">
 </head>
 <body class="marketplace-compact">
@@ -65,6 +65,8 @@
                 <select class="search-input" name="category">
                     <option value="">Todas las categorías</option>
                     <option value="Música" th:selected="${category == 'Música'}">Música</option>
+                    <option value="Artistas Cover" th:selected="${category == 'Artistas Cover'}">Música · Artistas Cover</option>
+                    <option value="Artistas Yo Soy" th:selected="${category == 'Artistas Yo Soy'}">Música · Artistas Yo Soy</option>
                     <option value="Tecnología" th:selected="${category == 'Tecnología'}">Tecnología</option>
                     <option value="Gastronomía" th:selected="${category == 'Gastronomía'}">Gastronomía</option>
                     <option value="Deporte" th:selected="${category == 'Deporte'}">Deporte</option>
@@ -98,7 +100,7 @@
 
     <section id="categories" class="category-strip professional-categories">
         <a data-marketplace-filter th:href="@{/events(dateRange=${dateRange})}" class="category-chip" th:classappend="${category == null || category.isBlank()} ? ' active' : ''">Todos</a>
-        <a data-marketplace-filter th:href="@{/events(category='Música',dateRange=${dateRange})}" class="category-chip" th:classappend="${category == 'Música'} ? ' active' : ''">Música</a>
+        <a data-marketplace-filter th:href="@{/events(category='Música',dateRange=${dateRange})}" class="category-chip" th:classappend="${musicSelected} ? ' active' : ''">Música</a>
         <a data-marketplace-filter th:href="@{/events(category='Tecnología',dateRange=${dateRange})}" class="category-chip" th:classappend="${category == 'Tecnología'} ? ' active' : ''">Tecnología</a>
         <a data-marketplace-filter th:href="@{/events(category='Gastronomía',dateRange=${dateRange})}" class="category-chip" th:classappend="${category == 'Gastronomía'} ? ' active' : ''">Gastronomía</a>
         <a data-marketplace-filter th:href="@{/events(category='Deporte',dateRange=${dateRange})}" class="category-chip" th:classappend="${category == 'Deporte'} ? ' active' : ''">Deporte</a>
@@ -115,12 +117,18 @@
             </div>
     </div>
     </div>
-    <div id="marketplaceCards" class="marketplace-results" aria-live="polite">
     <section id="featured" class="section-heading marketplace-explore-heading">
-        <p class="badge">Explorar</p>
-        <a data-marketplace-filter th:if="${q != null || city != null || category != null || dateRange != null}" th:href="@{/events}" class="btn secondary">Limpiar filtros</a>
+        <div class="marketplace-explore-types">
+            <p class="badge">Explorar</p>
+            <nav class="marketplace-music-types" aria-label="Especialidades de Música">
+                <a data-marketplace-filter class="marketplace-artist-chip artist-cover" th:href="@{/events(q=${q},city=${city},category='Artistas Cover',dateRange=${dateRange})}" th:classappend="${category == 'Artistas Cover'} ? ' active' : ''" th:attr="aria-current=${category == 'Artistas Cover' ? 'true' : null}"><span>Artistas Cover</span></a>
+                <a data-marketplace-filter class="marketplace-artist-chip artist-yo-soy" th:href="@{/events(q=${q},city=${city},category='Artistas Yo Soy',dateRange=${dateRange})}" th:classappend="${category == 'Artistas Yo Soy'} ? ' active' : ''" th:attr="aria-current=${category == 'Artistas Yo Soy' ? 'true' : null}"><span>Artistas Yo Soy</span></a>
+            </nav>
+        </div>
+        <a data-marketplace-filter data-marketplace-clear th:hidden="${q == null && city == null && category == null && dateRange == null}" th:href="@{/events}" class="btn secondary">Limpiar filtros</a>
     </section>
 
+    <div id="marketplaceCards" class="marketplace-results" aria-live="polite">
     <section class="event-grid" th:if="${!events.isEmpty()}">
         <article class="event-card professional-event-card" th:each="event : ${events}" th:with="presentation=${presentationByEventId[event.id]},demoEvent=${(event.id != null && event.id >= 1 && event.id <= 12) || (event.organizerEmail != null && (#strings.toLowerCase(event.organizerEmail) == 'org@connectify.com' || #strings.endsWith(#strings.toLowerCase(event.organizerEmail), '@connectify.local'))) || (event.description != null && #strings.contains(event.description, 'Propuesta ficticia de demostración'))}">
             <form class="favorite-card-form" th:if="${clientAccount}" th:action="@{/dashboard/client/favorites/toggle/{id}(id=${event.id})}" method="post">
@@ -165,7 +173,7 @@
 <div th:replace="~{fragments/site-footer :: publicFooter}"></div>
 <div th:replace="~{fragments/site-footer :: cookieNotice}"></div>
 <div th:replace="~{fragments/launch-welcome :: welcome}"></div>
-<script th:src="@{/js/marketplace-filters.js(v='1')}" defer></script>
+<script th:src="@{/js/marketplace-filters.js(v='2')}" defer></script>
 <script th:src="@{/js/launch-welcome.js(v='1')}" defer></script>
 </body>
 </html>

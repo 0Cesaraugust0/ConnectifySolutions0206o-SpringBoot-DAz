@@ -3,77 +3,64 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title th:text="${supportMode} ? 'Detalle de consulta - Connectify' : 'Detalle de comunicación - Connectify'">Detalle</title>
+    <title th:text="${message.subject} + ' - Connectify'">Leer mensaje - Connectify</title>
     <link rel="stylesheet" th:href="@{/css/styles.css}">
     <link rel="stylesheet" th:href="@{/css/ui.css}">
     <link rel="stylesheet" th:href="@{/css/communications-center.css(v='organizer-nav-2')}">
-    <script th:src="@{/js/app.js}" defer></script>
+    <link rel="stylesheet" th:href="@{/css/communications-detail.css(v='reading-1')}">
 </head>
-<body>
-<header class="navbar dashboard-nav communications-nav" th:classappend="${!supportMode and currentRole.name() == 'ORGANIZER'} ? ' organizer-role-nav' : ''">
+<body class="message-reader-body" th:attr="data-source=${message.senderRole.name()}">
+<header class="navbar dashboard-nav communications-nav message-reader-nav" th:classappend="${!supportMode and currentRole.name() == 'ORGANIZER'} ? ' organizer-role-nav' : ''">
     <a class="brand brand-link" th:href="@{/communications}">
-        <span class="logo organizer-brand-icon" aria-hidden="true" th:if="${!supportMode and currentRole.name() == 'ORGANIZER'}"><svg viewBox="0 0 24 24" focusable="false"><path d="M7 3v3M17 3v3M4.5 9h15M6.5 5h11a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2h-11a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2Z"/><path d="m9 14 2 2 4-4"/></svg></span>
-        <span class="logo" th:unless="${!supportMode and currentRole.name() == 'ORGANIZER'}" th:text="${supportMode} ? '🛟' : '📌'">📌</span>
-        <div><strong>Connectify</strong><small th:text="${supportMode} ? 'Soporte de Administración' : 'Detalle de solicitud'">Detalle</small></div>
+        <span class="logo reader-brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><rect x="3.5" y="5.5" width="17" height="13" rx="2"/><path d="m4 7 8 6 8-6"/></svg></span>
+        <div><strong>Connectify</strong><small th:text="${supportMode ? 'Soporte de Administración' : 'Centro de mensajes'}">Centro de mensajes</small></div>
     </a>
-    <nav class="top-actions">
-        <a class="btn secondary" th:href="@{/communications}" th:text="${supportMode} ? 'Mis consultas' : 'Volver a bandeja'">Volver</a>
-        <a class="btn secondary" th:href="@{/communications/new}" th:text="${supportMode} ? 'Escribir a soporte' : 'Nuevo mensaje'">Nuevo mensaje</a>
+    <nav class="top-actions" aria-label="Navegación de mensajes">
+        <a class="btn secondary" th:href="@{/communications}" th:text="${supportMode ? 'Mis consultas' : 'Buzón'}">Buzón</a>
+        <a class="btn secondary" th:href="@{/communications/new}" th:text="${supportMode ? 'Escribir a soporte' : 'Nuevo mensaje'}">Nuevo mensaje</a>
     </nav>
 </header>
 
-<main class="dashboard-page">
-    <section class="dashboard-hero">
-        <p class="badge" th:text="${supportMode} ? 'Soporte al cliente' : ${message.type}">GENERAL_COORDINATION</p>
-        <h1 th:text="${message.subject}">Asunto</h1>
-        <p class="muted" th:text="${supportMode} ? 'Consulta enviada únicamente a Administración.' : 'Solicitud interna entre agentes del sistema.'">Detalle del mensaje.</p>
-    </section>
-
-    <section class="checkout-layout">
-        <article class="message-card">
-            <div class="message-meta">
-                <span class="role-pill" th:text="${supportMode ? 'CLIENTE → ADMINISTRACIÓN' : message.senderRole + ' → ' + message.targetRole}">CLIENTE → ADMINISTRACIÓN</span>
-                <span class="priority-pill" th:unless="${supportMode}" th:classappend="${message.priority == T(com.connectify.entity.MessagePriority).URGENT ? ' priority-urgent' : message.priority == T(com.connectify.entity.MessagePriority).HIGH ? ' priority-high' : message.priority == T(com.connectify.entity.MessagePriority).LOW ? ' priority-low' : ' priority-normal'}" th:text="${message.priority}">NORMAL</span>
-                <span class="status-pill" th:classappend="${message.status == T(com.connectify.entity.MessageStatus).RESOLVED ? ' status-resolved' : message.status == T(com.connectify.entity.MessageStatus).IN_PROGRESS ? ' status-progress' : message.status == T(com.connectify.entity.MessageStatus).ARCHIVED ? ' status-archived' : ' status-open'}" th:text="${message.status}">OPEN</span>
-            </div>
-
-            <h2>Mensaje</h2>
-            <p class="message-body" th:text="${message.body}">Cuerpo</p>
-
-            <div class="event-meta-grid">
-                <div><strong>Remitente</strong><span th:text="${message.senderName}">Nombre</span></div>
-                <div><strong>Email</strong><span th:text="${message.senderEmail}">email</span></div>
-                <div><strong>Creado</strong><span th:text="${#temporals.format(message.createdAt, 'dd/MM/yyyy HH:mm')}">fecha</span></div>
-                <div th:unless="${supportMode}"><strong>Leído</strong><span th:text="${message.readByTarget ? 'Sí' : 'No'}">Sí</span></div>
-            </div>
-
-            <div th:if="${message.relatedEvent != null}" class="payment-box">
-                <h3>Evento relacionado</h3>
-                <p class="muted"><strong th:text="${message.relatedEvent.title}">Evento</strong></p>
-                <a class="btn secondary compact" th:href="@{/events/{id}(id=${message.relatedEvent.id})}">Ver evento</a>
-            </div>
+<main class="message-reader-page">
+    <div class="reader-context"><span th:text="${supportMode ? 'Mis consultas' : 'Mensajería'}">Mensajería</span><span aria-hidden="true">/</span><span>Lectura del mensaje</span><span class="reader-reference" th:text="${'N.º ' + message.id}">N.º 1</span></div>
+    <header class="reader-heading">
+        <div class="reader-heading-meta"><span class="reader-source"><i aria-hidden="true"></i><span th:text="${senderRoleLabel}">Administrador</span></span><span class="reader-type" th:text="${messageTypeLabel}">Revisión de evento</span></div>
+        <h1 th:text="${message.subject}">Asunto del mensaje</h1>
+        <p th:if="${supportMode}">Tu consulta está dirigida a Administración.</p>
+    </header>
+    <div class="reader-layout">
+        <article class="reader-letter" aria-labelledby="messageContentTitle">
+            <header class="reader-letter-head">
+                <div class="reader-avatar" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="3.2"/><path d="M5 20v-1a7 7 0 0 1 14 0v1"/></svg></div>
+                <div class="reader-sender"><span class="reader-field-label">De</span><strong th:text="${message.senderName}">Nombre del remitente</strong><span class="reader-sender-email" th:text="${message.senderEmail}">remitente@example.test</span></div>
+                <div class="reader-date"><span class="reader-field-label">Enviado</span><time th:if="${message.createdAt != null}" th:datetime="${message.createdAt}" th:text="${#temporals.format(message.createdAt, 'dd MMM yyyy · HH:mm')}">Fecha</time><span th:if="${message.createdAt == null}">Sin fecha registrada</span></div>
+            </header>
+            <div class="reader-recipient"><span>Para</span><strong th:text="${targetRoleLabel}">Organizador</strong><span class="reader-read-receipt" th:unless="${supportMode}" th:text="${message.readByTarget ? 'Leído por destino' : 'Pendiente de lectura'}">Pendiente de lectura</span></div>
+            <div class="reader-letter-content"><h2 id="messageContentTitle">Mensaje</h2><p class="reader-message-text" th:text="${message.body}">Contenido del mensaje.</p></div>
+            <footer class="reader-letter-foot"><span>Connectify · Centro de mensajes</span><span th:text="${'Referencia ' + message.id}">Referencia 1</span></footer>
         </article>
-
-        <aside class="summary-card" th:if="${supportMode}">
-            <h2>Estado</h2>
-            <div class="summary-row"><span>Destino</span><strong>Administración</strong></div>
-            <div class="summary-row"><span>Estado</span><strong th:text="${message.status}">OPEN</strong></div>
-            <p class="muted small">El Administrador puede revisar esta consulta desde su bandeja.</p>
-            <a class="btn secondary full" th:href="@{/communications}">Volver a mis consultas</a>
+        <aside class="reader-sidebar" aria-label="Información y gestión del mensaje">
+            <section class="reader-info-panel">
+                <div class="reader-panel-heading"><span class="reader-field-label">Seguimiento</span><span class="reader-state" th:attr="data-status=${message.status.name()}"><i aria-hidden="true"></i><span th:text="${message.status.label}">Pendiente</span></span></div>
+                <dl class="reader-facts">
+                    <div><dt>Tipo de comunicación</dt><dd th:text="${messageTypeLabel}">Revisión de evento</dd></div>
+                    <div th:unless="${supportMode}"><dt>Prioridad</dt><dd class="reader-priority" th:attr="data-priority=${message.priority.name()}" th:text="${priorityLabel}">Normal</dd></div>
+                    <div><dt>Destino</dt><dd th:text="${targetRoleLabel}">Organizador</dd></div>
+                </dl>
+                <form class="reader-status-form" th:unless="${supportMode}" th:action="@{/communications/{id}/status(id=${message.id})}" method="post">
+                    <label for="messageStatus">Cambiar estado</label>
+                    <select id="messageStatus" name="status"><option th:each="status : ${statuses}" th:value="${status}" th:selected="${status == message.status}" th:text="${status.label}">Pendiente</option></select>
+                    <button class="reader-save-status" type="submit">Guardar estado <span aria-hidden="true">↗</span></button>
+                </form>
+                <p class="reader-support-note" th:if="${supportMode}">Administración puede revisar y gestionar esta consulta desde su bandeja.</p>
+            </section>
+            <section class="reader-event-panel" th:if="${message.relatedEvent != null}">
+                <span class="reader-field-label">Evento relacionado</span><h2 th:text="${message.relatedEvent.title}">Nombre del evento</h2>
+                <p th:if="${message.relatedEvent.city != null}" th:text="${message.relatedEvent.city}">Ciudad</p>
+                <a th:href="@{/events/{id}(id=${message.relatedEvent.id})}">Ver evento <span aria-hidden="true">↗</span></a>
+            </section>
         </aside>
-
-        <aside class="summary-card" th:unless="${supportMode}">
-            <h2>Gestión</h2>
-            <form th:action="@{/communications/{id}/status(id=${message.id})}" method="post" class="auth-form">
-                <label>Cambiar estado</label>
-                <select class="search-input" name="status">
-                    <option th:each="status : ${statuses}" th:value="${status}" th:selected="${status == message.status}" th:text="${status}">OPEN</option>
-                </select>
-                <button class="btn primary full" type="submit">Actualizar estado</button>
-            </form>
-            <a class="btn secondary full" th:href="@{/communications}">Volver a bandeja</a>
-        </aside>
-    </section>
+    </div>
 </main>
 </body>
 </html>
