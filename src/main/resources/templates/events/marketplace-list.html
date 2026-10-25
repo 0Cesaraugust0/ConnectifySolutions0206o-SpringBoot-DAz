@@ -7,7 +7,9 @@
     <link rel="stylesheet" th:href="@{/css/styles.css(v='marketplace-cards-regular-1')}">
     <link rel="stylesheet" th:href="@{/css/marketplace-presentation.css}">
     <link rel="stylesheet" th:href="@{/css/marketplace-account.css(v='nav-51')}">
-    <link rel="stylesheet" th:href="@{/css/marketplace-compact.css(v='artist-glow-14')}">
+    <link rel="stylesheet" th:href="@{/css/marketplace-compact.css(v='filters-compact-18')}">
+    <link rel="stylesheet" th:href="@{/css/halloween-spider.css(v='2')}">
+    <link rel="stylesheet" th:href="@{/css/hero-ceremonial-pennants.css(v='5')}">
     <link rel="stylesheet" th:href="@{/css/launch-welcome.css(v='1')}">
 </head>
 <body class="marketplace-compact">
@@ -39,6 +41,7 @@
 </header>
 
 <main class="marketplace-page">
+    <div class="marketplace-ceremonial-frame">
     <section class="marketplace-hero professional-hero">
         <div class="hero-copy">
             <p class="badge glow">Marketplace de eventos</p>
@@ -86,6 +89,14 @@
         </form>
 
     </section>
+        <div class="hero-pennant hero-pennant-left" aria-hidden="true">
+            <img th:src="@{/images/ceremonial-tree-pennant.png(v='1')}" alt="" width="76" height="456" decoding="async">
+        </div>
+        <div class="hero-pennant hero-pennant-right" aria-hidden="true">
+            <img th:src="@{/images/ceremonial-tree-pennant.png(v='1')}" alt="" width="76" height="456" decoding="async">
+        </div>
+        <div th:replace="~{fragments/halloween-spider :: decoration}"></div>
+    </div>
 
     <div class="marketplace-browse-header">
     <div class="marketplace-browse-filters">
@@ -175,5 +186,6 @@
 <div th:replace="~{fragments/launch-welcome :: welcome}"></div>
 <script th:src="@{/js/marketplace-filters.js(v='2')}" defer></script>
 <script th:src="@{/js/launch-welcome.js(v='1')}" defer></script>
+<script th:src="@{/js/halloween-spider.js(v='1')}" defer></script>
 </body>
 </html>

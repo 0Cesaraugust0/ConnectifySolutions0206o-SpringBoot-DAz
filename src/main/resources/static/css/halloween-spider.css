@@ -1,0 +1,134 @@
+/* A self-contained seasonal illustration. It never changes the marketplace grid. */
+.halloween-scene {
+    --spider-size: 192px;
+    --ribbon-top: 3mm;
+    --silk-top: calc(var(--ribbon-top) + 78px);
+    --spider-top: clamp(135px, calc(50% - var(--spider-size) / 2), 225px);
+    position: absolute;
+    top: 0;
+    right: 3cm;
+    width: var(--spider-size);
+    height: 100%;
+    z-index: 7;
+    pointer-events: none;
+    user-select: none;
+    contain: layout style;
+}
+.halloween-scene[hidden] { display: none; }
+.halloween-ribbon {
+    position: absolute;
+    top: var(--ribbon-top);
+    left: calc(50% - 24px);
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    gap: 2px;
+    width: 48px;
+    height: 91px;
+    padding-top: 7px;
+    box-sizing: border-box;
+    color: #fff5e5;
+    background: linear-gradient(90deg, #8f182b, #d83743 42%, #ba2437 75%, #851c2c);
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 85%, 0 100%);
+    border-top: 3px solid #ed8b7d;
+    filter: drop-shadow(0 4px 5px #27061725);
+    z-index: 2;
+}
+.halloween-ribbon::before, .halloween-ribbon::after {
+    content: '';
+    position: absolute;
+    top: 4px;
+    bottom: 13px;
+    width: 1px;
+    background: #ffb19b5c;
+}
+.halloween-ribbon::before { left: 5px; }
+.halloween-ribbon::after { right: 5px; }
+.halloween-ribbon-star { font-size: 13px; line-height: 16px; }
+.halloween-ribbon-date { font: 600 23px/1.1 Georgia, serif; text-align: center; }
+.halloween-ribbon-date small { display: block; margin-top: 3px; font: 500 9px/1.2 Arial, sans-serif; letter-spacing: 2px; padding-left: 2px; }
+.halloween-controls {
+    position: absolute;
+    top: calc(var(--ribbon-top) + 4px);
+    left: calc(50% + 29px);
+    display: none;
+    gap: 4px;
+    z-index: 3;
+    pointer-events: auto;
+}
+.halloween-scene.has-controls .halloween-controls { display: flex; }
+.halloween-control {
+    display: grid;
+    place-items: center;
+    width: 25px;
+    height: 25px;
+    padding: 0;
+    border: 1px solid #e9cfcc;
+    border-radius: 50%;
+    background: #fffaf5;
+    color: #812d3b;
+    font: 500 17px/1 Arial, sans-serif;
+    box-shadow: 0 2px 9px #28182512;
+    cursor: pointer;
+}
+.halloween-control:hover { background: #fae4dc; }
+.halloween-control:focus-visible { outline: 3px solid #a74462; outline-offset: 3px; }
+.halloween-silk {
+    position: absolute;
+    top: var(--silk-top);
+    left: calc(50% - 1px);
+    width: 2px;
+    height: calc(var(--spider-top) + var(--spider-size) * .217 - var(--silk-top));
+    background: linear-gradient(90deg, #c6b3c8a6, #8a7090b8);
+    transform-origin: top center;
+    animation: halloween-thread 3.2s cubic-bezier(.2,.6,.24,1) .35s both;
+}
+.halloween-drop {
+    position: absolute;
+    top: var(--spider-top);
+    left: 0;
+    width: var(--spider-size);
+    height: var(--spider-size);
+    animation: halloween-descend 3.2s cubic-bezier(.2,.6,.24,1) .35s both;
+    filter: drop-shadow(0 12px 11px #110e2928);
+}
+.halloween-drop > svg { display: block; width: 100%; height: 100%; overflow: visible; }
+.halloween-scene .spider-character {
+    transform-origin: 120px 52px;
+    animation: halloween-peek 11s ease-in-out 3.6s infinite;
+}
+.halloween-scene .spider-eyes { transform-box: fill-box; transform-origin: center; animation: halloween-blink 4.6s 1s infinite; }
+.halloween-scene .spider-binoculars { transform-origin: 120px 140px; transform: translateY(12px) scale(1); animation: halloween-binoculars .9s cubic-bezier(.18,.9,.35,1.2) 3.3s both; }
+.halloween-scene .spider-halloween-label { animation: halloween-reveal .8s ease 4.1s both; }
+.halloween-scene .spider-lens-party { animation: halloween-reflection 4s ease-in-out 4.2s infinite alternate; }
+.halloween-scene .spider-confetti { transform-box: fill-box; transform-origin: center; animation: halloween-confetti 2.4s ease-in-out infinite alternate; }
+.halloween-scene .spider-confetti:nth-child(2n) { animation-delay: -.8s; animation-duration: 1.9s; }
+.halloween-scene .spider-confetti:nth-child(3n) { animation-delay: -1.6s; animation-duration: 3s; }
+.halloween-scene.is-paused *, .halloween-scene.is-paused *::before, .halloween-scene.is-paused *::after { animation-play-state: paused !important; }
+html.launch-welcome-open .halloween-scene { visibility: hidden; }
+html.launch-welcome-open .halloween-scene * { animation-play-state: paused !important; }
+@keyframes halloween-thread { from { transform: scaleY(0); } to { transform: scaleY(1); } }
+@keyframes halloween-descend {
+    0% { opacity: 0; transform: translateY(calc(var(--ribbon-top) - var(--spider-top) - 42px)) scale(.8); }
+    12% { opacity: 1; }
+    82% { transform: translateY(9px) scale(1); }
+    100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes halloween-peek { 0%,100% { transform: rotate(0); } 22%,32% { transform: rotate(5deg); } 64%,76% { transform: rotate(-5deg); } }
+@keyframes halloween-blink { 0%,45%,50%,100% { transform: scaleY(1); } 47% { transform: scaleY(.08); } }
+@keyframes halloween-binoculars { from { opacity: 0; transform: translateY(48px) scale(.6); } to { opacity: 1; transform: translateY(12px) scale(1); } }
+@keyframes halloween-reveal { from { opacity: 0; transform: translateY(-7px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes halloween-confetti { from { transform: translateY(-3px) rotate(-14deg); } to { transform: translateY(4px) rotate(18deg); } }
+@keyframes halloween-reflection { from { opacity: .78; } to { opacity: 1; } }
+@media (max-width: 960px) {
+    /* Give the decoration its own space above the copy on narrow screens. */
+    .marketplace-ceremonial-frame .professional-hero .hero-copy { padding-top: 198px; }
+    .halloween-scene { --spider-size: 112px; --ribbon-top: 8px; --silk-top: 86px; --spider-top: 66px; right: 12px; }
+    .halloween-controls { top: calc(var(--ribbon-top) + 4px); left: -8px; flex-direction: column; }
+    .halloween-control { width: 27px; height: 27px; }
+}
+@media (prefers-reduced-motion: reduce) {
+    .halloween-scene *, .halloween-scene *::before, .halloween-scene *::after { animation: none !important; }
+    .halloween-controls [data-halloween-pause] { display: none; }
+}
+@media print { .halloween-scene { display: none; } }

@@ -1,0 +1,53 @@
+/* Decorative textile pair attached to the hero, outside its clipping area. */
+.marketplace-ceremonial-frame {
+    --pennant-gap: 4mm;
+    --pennant-drop: 2cm;
+    --pennant-width: clamp(18px, calc(max(5vw + 14.4px, (100vw - 1116px) / 2) - 4mm - 12px), 3.5cm);
+    position: relative;
+    width: 90%;
+    margin-inline: auto;
+    margin-bottom: calc(var(--pennant-drop) + 12px);
+}
+.marketplace-ceremonial-frame > .professional-hero {
+    /* Scale this section only; keep the rest of the marketplace unchanged. */
+    width: 100%;
+    zoom: .9;
+    margin-bottom: 0;
+}
+.hero-pennant {
+    position: absolute;
+    top: 3mm;
+    bottom: calc(-1 * var(--pennant-drop));
+    width: var(--pennant-width);
+    z-index: 6;
+    pointer-events: none;
+    user-select: none;
+    overflow: clip;
+    filter: drop-shadow(2px 5px 4px rgb(10 23 46 / 20%));
+}
+.hero-pennant-left { right: calc(100% + var(--pennant-gap)); }
+.hero-pennant-right { left: calc(100% + var(--pennant-gap)); }
+.hero-pennant img {
+    /* Frame the transparent source around the full textile and its top rod. */
+    position: absolute;
+    left: -40%;
+    top: 0;
+    display: block;
+    width: 180%;
+    height: 101.95%;
+    max-width: none;
+    object-fit: fill;
+}
+.hero-pennant-right { filter: drop-shadow(-2px 5px 4px rgb(10 23 46 / 20%)); }
+@media (max-width: 720px) {
+    .marketplace-ceremonial-frame {
+        --pennant-width: clamp(12px, calc(5vw - 6px), 28px);
+        --pennant-gap: 4px;
+        --pennant-drop: 32px;
+    }
+    .hero-pennant {
+        top: auto;
+        height: calc(var(--pennant-width) * 6);
+    }
+}
+@media print { .hero-pennant { display: none; } }

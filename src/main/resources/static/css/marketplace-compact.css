@@ -7,8 +7,13 @@
 }
 .marketplace-browse-header{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:28px;align-items:start;margin-top:24px}
 .marketplace-browse-filters .date-filter-strip{margin:0 0 16px;flex-wrap:wrap}
-.marketplace-browse-filters .category-strip{margin:0;flex-wrap:wrap}
-.marketplace-browse-copy{padding:0 0 0 8px}
+.marketplace-browse-filters .category-strip{margin:0;flex-wrap:wrap;gap:10px}
+.marketplace-browse-filters .category-strip .category-chip{min-height:40px;padding:9px 14px;font-size:.84rem;font-weight:900}
+.marketplace-browse-copy{grid-column:2;grid-row:1;padding:0 0 0 8px}
+@media(min-width:901px){
+  .marketplace-browse-filters .date-filter-strip{position:relative;left:min(5vw,62px)}
+  .marketplace-browse-filters .category-strip{position:relative;left:calc(min(5vw,62px) + 56px)}
+}
 .marketplace-browse-copy h2{font-size:28px;line-height:1.2;letter-spacing:-.035em;margin:0 0 12px}
 .marketplace-browse-copy p{font-size:13px;line-height:1.6;margin:0;max-width:540px}
 .marketplace-compact .marketplace-nav .launch-welcome-trigger{display:inline-flex;align-items:center;gap:7px;flex:none;margin-right:5px;padding:7px 9px;border:1px solid #d9dfe9;border-radius:9px;background:rgba(255,255,255,.65);color:#344054;font-size:11px;font-weight:500;line-height:1.2;white-space:nowrap}
@@ -92,5 +97,5 @@
 :is(.marketplace-compact,.marketplace-event-detail) .footer-logo{display:grid;place-items:center;flex-shrink:0;width:26px;height:26px;border:1px solid #64748b;border-radius:50%;background:#374151;font-size:14px}
 :is(.marketplace-compact,.marketplace-event-detail) .footer-brand-block p{font-size:11px;margin-top:8px;max-width:300px}
 :is(.marketplace-compact,.marketplace-event-detail) .site-footer-bottom{width:min(1240px,calc(100% - 48px));padding:11px 0 17px;gap:11px;font-size:10px}
-@media(max-width:900px){.marketplace-browse-header{grid-template-columns:1fr;gap:18px}.marketplace-browse-copy{padding:0}.marketplace-browse-copy h2{font-size:24px}.marketplace-compact .event-grid{grid-template-columns:repeat(2,minmax(0,310px))}:is(.marketplace-compact,.marketplace-event-detail) .site-footer-inner{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:900px){.marketplace-browse-header{grid-template-columns:1fr;gap:18px}.marketplace-browse-copy{grid-column:1;grid-row:auto;padding:0}.marketplace-browse-copy h2{font-size:24px}.marketplace-compact .event-grid{grid-template-columns:repeat(2,minmax(0,310px))}:is(.marketplace-compact,.marketplace-event-detail) .site-footer-inner{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:560px){.marketplace-compact .event-grid{grid-template-columns:minmax(0,310px);justify-content:start}:is(.marketplace-compact,.marketplace-event-detail) .site-footer-bottom{flex-direction:column}.marketplace-browse-filters .date-filter-strip{gap:8px}}

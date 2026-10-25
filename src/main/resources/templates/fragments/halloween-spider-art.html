@@ -1,0 +1,169 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:th="http://www.thymeleaf.org"
+     th:fragment="art" viewBox="0 0 240 240" aria-hidden="true" focusable="false">
+    <defs>
+        <linearGradient id="halloween-shell" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#e4d7f7"/>
+            <stop offset="0.38" stop-color="#b49acb"/>
+            <stop offset="1" stop-color="#80669e"/>
+        </linearGradient>
+        <linearGradient id="halloween-face" x1="0" y1="0" x2="0.8" y2="1">
+            <stop offset="0" stop-color="#e8dcf7"/>
+            <stop offset="0.62" stop-color="#c8addc"/>
+            <stop offset="1" stop-color="#9d7cb7"/>
+        </linearGradient>
+        <linearGradient id="halloween-copper" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#ffddaa"/>
+            <stop offset="0.35" stop-color="#c98464"/>
+            <stop offset="0.7" stop-color="#8c4d43"/>
+            <stop offset="1" stop-color="#f5bb8a"/>
+        </linearGradient>
+        <linearGradient id="halloween-optics" x1="0" y1="0" x2="0.2" y2="1">
+            <stop offset="0" stop-color="#53505e"/>
+            <stop offset="0.35" stop-color="#242333"/>
+            <stop offset="1" stop-color="#11101c"/>
+        </linearGradient>
+        <radialGradient id="halloween-lens" cx="0.33" cy="0.27" r="0.87">
+            <stop offset="0" stop-color="#a28df2"/>
+            <stop offset="0.4" stop-color="#5e5ab3"/>
+            <stop offset="0.74" stop-color="#275b7c"/>
+            <stop offset="1" stop-color="#13253f"/>
+        </radialGradient>
+        <linearGradient id="halloween-label" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0" stop-color="#211c2d"/>
+            <stop offset="0.5" stop-color="#342637"/>
+            <stop offset="1" stop-color="#211c2d"/>
+        </linearGradient>
+        <clipPath id="halloween-left-lens-clip">
+            <circle cx="97" cy="136" r="15.5"/>
+        </clipPath>
+        <clipPath id="halloween-right-lens-clip">
+            <circle cx="143" cy="136" r="15.5"/>
+        </clipPath>
+    </defs>
+
+    <g class="spider-character">
+        <!-- Eight soft, curved legs give the little observer a plush silhouette. -->
+        <g fill="none" stroke="#9575ad" stroke-width="9" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M92 95C72 81 57 87 53 72Q51 65 57 63"/>
+            <path d="M85 112C67 103 48 105 44 120Q42 126 48 129"/>
+            <path d="M84 135C61 130 52 143 56 156Q58 163 64 161"/>
+            <path d="M96 154C76 155 71 173 82 181Q87 185 91 180"/>
+            <path d="M148 95C168 81 183 87 187 72Q189 65 183 63"/>
+            <path d="M155 112C173 103 192 105 196 120Q198 126 192 129"/>
+            <path d="M156 135C179 130 188 143 184 156Q182 163 176 161"/>
+            <path d="M144 154C164 155 169 173 158 181Q153 185 149 180"/>
+        </g>
+        <g fill="none" stroke="#e1cdef" stroke-width="2.5" stroke-linecap="round" opacity="0.8">
+            <path d="M90 93C73 81 58 86 55 73M83 110C68 103 50 105 47 118"/>
+            <path d="M82 133C63 131 55 142 58 153M94 152C78 155 74 170 82 177"/>
+            <path d="M150 93C167 81 182 86 185 73M157 110C172 103 190 105 193 118"/>
+            <path d="M158 133C177 131 185 142 182 153M146 152C162 155 166 170 158 177"/>
+        </g>
+
+        <!-- The ribbon's attachment point is centered at (120, 52). -->
+        <path d="M120 52v9" stroke="#d8a684" stroke-width="2.5" stroke-linecap="round"/>
+        <ellipse cx="120" cy="85" rx="34" ry="29" fill="url(#halloween-shell)" stroke="#9275aa" stroke-width="1.2"/>
+        <path d="M101 75c2-7 10-12 18-12" fill="none" stroke="#fff4ff" stroke-width="3" stroke-linecap="round" opacity="0.65"/>
+        <path d="M114 64q1-10 7-8-1 6 5 9" fill="#cfb8e3" stroke="#9275aa" stroke-width="1.2" stroke-linecap="round"/>
+        <path d="m131 70 2 4.5 5 .7-3.6 3.4.9 4.9-4.3-2.3-4.3 2.3.9-4.9-3.6-3.4 5-.7z" fill="#ffe2a0" stroke="#cba471" stroke-width=".65"/>
+        <ellipse cx="120" cy="129" rx="43" ry="50" fill="url(#halloween-face)" stroke="#9275aa" stroke-width="1.2"/>
+        <path d="M88 106q4-12 14-16" fill="none" stroke="#fff4ff" stroke-width="3" stroke-linecap="round" opacity="0.55"/>
+
+        <g class="spider-eyes">
+            <ellipse cx="105" cy="108" rx="12" ry="15" fill="#fff9f4"/>
+            <ellipse cx="135" cy="108" rx="12" ry="15" fill="#fff9f4"/>
+            <ellipse cx="108" cy="109" rx="7.1" ry="9.8" fill="#533c64"/>
+            <ellipse cx="132" cy="109" rx="7.1" ry="9.8" fill="#533c64"/>
+            <ellipse cx="109" cy="110" rx="4.8" ry="7.3" fill="#2f243d"/>
+            <ellipse cx="131" cy="110" rx="4.8" ry="7.3" fill="#2f243d"/>
+            <circle cx="110" cy="104.5" r="3.1" fill="#fff"/>
+            <circle cx="134" cy="104.5" r="3.1" fill="#fff"/>
+            <circle cx="105" cy="113" r="1.5" fill="#e8d9ff"/>
+            <circle cx="129" cy="113" r="1.5" fill="#e8d9ff"/>
+        </g>
+        <path d="M98 89q6-3 12-1M130 88q6-2 12 1" fill="none" stroke="#8b679e" stroke-width="2.2" stroke-linecap="round"/>
+        <ellipse cx="87" cy="121" rx="7" ry="4.5" fill="#ee9fb9" opacity=".85"/>
+        <ellipse cx="153" cy="121" rx="7" ry="4.5" fill="#ee9fb9" opacity=".85"/>
+        <path d="M113 171q7 8 14 0" fill="#f1b3c5" stroke="#795271" stroke-width="1.8" stroke-linecap="round"/>
+
+        <g class="spider-binoculars">
+            <path d="M96 143q24 29 48 0" fill="none" stroke="#7d575f" stroke-width="2"/>
+            <rect x="86" y="110" width="20" height="22" rx="6" fill="#181724" stroke="#69606d" stroke-width="1"/>
+            <rect x="134" y="110" width="20" height="22" rx="6" fill="#181724" stroke="#69606d" stroke-width="1"/>
+            <path d="M84 119h25l8 18H77zM131 119h25l7 18h-40z" fill="url(#halloween-optics)"/>
+            <rect x="110" y="126" width="20" height="11" rx="4" fill="#333041" stroke="#82727d" stroke-width="1"/>
+            <rect x="116" y="122" width="8" height="11" rx="3" fill="url(#halloween-copper)"/>
+            <path d="M118 124v6m3-6v6" stroke="#774d46" stroke-width="0.8"/>
+            <circle cx="97" cy="136" r="21" fill="#11111e"/>
+            <circle cx="143" cy="136" r="21" fill="#11111e"/>
+            <circle cx="97" cy="136" r="18.5" fill="url(#halloween-copper)"/>
+            <circle cx="143" cy="136" r="18.5" fill="url(#halloween-copper)"/>
+            <circle cx="97" cy="136" r="16.5" fill="#1b1a2c"/>
+            <circle cx="143" cy="136" r="16.5" fill="#1b1a2c"/>
+            <circle cx="97" cy="136" r="15.5" fill="url(#halloween-lens)"/>
+            <circle cx="143" cy="136" r="15.5" fill="url(#halloween-lens)"/>
+
+            <g class="spider-lens-party" clip-path="url(#halloween-left-lens-clip)">
+                <path d="m84 119 13 34h10z" fill="#d3aaff" opacity="0.23"/>
+                <path d="m110 121-22 30h9z" fill="#82f5ed" opacity="0.26"/>
+                <path d="M80 127q17 9 34-2" fill="none" stroke="#f2c69d" stroke-width="0.7" opacity="0.85"/>
+                <path d="m85 129 2 4 2-3m7 1 2 4 2-4m7-2 2 3 2-4" fill="#f5b08e"/>
+                <g fill="#171c3c" stroke="#171c3c" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="91" cy="141" r="2.5" stroke="none"/>
+                    <path d="M91 145v8m0-6-5-4-2-6m7 10 5-5 1-5" fill="none" stroke-width="2.8"/>
+                    <circle cx="105" cy="143" r="2.4" stroke="none"/>
+                    <path d="M105 147v8m0-7-4-4m4 4 4-6 1-5" fill="none" stroke-width="2.8"/>
+                </g>
+                <g class="spider-confetti" fill="#f8d08e">
+                    <path d="m94 123 .9 2 2.1.2-1.6 1.4.4 2.1-1.8-1.1-1.8 1.1.4-2.1-1.6-1.4 2.1-.2z"/>
+                    <rect x="103" y="132" width="1.7" height="3.5" rx="0.6" transform="rotate(25 104 134)"/>
+                </g>
+                <g class="spider-confetti" fill="#a8fff0">
+                    <circle cx="88" cy="135" r="1"/><circle cx="107" cy="126" r="1.1"/>
+                    <path d="m97 136 2-2 1 1-2 2z"/>
+                </g>
+                <path class="spider-confetti" d="m83 133 2 1m24 7 2-2" fill="none" stroke="#ffa8c5" stroke-width="1.4" stroke-linecap="round"/>
+            </g>
+
+            <g class="spider-lens-party" clip-path="url(#halloween-right-lens-clip)">
+                <path d="m130 118 15 35h9z" fill="#bffbf3" opacity="0.2"/>
+                <path d="m156 120-24 31h10z" fill="#bf9cff" opacity="0.32"/>
+                <path d="M127 126q17 10 33 0" fill="none" stroke="#f2c69d" stroke-width="0.7" opacity="0.85"/>
+                <path d="m132 129 2 4 2-3m7 1 2 4 2-4m6-2 2 3 2-4" fill="#efb79f"/>
+                <g fill="#171c3c" stroke="#171c3c" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="137" cy="143" r="2.6" stroke="none"/>
+                    <path d="M137 147v8m0-7-5-6-1-4m6 10 5-6" fill="none" stroke-width="2.8"/>
+                    <circle cx="150" cy="140" r="2.5" stroke="none"/>
+                    <path d="M150 144v10m0-8-5-7-1-4m6 11 5-5 1-5" fill="none" stroke-width="2.8"/>
+                </g>
+                <g class="spider-confetti" fill="#a8fff0">
+                    <path d="m144 122 .8 2 2.2.2-1.7 1.4.5 2.1-1.8-1.1-1.8 1.1.4-2.1-1.6-1.4 2.1-.2z"/>
+                    <rect x="134" y="134" width="1.7" height="3.5" rx="0.6" transform="rotate(-30 135 136)"/>
+                </g>
+                <g class="spider-confetti" fill="#ffd492">
+                    <circle cx="132" cy="125" r="1"/><circle cx="151" cy="132" r="1.1"/>
+                    <path d="m142 137 2-2 1 1-2 2z"/>
+                </g>
+                <path class="spider-confetti" d="m154 125 1 2m-24 12 2 1" fill="none" stroke="#ffa8c5" stroke-width="1.4" stroke-linecap="round"/>
+            </g>
+
+            <!-- Small arcs and diagonal glints make the miniature scenes read as glass. -->
+            <g fill="none" stroke-linecap="round">
+                <path d="M85 133a12 12 0 0 1 10-9M131 133a12 12 0 0 1 10-9" stroke="#fff6ee" stroke-width="1.8" opacity="0.8"/>
+                <path d="m101 124 5 7m41-7 5 7" stroke="#efffff" stroke-width="3.5" opacity="0.22"/>
+                <path d="M101 149q6-2 9-8M147 149q6-2 9-8" stroke="#81f6ed" stroke-width="1.2" opacity="0.65"/>
+                <path d="M81 127a18 18 0 0 1 12-9M127 127a18 18 0 0 1 12-9" stroke="#ffe4bf" stroke-width="1" opacity="0.8"/>
+            </g>
+        </g>
+    </g>
+
+    <g class="spider-halloween-label">
+        <rect x="37" y="203" width="166" height="30" rx="15" fill="#0f0d19" opacity="0.15"/>
+        <rect x="37" y="200" width="166" height="30" rx="15" fill="url(#halloween-label)" stroke="#b87c68" stroke-width="1"/>
+        <path d="M62 202h116" stroke="#e3b187" stroke-width="0.8" opacity="0.65"/>
+        <path d="M52 208a7 7 0 1 0 0 13 6 6 0 0 1 0-13" fill="#edb989"/>
+        <text x="121" y="220.5" text-anchor="middle" fill="#f4b593"
+              font-family="Arial, Helvetica, sans-serif" font-size="14" font-weight="800" letter-spacing="1.6">HALLOWEEN</text>
+        <path d="m187 210 1.2 3.6 3.8 1.4-3.8 1.3-1.2 3.7-1.3-3.7-3.7-1.3 3.7-1.4z" fill="#edb989"/>
+    </g>
+</svg>

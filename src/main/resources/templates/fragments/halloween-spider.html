@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<body>
+<aside th:fragment="decoration" class="halloween-scene" aria-label="Decoración de Halloween" data-halloween-scene>
+    <div class="halloween-ribbon" aria-hidden="true">
+        <span class="halloween-ribbon-star">✦</span>
+        <span class="halloween-ribbon-date">31<small>OCT</small></span>
+    </div>
+    <div class="halloween-controls" aria-label="Controles de la animación">
+        <button type="button" class="halloween-control" data-halloween-pause aria-label="Pausar animación de Halloween" title="Pausar animación" aria-pressed="false"><span aria-hidden="true">Ⅱ</span></button>
+        <button type="button" class="halloween-control" data-halloween-close aria-label="Ocultar decoración de Halloween" title="Ocultar decoración"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="halloween-silk" aria-hidden="true"></div>
+    <div class="halloween-drop" aria-hidden="true">
+        <svg th:replace="~{fragments/halloween-spider-art :: art}"></svg>
+    </div>
+</aside>
+</body>
+</html>
