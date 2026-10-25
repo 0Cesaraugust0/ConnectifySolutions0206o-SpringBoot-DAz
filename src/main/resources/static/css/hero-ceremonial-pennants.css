@@ -6,9 +6,10 @@
     position: relative;
     width: 90%;
     margin-inline: auto;
-    margin-bottom: calc(var(--pennant-drop) + 12px);
+    margin-bottom: 0;
 }
-.marketplace-ceremonial-frame > .professional-hero {
+.marketplace-ceremonial-frame + .marketplace-browse-header { margin-top: 6mm; }
+.marketplace-ceremonial-frame .professional-hero {
     /* Scale this section only; keep the rest of the marketplace unchanged. */
     width: 100%;
     zoom: .9;

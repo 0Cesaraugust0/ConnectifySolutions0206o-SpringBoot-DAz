@@ -9,8 +9,9 @@
     <link rel="stylesheet" th:href="@{/css/marketplace-account.css(v='nav-51')}">
     <link rel="stylesheet" th:href="@{/css/marketplace-compact.css(v='filters-compact-18')}">
     <link rel="stylesheet" th:href="@{/css/halloween-spider.css(v='2')}">
-    <link rel="stylesheet" th:href="@{/css/hero-ceremonial-pennants.css(v='5')}">
+    <link rel="stylesheet" th:href="@{/css/hero-ceremonial-pennants.css(v='6')}">
     <link rel="stylesheet" th:href="@{/css/launch-welcome.css(v='1')}">
+    <link rel="stylesheet" th:href="@{/css/marketplace-visits.css(v='1')}">
 </head>
 <body class="marketplace-compact">
 <header class="navbar marketplace-nav">
@@ -42,6 +43,8 @@
 
 <main class="marketplace-page">
     <div class="marketplace-ceremonial-frame">
+    <div class="marketplace-hero-window" data-visits-window>
+    <div class="marketplace-hero-slide" data-visits-hero>
     <section class="marketplace-hero professional-hero">
         <div class="hero-copy">
             <p class="badge glow">Marketplace de eventos</p>
@@ -89,6 +92,26 @@
         </form>
 
     </section>
+    </div>
+    <section id="peruVisits" class="marketplace-visits" aria-labelledby="peruVisitsTitle" aria-hidden="true" inert data-visits-panel th:attr="data-agenda-url=@{/js/data/peru-visits-2026-2027.json(v='1')}">
+        <button type="button" class="visits-return" data-visits-close aria-label="Volver al hero" title="Volver al hero"><span aria-hidden="true">›</span></button>
+        <header class="visits-heading">
+            <div><p class="visits-eyebrow">Agenda · Octubre 2026 — Marzo 2027</p><h2 id="peruVisitsTitle" tabindex="-1">Visitas al Perú</h2></div>
+            <span class="visits-period">Hasta el 31 de marzo</span>
+        </header>
+        <div class="visits-columns">
+            <section class="visits-column visits-artists" aria-labelledby="visitsArtistsTitle">
+                <h3 id="visitsArtistsTitle"><span aria-hidden="true">01</span> Artistas visitándonos</h3>
+                <div class="visits-list" tabindex="0" role="region" aria-label="Fechas de artistas que visitan Perú" data-visits-artists><p class="visits-message">Cargando la agenda…</p></div>
+            </section>
+            <section class="visits-column visits-holidays" aria-labelledby="visitsHolidaysTitle">
+                <h3 id="visitsHolidaysTitle"><span aria-hidden="true">02</span> Fechas memorables del Perú</h3>
+                <div class="visits-list" tabindex="0" role="region" aria-label="Feriados y conmemoraciones hasta marzo de 2027" data-visits-holidays><p class="visits-message">Cargando las fechas…</p></div>
+            </section>
+        </div>
+        <footer class="visits-footnote"><span data-visits-status aria-live="polite">Agenda informativa · Artistas, feriados y conmemoraciones.</span></footer>
+    </section>
+    </div>
         <div class="hero-pennant hero-pennant-left" aria-hidden="true">
             <img th:src="@{/images/ceremonial-tree-pennant.png(v='1')}" alt="" width="76" height="456" decoding="async">
         </div>
@@ -134,6 +157,7 @@
             <nav class="marketplace-music-types" aria-label="Especialidades de Música">
                 <a data-marketplace-filter class="marketplace-artist-chip artist-cover" th:href="@{/events(q=${q},city=${city},category='Artistas Cover',dateRange=${dateRange})}" th:classappend="${category == 'Artistas Cover'} ? ' active' : ''" th:attr="aria-current=${category == 'Artistas Cover' ? 'true' : null}"><span>Artistas Cover</span></a>
                 <a data-marketplace-filter class="marketplace-artist-chip artist-yo-soy" th:href="@{/events(q=${q},city=${city},category='Artistas Yo Soy',dateRange=${dateRange})}" th:classappend="${category == 'Artistas Yo Soy'} ? ' active' : ''" th:attr="aria-current=${category == 'Artistas Yo Soy' ? 'true' : null}"><span>Artistas Yo Soy</span></a>
+                <button type="button" class="marketplace-artist-chip artist-visits" data-visits-toggle aria-controls="peruVisits" aria-expanded="false"><svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M7 3v4M17 3v4M3 10h18M8 14h2M14 14h2M8 18h2"/></svg><span>Visitas al Perú</span></button>
             </nav>
         </div>
         <a data-marketplace-filter data-marketplace-clear th:hidden="${q == null && city == null && category == null && dateRange == null}" th:href="@{/events}" class="btn secondary">Limpiar filtros</a>
@@ -187,5 +211,6 @@
 <script th:src="@{/js/marketplace-filters.js(v='2')}" defer></script>
 <script th:src="@{/js/launch-welcome.js(v='1')}" defer></script>
 <script th:src="@{/js/halloween-spider.js(v='1')}" defer></script>
+<script th:src="@{/js/marketplace-visits.js(v='1')}" defer></script>
 </body>
 </html>

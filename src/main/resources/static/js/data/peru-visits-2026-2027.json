@@ -1,0 +1,36 @@
+{
+  "reviewedAt": "2026-10-25",
+  "until": "2027-03-31",
+  "artists": [
+    {"date":"2026-10-27","name":"The Rasmus","venue":"Centro de Convenciones Leguía · Lima","source":"Ticketmaster Perú","sourceUrl":"https://www.ticketmaster.pe/page/categoria-conciertos"},
+    {"date":"2026-10-29","name":"Blessd","venue":"Arena 1 · Lima","source":"Ticketmaster Perú","sourceUrl":"https://www.ticketmaster.pe/page/categoria-conciertos"},
+    {"date":"2026-11-07","name":"Juan Luis Guerra y Carlos Vives","venue":"Estadio San Marcos · Lima","source":"Ticketmaster Perú","sourceUrl":"https://www.ticketmaster.pe/page/categoria-conciertos"},
+    {"date":"2026-11-07","name":"Enrique Bunbury","venue":"Lima","source":"Live Nation Perú","sourceUrl":"https://www.livenation.com.pe/"},
+    {"date":"2026-11-10","name":"Camilo","venue":"Lima","source":"Live Nation Perú","sourceUrl":"https://www.livenation.com.pe/"},
+    {"date":"2026-11-14","name":"Airbag","venue":"Estadio San Marcos · Lima","source":"Live Nation Perú","sourceUrl":"https://www.livenation.com.pe/"},
+    {"date":"2026-11-20","name":"The Strokes","venue":"Estadio San Marcos · Lima","source":"Live Nation Perú","sourceUrl":"https://www.livenation.com.pe/"},
+    {"date":"2026-11-23","name":"Gorillaz","venue":"Lurín Live · Lima","source":"Ticketmaster Perú","sourceUrl":"https://www.ticketmaster.pe/page/categoria-conciertos"},
+    {"date":"2026-11-27","name":"CA7RIEL & Paco Amoroso","venue":"Lima","source":"Live Nation Perú","sourceUrl":"https://www.livenation.com.pe/"},
+    {"date":"2026-12-02","name":"Chayanne","venue":"Estadio Nacional · Lima","source":"Ticketmaster Perú","sourceUrl":"https://www.ticketmaster.pe/page/categoria-conciertos"},
+    {"date":"2026-12-02","name":"Maná","venue":"Estadio San Marcos · Lima","source":"Live Nation Perú","sourceUrl":"https://www.livenation.com.pe/"},
+    {"date":"2026-12-07","name":"Martin Garrix","venue":"Arena Monumental · Lima","source":"Ticketmaster Perú","sourceUrl":"https://www.ticketmaster.pe/page/categoria-conciertos"},
+    {"date":"2026-12-08","name":"Daniel Caesar","venue":"Costa 21 Duomo · Lima","source":"Live Nation Perú","sourceUrl":"https://www.livenation.com.pe/"},
+    {"date":"2027-01-22","name":"Karol G","venue":"Estadio San Marcos · Lima","source":"Teleticket / Live Nation Perú","sourceUrl":"https://pagos.teleticket.com.pe/Landing/ListadoEventosTodos"},
+    {"date":"2027-02-12","name":"Jerry Rivera","venue":"Multiespacio Costa 21 · Lima","source":"Teleticket","sourceUrl":"https://pagos.teleticket.com.pe/Landing/ListadoEventosTodos"},
+    {"date":"2027-02-16","name":"Andrés Cepeda","venue":"Gran Teatro Nacional · Lima","source":"Teleticket","sourceUrl":"https://pagos.teleticket.com.pe/andres-cepeda"},
+    {"date":"2027-03-03","name":"Foo Fighters","venue":"Estadio San Marcos · Lima","source":"Live Nation Perú","sourceUrl":"https://www.livenation.com.pe/foo-fighters-tickets-adp40"},
+    {"date":"2027-03-16","name":"Ricardo Montaner","venue":"Costa 21 · Lima","source":"Teleticket","sourceUrl":"https://teleticket.com.pe/ricardo-montaner-lima-2027"}
+  ],
+  "holidays": [
+    {"date":"2026-10-31","name":"Día de la Canción Criolla","kind":"Conmemoración cultural","sourceUrl":"https://target2.promperu.gob.pe/festividades/detalle/dia-de-la-cancion-criolla"},
+    {"date":"2026-11-01","name":"Día de Todos los Santos","kind":"Feriado nacional","sourceUrl":"https://www.gob.pe/feriados"},
+    {"date":"2026-11-27","name":"Batalla de Tarapacá","kind":"Conmemoración histórica","sourceUrl":"https://www.gob.pe/institucion/pnp/noticias/1065624-la-historia-lo-recuerda-cada-27-de-noviembre-se-conmemora-el-acto-heroico-del-valiente-de-tarapaca"},
+    {"date":"2026-12-08","name":"Inmaculada Concepción","kind":"Feriado nacional","sourceUrl":"https://www.gob.pe/feriados"},
+    {"date":"2026-12-09","name":"Batalla de Ayacucho","kind":"Feriado nacional","sourceUrl":"https://www.gob.pe/feriados"},
+    {"date":"2026-12-25","name":"Navidad","kind":"Feriado nacional","sourceUrl":"https://www.gob.pe/feriados"},
+    {"date":"2027-01-01","name":"Año Nuevo","kind":"Feriado nacional","sourceUrl":"https://www.gob.pe/feriados"},
+    {"date":"2027-03-08","name":"Día Internacional de la Mujer","kind":"Conmemoración","sourceUrl":"https://www.gob.pe/institucion/mimp/noticias/1360304-mimp-inicia-el-mes-de-la-mujer-con-agenda-nacional-de-actividades-por-el-8-de-marzo"},
+    {"date":"2027-03-25","name":"Jueves Santo","kind":"Feriado nacional","sourceUrl":"https://www.gob.pe/feriados"},
+    {"date":"2027-03-26","name":"Viernes Santo","kind":"Feriado nacional","sourceUrl":"https://www.gob.pe/feriados"}
+  ]
+}
