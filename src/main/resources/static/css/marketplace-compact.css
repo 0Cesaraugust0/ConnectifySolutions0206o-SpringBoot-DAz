@@ -1,5 +1,5 @@
 /* Compact marketplace layout, scoped to the events listing. */
-.marketplace-compact .hero-search-panel > .btn{align-self:center}
+.marketplace-compact .hero-search-panel > .btn{align-self:center;padding-block:10px}
 .marketplace-compact .professional-hero .badge.glow{transform:translateY(-19px)}
 @media(min-width:961px){
   .marketplace-compact .hero-search-panel{transform:translateY(40px)}

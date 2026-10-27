@@ -1192,12 +1192,12 @@ h3 {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 20px;
-    width: min(980px, calc(100% - 48px));
+    gap: 16px;
+    width: min(784px, calc(100% - 38px));
     margin: 0 auto;
-    padding: 16px 18px;
+    padding: 13px 14px;
     border: 1px solid #dfe4ee;
-    border-radius: 18px;
+    border-radius: 14px;
     background: rgba(255,255,255,.96);
     box-shadow: 0 24px 65px rgba(15,23,42,.18);
     -webkit-backdrop-filter: blur(16px);
@@ -1211,20 +1211,27 @@ h3 {
 .cookie-notice strong {
     display: block;
     color: #111827;
-    margin-bottom: 4px;
+    margin-bottom: 3px;
+    font-size: .82rem;
 }
 
 .cookie-notice p {
     margin: 0;
     color: #5b6475;
-    font-size: .88rem;
+    font-size: .72rem;
     line-height: 1.45;
 }
 
 .cookie-actions {
     display: flex;
     flex: 0 0 auto;
-    gap: 10px;
+    gap: 8px;
+}
+
+.cookie-actions .btn.compact {
+    padding: 8px 13px;
+    border-radius: 11px;
+    font-size: .78rem;
 }
 
 .legal-consent {

@@ -68,6 +68,11 @@
         const link = event.target.closest('a[data-marketplace-filter]');
         if (!link || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
         event.preventDefault();
+        if (link.matches('[data-marketplace-clear]')) {
+            document.querySelectorAll('.hero-search-panel [name="q"], .hero-search-panel [name="city"]').forEach(function (field) {
+                field.value = '';
+            });
+        }
         link.parentElement.querySelectorAll('a[data-marketplace-filter]').forEach(function (item) {
             item.classList.toggle('active', item === link);
         });
