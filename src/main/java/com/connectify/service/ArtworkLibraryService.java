@@ -20,7 +20,7 @@ import java.util.stream.Stream;
 /** Read-only catalogue: discovering artwork never moves or changes the source files. */
 @Service
 public class ArtworkLibraryService {
-    private static final Set<String> FORMATS = Set.of("png", "jpg", "jpeg", "webp", "gif", "svg");
+    private static final Set<String> FORMATS = Set.of("png", "jpg", "jpeg", "webp", "gif", "svg", "avif");
     private final PathMatchingResourcePatternResolver resources = new PathMatchingResourcePatternResolver();
     private final Path presentationDirectory;
 
@@ -71,13 +71,14 @@ public class ArtworkLibraryService {
         String name = switch (stem) {
             case "ceremonial-tree-pennant" -> "Banderín ceremonial · Árbol";
             case "marketplace-hero" -> "Portada del Marketplace";
+            case "peru-inka-intro" -> "Espíritu del Perú · Inka y Machu Picchu";
             case "halloween-party-couple" -> "Halloween · Baile en pareja";
             case "halloween-party-confetti" -> "Halloween · Lluvia de confeti";
             case "halloween-party-costumes" -> "Halloween · Fiesta de disfraces";
             default -> stem.replace('-', ' ').replace('_', ' ');
         };
         String category = stem.contains("stage") ? "Escenarios"
-                : stem.contains("pennant") || stem.startsWith("halloween") ? "Decoraciones"
+                : stem.contains("pennant") || stem.startsWith("halloween") || stem.startsWith("peru-") ? "Decoraciones"
                 : stem.contains("cover") || stem.contains("hero") ? "Portadas"
                 : stem.contains("logo") || stem.contains("mark") || stem.startsWith("partner") ? "Identidad"
                 : "Otras imágenes";

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="scene" id="peruInkaScene" class="peru-inka-scene" aria-hidden="true">
+    <svg class="peru-inka-art" viewBox="0 0 1536 1024" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+            <clipPath id="peruFlagClip"><path d="M43 74 L127 126 L187 200 L304 263 L354 462 L226 419 L82 382 L7 347 Z"/></clipPath>
+            <filter id="peruFlagWave" x="-10%" y="-10%" width="120%" height="120%">
+                <feTurbulence type="fractalNoise" baseFrequency="0.012 0.004" numOctaves="1" seed="8" result="wave"/>
+                <feDisplacementMap in="SourceGraphic" in2="wave" scale="0" xChannelSelector="R" yChannelSelector="G" data-peru-wave/>
+            </filter>
+            <radialGradient id="peruSun"><stop stop-color="#fff9d3" stop-opacity=".8"/><stop offset=".25" stop-color="#ffc96b" stop-opacity=".35"/><stop offset="1" stop-color="#ffc96b" stop-opacity="0"/></radialGradient>
+        </defs>
+        <image th:href="@{/images/peru/peru-inka-intro.jpg}" width="1536" height="1024"/>
+        <g clip-path="url(#peruFlagClip)"><image th:href="@{/images/peru/peru-inka-intro.jpg}" width="1536" height="1024" filter="url(#peruFlagWave)"/></g>
+        <circle class="peru-intro-sun" cx="397" cy="253" r="145" fill="url(#peruSun)"/>
+    </svg>
+    <span class="peru-intro-rays"></span>
+    <span class="peru-intro-star peru-intro-star-one">✦</span>
+    <span class="peru-intro-star peru-intro-star-two">✧</span>
+    <span class="peru-intro-caption"><small>TIERRA DE HISTORIAS</small><strong>Espíritu del Perú</strong></span>
+</div>
+</body>
+</html>

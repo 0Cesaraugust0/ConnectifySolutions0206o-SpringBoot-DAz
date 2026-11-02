@@ -12,6 +12,7 @@
     <link rel="stylesheet" th:href="@{/css/hero-ceremonial-pennants.css(v='6')}">
     <link rel="stylesheet" th:href="@{/css/launch-welcome.css(v='1')}">
     <link rel="stylesheet" th:href="@{/css/marketplace-visits.css(v='1')}">
+    <link rel="stylesheet" th:href="@{/css/peru-inka-intro.css(v='9')}">
 </head>
 <body class="marketplace-compact">
 <header class="navbar marketplace-nav">
@@ -19,6 +20,11 @@
         <span class="logo brand-mark">C</span>
         <div><strong>Connectify</strong><small>Marketplace</small></div>
     </a>
+    <button class="peru-intro-trigger" type="button" data-peru-intro aria-label="Repetir presentación Espíritu del Perú" aria-controls="peruInkaScene" title="Repetir presentación · 6 segundos">
+        <img th:src="@{/images/peru/peru-inka-intro.jpg}" alt="" width="78" height="46">
+        <span class="peru-intro-copy"><small>INKA · MACHU PICCHU · LÍDER</small><strong>Y Ser Espíritu del Perú</strong></span>
+        <span class="peru-intro-play" aria-hidden="true">↻</span>
+    </button>
     <nav class="top-actions">
         <button class="launch-welcome-trigger" type="button" data-launch-open>Nuestra apertura <span aria-hidden="true">↗</span></button>
         <a class="nav-link" th:href="@{/events}">Eventos</a>
@@ -47,7 +53,7 @@
     <div class="marketplace-hero-slide" data-visits-hero>
     <section class="marketplace-hero professional-hero">
         <div class="hero-copy">
-            <p class="badge glow">Marketplace de eventos</p>
+            <p class="badge glow peru-hero-label">Marketplace de eventos <span class="peru-label-star" aria-hidden="true">✦</span></p>
             <h1>Descubre eventos seleccionados en Perú</h1>
             <p class="muted hero-text">Conciertos, presentaciones, ferias, actividades deportivas, eventos sociales, charlas y talleres en una experiencia de compra clara y segura.</p>
 
@@ -56,6 +62,7 @@
         <div class="hero-media" aria-hidden="true">
             <img th:src="@{/images/marketplace-hero.png}" alt="">
         </div>
+        <div th:replace="~{fragments/peru-inka-intro :: scene}"></div>
 
         <form class="search-panel hero-search-panel" th:action="@{/events}" method="get">
             <label class="market-search-field">
@@ -212,5 +219,6 @@
 <script th:src="@{/js/launch-welcome.js(v='1')}" defer></script>
 <script th:src="@{/js/halloween-spider.js(v='13')}" defer></script>
 <script th:src="@{/js/marketplace-visits.js(v='1')}" defer></script>
+<script th:src="@{/js/peru-inka-intro.js(v='1')}" defer></script>
 </body>
 </html>
