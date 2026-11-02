@@ -71,6 +71,8 @@ public class SecurityConfig {
                                 "/css/**", "/js/**", "/images/**", "/uploads/**"
                         ).permitAll()
                         .requestMatchers("/prototype/**").permitAll()
+                        .requestMatchers("/dashboard/artwork", "/dashboard/artwork/**").hasAnyRole("ADMIN", "DEVELOPER")
+                        .requestMatchers("/dashboard/organizer/artwork", "/dashboard/organizer/artwork/**").denyAll()
                         .requestMatchers("/dashboard/developer/**").hasRole("DEVELOPER")
                         .requestMatchers("/dashboard/admin/**", "/admin/**").hasRole("ADMIN")
                         .requestMatchers("/dashboard/organizer/**").hasRole("ORGANIZER")

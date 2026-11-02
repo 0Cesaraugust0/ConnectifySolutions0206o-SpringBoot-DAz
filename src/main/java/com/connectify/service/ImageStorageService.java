@@ -1,6 +1,8 @@
 package com.connectify.service;
 
 import org.springframework.stereotype.Service;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -18,7 +20,16 @@ public class ImageStorageService {
 
     private static final long MAX_IMAGE_SIZE = 5L * 1024L * 1024L;
     private static final Set<String> ALLOWED_TYPES = Set.of("image/jpeg", "image/png", "image/webp");
-    private final Path uploadRoot = Paths.get(System.getProperty("user.dir"), "uploads").toAbsolutePath().normalize();
+    private final Path uploadRoot;
+
+    public ImageStorageService() { this("uploads"); }
+
+    @Autowired
+    public ImageStorageService(@Value("${connectify.media.directory:uploads}") String directory) {
+        this.uploadRoot = Paths.get(directory).toAbsolutePath().normalize();
+    }
+
+    public Path getUploadRoot() { return uploadRoot; }
 
     public String store(MultipartFile file, String folder) {
         if (file == null || file.isEmpty()) {

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Biblioteca de arte · Connectify</title>
+    <link rel="stylesheet" th:href="@{/css/artwork-library.css(v='1')}">
+</head>
+<body>
+<header class="art-nav">
+    <a class="art-brand" th:href="@{/dashboard}"><span>C</span><div>Connectify<small>Biblioteca visual</small></div></a>
+    <nav aria-label="Navegación"><a th:href="@{/dashboard}">Mi panel</a><a th:href="@{/events}">Marketplace</a><form th:action="@{/logout}" method="post"><button type="submit">Cerrar sesión</button></form></nav>
+</header>
+<main class="art-page">
+    <section class="art-heading">
+        <div><p class="art-eyebrow">Colección visual / Connectify</p><h1>Imágenes &amp; arte</h1><p>Explora las portadas, ilustraciones e identidad visual que forman parte de la plataforma.</p></div>
+        <div class="art-total"><strong th:text="${#lists.size(artworks)}">0</strong><span>recursos en la colección</span></div>
+    </section>
+    <section class="art-tools" aria-label="Organizar colección">
+        <label class="art-search">Buscar en la colección<input id="art-search" type="search" placeholder="Nombre, categoría o formato…" autocomplete="off"></label>
+        <label>Ordenar por<select id="art-sort"><option value="name">Nombre</option><option value="category">Categoría</option><option value="format">Formato</option></select></label>
+    </section>
+    <nav class="art-filters" aria-label="Categorías de arte">
+        <button type="button" data-category="" aria-pressed="true">Todas</button>
+        <button type="button" th:each="category : ${ {'Portadas','Escenarios','Identidad','Decoraciones','Otras imágenes'} }" th:attr="data-category=${category}" th:text="${category}" aria-pressed="false">Categoría</button>
+    </nav>
+    <p id="art-results" class="art-results" role="status" aria-live="polite" th:text="${#lists.size(artworks)} + ' recursos'">Recursos</p>
+    <section class="art-grid" id="art-grid" aria-label="Colección de imágenes">
+        <article class="art-card" th:each="art : ${artworks}" th:attr="data-name=${art.name},data-category=${art.category},data-format=${art.format},data-filename=${art.filename}">
+            <button class="art-preview" type="button" th:attr="aria-label='Ver ' + ${art.name}">
+                <img th:unless="${art.illustration}" th:src="${art.url}" alt="" loading="lazy" decoding="async">
+                <th:block th:if="${art.illustration}"><svg th:replace="~{fragments/halloween-spider-art :: art}"></svg></th:block>
+                <span class="art-open" aria-hidden="true">Ampliar ↗</span>
+            </button>
+            <div class="art-card-info"><span class="art-category" th:text="${art.category}">Categoría</span><h2 th:text="${art.name}">Imagen</h2><p><span th:text="${art.format}">PNG</span><span th:text="${art.sizeLabel}">0 KB</span></p><small th:text="${art.origin}">Origen</small></div>
+        </article>
+    </section>
+    <div class="art-empty" id="art-empty" hidden><h2>No encontramos imágenes con esos filtros.</h2><button id="art-clear" type="button">Mostrar toda la colección</button></div>
+</main>
+<dialog id="art-dialog" aria-labelledby="art-dialog-title">
+    <div class="art-dialog-head"><h2 id="art-dialog-title">Vista previa</h2><button id="art-close" type="button" aria-label="Cerrar vista previa">×</button></div>
+    <div class="art-dialog-canvas"><img id="art-dialog-image" alt=""></div>
+    <p id="art-dialog-meta"></p>
+</dialog>
+<script th:src="@{/js/artwork-library.js(v='1')}" defer></script>
+</body>
+</html>

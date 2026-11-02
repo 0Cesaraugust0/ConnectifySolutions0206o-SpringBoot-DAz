@@ -150,8 +150,8 @@
     const lenses = party.querySelector('.halloween-party-optics');
     const clips = [
         {src: '/images/halloween-party-7s.mp4?v=couple-2', poster: '/images/halloween-party-couple.jpg', name: '...Mmmm   me dice para bailar', positions: ['0% 50%', '100% 50%']},
-        {src: '/images/halloween-party-toast-7s.mp4', poster: '/images/halloween-party-toast.jpg', name: '...Unas bebidas y a celebrarlo', positions: ['25% 65%', '75% 65%']},
-        {src: '/images/halloween-party-confetti-7s.mp4?v=young-2', poster: '/images/halloween-party-confetti.jpg?v=young-2', name: '...Llego Justo en el momento ... Vale x 2', positions: ['45% 50%', '55% 50%']}
+        {src: '/images/halloween-party-costumes-7s.mp4?v=halloween-1', poster: '/images/halloween-party-costumes.jpg?v=halloween-1', name: '...Unas bebidas y a celebrarlo', positions: ['15% 50%', '85% 50%']},
+        {src: '/images/halloween-party-confetti-7s.mp4?v=restored-3', poster: '/images/halloween-party-confetti.jpg?v=restored-3', name: '...Llego Justo en el momento ... Vale x 2', positions: ['45% 50%', '55% 50%']}
     ];
     let nextClip = 0, currentClip = clips[0], progressFrame = 0;
     const videos = [];

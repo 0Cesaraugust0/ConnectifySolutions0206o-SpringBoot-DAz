@@ -1,19 +1,24 @@
 package com.connectify.config;
 
 import org.springframework.context.annotation.Configuration;
+import com.connectify.service.ImageStorageService;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.nio.file.Path;
-import java.nio.file.Paths;
 
 @Configuration
 public class UploadResourceConfig implements WebMvcConfigurer {
 
+    private final ImageStorageService storage;
+
+    public UploadResourceConfig(ImageStorageService storage) { this.storage = storage; }
+
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        Path uploadRoot = Paths.get(System.getProperty("user.dir"), "uploads").toAbsolutePath().normalize();
+        Path uploadRoot = storage.getUploadRoot();
+        String location = uploadRoot.toUri().toString();
         registry.addResourceHandler("/uploads/**")
-                .addResourceLocations(uploadRoot.toUri().toString());
+                .addResourceLocations(location.endsWith("/") ? location : location + "/");
     }
 }

@@ -65,7 +65,7 @@
                 <div class="create-section-heading"><h2>2. Presentación en Marketplace</h2><p class="section-note">Selecciona una plantilla inicial y mírala en una vista paralela. El Diseñador podrá tomar esa base y elevarla cuando le solicites apoyo.</p></div>
                 <div class="field-grid">
                     <label>URL de imagen principal<input id="eventImageUrl" class="search-input" name="imageUrl" type="text" th:value="${editMode == true ? event.imageUrl : ''}" placeholder="https://.../portada-evento.jpg"></label>
-                    <label>Subir JPG/PNG<input id="eventImageFile" class="search-input" name="imageFile" type="file" accept="image/jpeg,image/png,image/webp"></label>
+                    <label>Subir JPG/PNG<input id="eventImageFile" class="search-input" name="imageFile" type="file" accept="image/jpeg,image/png,image/webp"><small>La imagen se conserva al guardar el evento.</small></label>
                 </div>
 
                 <div class="organizer-presentation-picker">

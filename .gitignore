@@ -39,3 +39,6 @@ application-secret.properties
 # Local account records and Supabase CLI cache
 /Tabla de usuarios.txt
 /supabase/.temp/
+
+# Persistent images uploaded at runtime
+/uploads/
