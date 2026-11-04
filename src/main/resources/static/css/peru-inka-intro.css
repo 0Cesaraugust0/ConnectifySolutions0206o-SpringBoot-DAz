@@ -7,7 +7,9 @@
 .peru-intro-trigger strong{display:block;font-size:12px;font-weight:550;line-height:1.5;white-space:nowrap}
 .peru-intro-trigger .peru-intro-copy{flex:1;min-width:0;text-align:left}
 .peru-intro-trigger .peru-intro-copy strong{padding-right:22px}
-.peru-intro-trigger .peru-intro-play{position:absolute;right:10px;bottom:5px;font-size:18px;font-weight:400;line-height:1;margin:0}
+.peru-intro-trigger .peru-intro-play{position:absolute;right:0;bottom:0;width:27px;height:25px;margin:0;clip-path:polygon(100% 0,100% 100%,0 100%);background:linear-gradient(135deg,transparent 0 45%,#f2d88b 46% 61%,#b78a31 62% 77%,#6c4d1b 78% 100%);filter:drop-shadow(-2px -2px 2px rgba(4,18,20,.26));transform-origin:100% 100%;transition:transform .18s ease,filter .18s ease}
+.peru-intro-trigger .peru-intro-play::after{content:"";position:absolute;right:4px;bottom:4px;width:8px;height:8px;border-right:1px solid rgba(255,248,218,.72);border-bottom:1px solid rgba(255,248,218,.72);transform:rotate(-4deg)}
+.peru-intro-trigger:hover .peru-intro-play{transform:translate(-2px,-2px) rotate(-5deg);filter:drop-shadow(-3px -3px 3px rgba(4,18,20,.32))}
 .peru-intro-trigger:hover{border-color:#dcb974;background:#17343d}
 .peru-intro-trigger:focus-visible{outline:2px solid #a97c2c;outline-offset:4px}
 .peru-inka-scene{position:absolute;inset:0 0 0 28%;z-index:1;overflow:hidden;pointer-events:none;opacity:0;background:#0b2430;transition:opacity .6s ease;isolation:isolate}

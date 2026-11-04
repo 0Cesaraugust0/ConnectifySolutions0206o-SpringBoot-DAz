@@ -5,9 +5,9 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
 import org.springframework.boot.test.context.TestConfiguration;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.security.core.session.SessionRegistry;
@@ -34,7 +34,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class GateSecurityFilterTest {
     @Autowired private MockMvc mvc;
     @Autowired private SessionRegistry sessions;
-    @MockBean private UserDetailsService users;
+    @MockitoBean private UserDetailsService users;
 
     @Test void doorAccessDoesNotRequireAnAccountLoginButUnsafeRequestsRequireCsrf() throws Exception {
         mvc.perform(get("/tickets")).andExpect(status().isOk());
@@ -55,7 +55,7 @@ class GateSecurityFilterTest {
 
     @Test void anonymousUsersAreSentToLoginForDoorAdministration() throws Exception {
         mvc.perform(get("/admin/events/22/gate"))
-                .andExpect(status().is3xxRedirection()).andExpect(redirectedUrlPattern("**/login"));
+                .andExpect(status().is3xxRedirection()).andExpect(redirectedUrl("/login"));
     }
 
     @Test void administratorCanConfigureDoorsOnlyWithCsrfProtection() throws Exception {

@@ -3,7 +3,7 @@ package com.connectify.controller;
 import com.connectify.dto.IzipayWebBuyer;
 import com.connectify.service.CartService;
 import com.connectify.service.IzipayWebCheckoutService;
-import com.fasterxml.jackson.databind.JsonNode;
+import tools.jackson.databind.JsonNode;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

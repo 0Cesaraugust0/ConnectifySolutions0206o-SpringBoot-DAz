@@ -27,8 +27,8 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
@@ -55,7 +55,7 @@ import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrlPattern;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
@@ -79,16 +79,16 @@ class AdminMarketplacePreviewTemplateTest {
 
     @Autowired private MockMvc mvc;
     @Autowired private ApplicationContext context;
-    @MockBean private EventService events;
-    @MockBean private EventRepository eventRepository;
-    @MockBean private TicketTypeRepository tickets;
-    @MockBean private EventPresentationSettingsRepository presentations;
-    @MockBean private UserAccountRepository accounts;
-    @MockBean private ClientFavoriteRepository favorites;
-    @MockBean private EventAdminRecordRepository records;
-    @MockBean private InternalMessageService messages;
-    @MockBean private EventGateAccessService gateAccess;
-    @MockBean private DatabaseUserDetailsService users;
+    @MockitoBean private EventService events;
+    @MockitoBean private EventRepository eventRepository;
+    @MockitoBean private TicketTypeRepository tickets;
+    @MockitoBean private EventPresentationSettingsRepository presentations;
+    @MockitoBean private UserAccountRepository accounts;
+    @MockitoBean private ClientFavoriteRepository favorites;
+    @MockitoBean private EventAdminRecordRepository records;
+    @MockitoBean private InternalMessageService messages;
+    @MockitoBean private EventGateAccessService gateAccess;
+    @MockitoBean private DatabaseUserDetailsService users;
 
     private Event event;
     private EventPresentationSettings presentation;
@@ -254,7 +254,7 @@ class AdminMarketplacePreviewTemplateTest {
     @Test
     void anonymousVisitorMustSignInBeforeThePreviewIsRead() throws Exception {
         mvc.perform(get(PREVIEW_URL)).andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrlPattern("**/login"));
+                .andExpect(redirectedUrl("/login"));
         verifyNoInteractions(eventRepository, events, presentations, tickets, accounts, favorites, messages, gateAccess, records);
     }
 

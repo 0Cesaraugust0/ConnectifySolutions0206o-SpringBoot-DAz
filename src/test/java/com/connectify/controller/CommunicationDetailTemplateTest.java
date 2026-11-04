@@ -12,8 +12,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.util.ReflectionTestUtils;
@@ -34,10 +34,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ActiveProfiles("prod")
 class CommunicationDetailTemplateTest {
     @Autowired MockMvc mvc;
-    @MockBean InternalMessageService messages;
-    @MockBean EventService events;
-    @MockBean EventGateAccessService gateAccess;
-    @MockBean DatabaseUserDetailsService users;
+    @MockitoBean InternalMessageService messages;
+    @MockitoBean EventService events;
+    @MockitoBean EventGateAccessService gateAccess;
+    @MockitoBean DatabaseUserDetailsService users;
     private InternalMessage message;
 
     @BeforeEach

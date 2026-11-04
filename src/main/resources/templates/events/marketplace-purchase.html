@@ -1,9 +1,12 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title th:text="${event.title} + ' - Connectify'">Evento</title>
+    <title th:text="${event.title} + ' | Show You Play'">Evento | Show You Play</title>
+    <meta name="description" th:content="${event.description != null and !#strings.isEmpty(event.description) ? #strings.abbreviate(event.description, 155) : 'Consulta la fecha, ubicación, entradas disponibles y detalles de este evento en Show You Play.'}" content="Consulta la fecha, ubicación, entradas disponibles y detalles del evento en Show You Play.">
+    <meta name="robots" content="index, follow, max-image-preview:large">
+    <link rel="canonical" th:href="${'https://www.showyouplay.com/events/' + event.id}" href="https://www.showyouplay.com/events">
     <link rel="stylesheet" th:href="@{/css/styles.css}">
     <link rel="stylesheet" th:href="@{/css/ui.css}">
     <link rel="stylesheet" th:href="@{/css/marketplace-presentation.css(v='templates-2')}">

@@ -9,8 +9,8 @@ import com.connectify.service.EventGateAccessService.GateSession;
 import com.connectify.service.TicketService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.test.context.ActiveProfiles;
@@ -33,10 +33,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ActiveProfiles("prod")
 class LoginGateCsrfTemplateTest {
     @Autowired private MockMvc mvc;
-    @MockBean private DatabaseUserDetailsService users;
-    @MockBean private EventGateAccessService gates;
-    @MockBean private TicketService tickets;
-    @MockBean private GateLoginThrottle throttle;
+    @MockitoBean private DatabaseUserDetailsService users;
+    @MockitoBean private EventGateAccessService gates;
+    @MockitoBean private TicketService tickets;
+    @MockitoBean private GateLoginThrottle throttle;
 
     @Test
     void theActualLoginModalTokenIsAcceptedByTheSeparateGateChainWithoutAnAccountRole() throws Exception {

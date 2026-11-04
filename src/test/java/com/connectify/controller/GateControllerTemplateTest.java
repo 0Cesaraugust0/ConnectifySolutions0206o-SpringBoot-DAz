@@ -17,8 +17,8 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.junit.jupiter.params.provider.NullSource;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -54,12 +54,12 @@ class GateControllerTemplateTest {
             new GateSession(22L, 2202L, 3L, Instant.parse("2099-01-01T00:00:00Z"));
 
     @Autowired private MockMvc mvc;
-    @MockBean private EventService events;
-    @MockBean private EventGateAccessService gates;
-    @MockBean private TicketService tickets;
-    @MockBean private GateLoginThrottle throttle;
-    @MockBean private UserDetailsService users;
-    @MockBean private SessionRegistry sessionRegistry;
+    @MockitoBean private EventService events;
+    @MockitoBean private EventGateAccessService gates;
+    @MockitoBean private TicketService tickets;
+    @MockitoBean private GateLoginThrottle throttle;
+    @MockitoBean private UserDetailsService users;
+    @MockitoBean private SessionRegistry sessionRegistry;
 
     @Test
     void administratorGetsFourDoorFormsWithCsrfAndNoStoredPasswords() throws Exception {

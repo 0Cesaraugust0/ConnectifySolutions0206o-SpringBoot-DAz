@@ -1,7 +1,7 @@
 package com.connectify.service;
 
 import com.connectify.entity.IzipayWebAttempt;
-import com.fasterxml.jackson.databind.JsonNode;
+import tools.jackson.databind.JsonNode;
 import org.springframework.stereotype.Component;
 import java.math.BigDecimal;
 

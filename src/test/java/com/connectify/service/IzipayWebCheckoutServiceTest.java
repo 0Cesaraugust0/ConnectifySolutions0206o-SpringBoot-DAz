@@ -4,7 +4,7 @@ import com.connectify.config.IzipayWebProperties;
 import com.connectify.dto.*;
 import com.connectify.entity.*;
 import com.connectify.repository.*;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.access.AccessDeniedException;

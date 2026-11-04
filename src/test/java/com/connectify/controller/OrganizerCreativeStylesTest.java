@@ -22,8 +22,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.util.ReflectionTestUtils;
@@ -52,16 +52,16 @@ class OrganizerCreativeStylesTest {
     private static final String GALLERY = "/dashboard/organizer/events/creative-styles";
 
     @Autowired private MockMvc mvc;
-    @MockBean private EventRepository events;
-    @MockBean private CategoryRepository categories;
-    @MockBean private TicketTypeRepository tickets;
-    @MockBean private EventAdminRecordRepository records;
-    @MockBean private EventPresentationSettingsRepository presentations;
-    @MockBean private InternalMessageService messages;
-    @MockBean private UserAccountRepository accounts;
-    @MockBean private EventGateAccessService gateAccess;
-    @MockBean private DatabaseUserDetailsService users;
-    @MockBean private ImageStorageService imageStorage;
+    @MockitoBean private EventRepository events;
+    @MockitoBean private CategoryRepository categories;
+    @MockitoBean private TicketTypeRepository tickets;
+    @MockitoBean private EventAdminRecordRepository records;
+    @MockitoBean private EventPresentationSettingsRepository presentations;
+    @MockitoBean private InternalMessageService messages;
+    @MockitoBean private UserAccountRepository accounts;
+    @MockitoBean private EventGateAccessService gateAccess;
+    @MockitoBean private DatabaseUserDetailsService users;
+    @MockitoBean private ImageStorageService imageStorage;
 
     private Event demo;
     private EventPresentationSettings presentation;

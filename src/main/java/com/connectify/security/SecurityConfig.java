@@ -23,8 +23,8 @@ import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.web.session.HttpSessionEventPublisher;
 import org.springframework.security.web.csrf.CsrfFilter;
+import org.springframework.security.web.servlet.util.matcher.PathPatternRequestMatcher;
 import org.springframework.security.web.util.matcher.AndRequestMatcher;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -46,8 +46,7 @@ public class SecurityConfig {
     @Bean
     public DaoAuthenticationProvider databaseAuthenticationProvider(DatabaseUserDetailsService userDetailsService,
                                                                      PasswordEncoder passwordEncoder) {
-        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-        provider.setUserDetailsService(userDetailsService);
+        DaoAuthenticationProvider provider = new DaoAuthenticationProvider(userDetailsService);
         provider.setPasswordEncoder(passwordEncoder);
         return provider;
     }
@@ -58,7 +57,8 @@ public class SecurityConfig {
                                                    SessionRegistry sessionRegistry) throws Exception {
         http
                 .csrf(csrf -> csrf.requireCsrfProtectionMatcher(new AndRequestMatcher(
-                        CsrfFilter.DEFAULT_CSRF_MATCHER, new AntPathRequestMatcher("/dashboard/developer/accounts/**"))))
+                        CsrfFilter.DEFAULT_CSRF_MATCHER,
+                        PathPatternRequestMatcher.pathPattern("/dashboard/developer/accounts/**"))))
                 .sessionManagement(session -> session.maximumSessions(-1)
                         .sessionRegistry(sessionRegistry).expiredUrl("/login?accessUpdated"))
                 .authenticationProvider(databaseAuthenticationProvider)
@@ -67,6 +67,7 @@ public class SecurityConfig {
                                 "/", "/login", "/register", "/setup", "/prototype",
                                 "/terms", "/privacy", "/cookies", "/help", "/help/**",
                                 "/events", "/events/**",
+                                "/robots.txt", "/sitemap.xml",
                                 "/payments/izipay/**",
                                 "/css/**", "/js/**", "/images/**", "/uploads/**"
                         ).permitAll()

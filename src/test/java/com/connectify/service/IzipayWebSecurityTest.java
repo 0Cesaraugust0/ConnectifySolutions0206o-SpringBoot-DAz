@@ -2,8 +2,8 @@ package com.connectify.service;
 
 import com.connectify.config.IzipayWebProperties;
 import com.connectify.entity.IzipayWebAttempt;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import javax.crypto.Mac;
@@ -79,7 +79,7 @@ class IzipayWebSecurityTest {
         JsonNode missing = mapper.readTree(payload("105.00", "0123456789ABCDE").toString().replace("AUTH123", ""));
         assertThatThrownBy(() -> validator.approved(missing, attempt)).hasMessageContaining("autorización");
         var annulled = payload("105.00", "0123456789ABCDE").deepCopy();
-        ((com.fasterxml.jackson.databind.node.ObjectNode) annulled.path("response").path("order").get(0)).put("stateMessage", "Anulado");
+        ((tools.jackson.databind.node.ObjectNode) annulled.path("response").path("order").get(0)).put("stateMessage", "Anulado");
         assertThatThrownBy(() -> validator.approved(annulled, attempt)).hasMessageContaining("estado");
     }
 
