@@ -12,7 +12,7 @@
 .marketplace-browse-copy{grid-column:2;grid-row:1;padding:0 0 0 8px}
 @media(min-width:901px){
   .marketplace-browse-filters {
-      --filter-inset: clamp(0px, calc(8vw - 88px), 62px);
+      --filter-inset: clamp(0px, calc(8vw - 88px), 24px);
   }
   .marketplace-browse-filters .date-filter-strip {
       padding-inline-start: var(--filter-inset);
@@ -107,27 +107,52 @@
 @media(max-width:900px){.marketplace-browse-header{grid-template-columns:1fr;gap:18px}.marketplace-browse-copy{grid-column:1;grid-row:auto;padding:0}.marketplace-browse-copy h2{font-size:24px}.marketplace-compact .event-grid{grid-template-columns:repeat(2,minmax(0,310px))}:is(.marketplace-compact,.marketplace-event-detail) .site-footer-inner{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:560px){.marketplace-compact .event-grid{grid-template-columns:minmax(0,310px);justify-content:start}:is(.marketplace-compact,.marketplace-event-detail) .site-footer-bottom{flex-direction:column}.marketplace-browse-filters .date-filter-strip{gap:8px}}
 
-/* Use the available desktop viewport, with a shared limit for ultrawide layouts. */
+/* Keep the desktop catalog at three cards per row and let content set their height. */
 @media (min-width: 961px) {
-    .marketplace-compact {
-        --marketplace-content-limit: clamp(1240px, calc(62.5vw + 340px), 1760px);
-    }
-    .marketplace-compact .marketplace-page,
-    .marketplace-compact .site-footer-inner,
-    .marketplace-compact .site-footer-bottom {
-        width: min(calc(100% - 32px), var(--marketplace-content-limit));
-    }
     .marketplace-compact .marketplace-ceremonial-frame {
         --pennant-drop: 12px;
-        width: min(90%, 1440px);
     }
     .marketplace-compact .event-grid {
-        grid-template-columns: repeat(auto-fill, minmax(285px, 1fr));
+        width: min(100%, 1120px);
+        margin-inline: auto;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        align-items: start;
     }
-}
-
-@media (min-width: 1800px) {
-    .marketplace-compact .marketplace-nav {
-        padding-inline: max(32px, calc((100% - var(--marketplace-content-limit)) / 2));
+    .marketplace-compact .professional-event-card,
+    .marketplace-compact .event-card-link {
+        min-height: 0;
+    }
+    .marketplace-compact .event-body {
+        gap: 8px;
+        padding: 16px;
+    }
+    .marketplace-compact .event-body h3 {
+        margin: 0;
+    }
+    .marketplace-compact .event-description {
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 4;
+        overflow: hidden;
+    }
+    .marketplace-compact .professional-hero {
+        min-height: clamp(400px, 35vw, 470px);
+    }
+    .marketplace-compact .professional-hero .hero-copy {
+        padding-bottom: 112px;
+    }
+    .marketplace-compact .professional-hero h1 {
+        font-size: clamp(2.55rem, 4.15vw, 3.85rem);
+    }
+    .marketplace-compact .hero-search-panel {
+        bottom: 28px;
+        grid-template-columns: minmax(0, 1.35fr) repeat(2, minmax(0, 1fr)) minmax(0, 1.1fr) 100px;
+        transform: none;
+    }
+    .marketplace-compact .hero-search-panel > .btn {
+        grid-column: auto;
+    }
+    .marketplace-compact .hero-search-panel .search-input {
+        min-width: 0;
     }
 }
