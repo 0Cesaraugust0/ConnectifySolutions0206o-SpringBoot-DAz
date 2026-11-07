@@ -2,7 +2,7 @@
 .launch-welcome-trigger{border:1px solid rgba(255,255,255,.3);border-radius:7px;background:rgba(255,255,255,.08);color:inherit;font:inherit;font-size:11px;padding:6px 10px;cursor:pointer}
 .launch-welcome-trigger span{margin-left:6px}
 html.launch-welcome-open{overflow:hidden}
-.launch-welcome{width:min(540px,calc(100vw - 32px));max-width:none;max-height:calc(100dvh - 32px);margin:auto;padding:0;border:1px solid rgba(255,255,255,.22);border-radius:20px;color:#253047;background:#fff;box-shadow:0 30px 100px #050b234f;overflow:auto;overscroll-behavior:contain;font-family:inherit}
+.launch-welcome{width:min(465px,calc(100vw - 32px));max-width:none;max-height:calc(100dvh - 32px);margin:auto;padding:0;border:1px solid rgba(255,255,255,.22);border-radius:20px;color:#253047;background:#fff;box-shadow:0 30px 100px #050b234f;overflow:auto;overscroll-behavior:contain;font-family:inherit}
 .launch-welcome::backdrop{background:rgba(12,18,36,.68);backdrop-filter:blur(6px)}
 .launch-welcome[open]{animation:launch-enter .3s ease-out}
 .launch-welcome-shell{position:relative;isolation:isolate}

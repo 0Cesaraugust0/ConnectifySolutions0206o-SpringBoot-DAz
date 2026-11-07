@@ -2,13 +2,77 @@
 .marketplace-nav .top-actions{gap:10px}.market-account-cluster{display:flex;align-items:center;gap:8px;padding-left:10px;margin-left:2px;border-left:1px solid #e4e7ef}.account-name-control,.market-text-control{position:relative;display:inline-flex;align-items:center;gap:8px;min-height:40px;padding:7px 10px;border:1px solid #e0e5ef;border-radius:12px;background:#fff;color:#26315b;text-decoration:none;font-size:.84rem;font-weight:900;transition:.16s}.account-name-control{padding-left:7px}.account-name-control:hover,.market-text-control:hover{border-color:#c9a34e;background:#fffdf7;transform:translateY(-1px)}.windows-person-icon{position:relative;display:inline-block;flex:0 0 26px;width:26px;height:26px;overflow:hidden;border-radius:8px;background:linear-gradient(135deg,#1f2937,#77581a)}.windows-person-icon::before{content:'';position:absolute;top:5px;left:9px;width:8px;height:8px;border-radius:50%;background:#fff}.windows-person-icon::after{content:'';position:absolute;bottom:-3px;left:5px;width:16px;height:13px;border-radius:10px 10px 3px 3px;background:#fff}.market-icon-badge{position:absolute;right:-5px;top:-6px;display:grid;place-items:center;min-width:18px;height:18px;padding:0 4px;border-radius:999px;background:#77581a;color:#fff;font-size:.65rem;font-weight:900}.favorite-toggle{display:inline-flex;align-items:center;justify-content:center;gap:7px;min-height:40px;padding:9px 12px;border:1px solid #d8c8a1;border-radius:11px;background:#fffdf7;color:#77581a;font:inherit;font-size:.82rem;font-weight:900;cursor:pointer;transition:.16s}.favorite-toggle:hover{background:#fff8e8;transform:translateY(-1px)}.favorite-toggle.saved{border-color:#77581a;background:#77581a;color:#fff}.favorite-toggle .heart-symbol{display:none}.favorite-card-form{position:absolute;z-index:4;top:18px;left:18px}.favorite-card-button{display:inline-flex;align-items:center;justify-content:center;min-width:76px;height:34px;padding:0 12px;border:1px solid rgba(255,255,255,.55);border-radius:999px;background:rgba(255,255,255,.9);color:#263143;font-size:.72rem;font-weight:900;cursor:pointer;backdrop-filter:blur(8px);box-shadow:0 8px 16px rgba(17,24,39,.15)}.favorite-card-button.saved{background:#111827;border-color:#111827;color:#fff}.event-card{position:relative}.event-card-link{display:flex;min-height:520px;flex-direction:column;color:#111827;text-decoration:none}.event-cover .event-status{position:absolute;z-index:3;top:18px;right:18px}.market-detail-account-actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:18px}.favorites-page-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px}.favorite-event-card{display:flex;flex-direction:column;min-height:260px;padding:22px;border:1px solid #e4e8f1;border-radius:20px;background:#fff;box-shadow:0 12px 28px rgba(15,23,42,.05)}.favorite-event-card h3{color:#25305a}.favorite-event-card p{color:#69758d;line-height:1.5}.favorite-event-card .favorite-event-actions{display:flex;gap:9px;margin-top:auto;padding-top:14px}.favorite-event-actions .btn{flex:1}.favorite-event-actions form{flex:1}.favorite-event-actions form .btn{width:100%}
 /* Barra fija del Marketplace: vidrio translúcido al hacer scroll. */
 .marketplace-nav{background:rgba(255,255,255,.34)!important;border-bottom-color:rgba(214,220,232,.38);box-shadow:0 10px 26px rgba(24,34,70,.045);-webkit-backdrop-filter:blur(18px) saturate(1.1);backdrop-filter:blur(18px) saturate(1.1)}
-.marketplace-compact .marketplace-nav .brand-link .brand-mark{
+.marketplace-compact .marketplace-nav :is(.brand-link .brand-mark, .marketplace-coin-front){
     border:3px solid #d9b85f !important;
     outline:1px solid rgba(116,82,22,.48);
     outline-offset:1px;
     background:linear-gradient(145deg,#123638,#082022 68%,#041415) !important;
     color:#fbf7e8;
     box-shadow:inset 0 0 0 1px rgba(255,243,198,.24),0 4px 12px rgba(5,28,29,.22);
+}
+.marketplace-coin {
+    display: grid;
+    flex: 0 0 44px;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: none;
+    cursor: pointer;
+    perspective: 180px;
+}
+.marketplace-coin:focus-visible {
+    outline: 2px solid #77581a;
+    outline-offset: 4px;
+}
+.marketplace-coin-rotor {
+    position: relative;
+    display: block;
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+    transition: transform 640ms cubic-bezier(.38, .1, .2, 1);
+}
+.marketplace-coin[aria-pressed="true"] .marketplace-coin-rotor {
+    transform: rotateY(180deg);
+}
+.marketplace-coin .logo {
+    position: absolute;
+    inset: 0;
+    backface-visibility: hidden;
+}
+.marketplace-coin-front {
+    transform: translateZ(2px);
+}
+.marketplace-coin-edge {
+    position: absolute;
+    inset: 2px auto 2px calc(50% - 2px);
+    width: 4px;
+    border-radius: 2px;
+    background: repeating-linear-gradient(0deg, #626a74 0 1px, #d6dde3 1px 2px);
+    transform: rotateY(90deg);
+}
+.marketplace-coin .marketplace-coin-back {
+    border: 1px solid #64717d;
+    background: radial-gradient(circle at 31% 23%, #f6fafc, #e0e6eb 43%, #a4aeb8 75%, #7c8895);
+    box-shadow: inset 0 0 0 2px #e8eef2, inset 0 0 0 4px #88939f, 0 4px 9px #1b273433;
+    color: #42515f;
+    transform: rotateY(180deg) translateZ(2px);
+}
+.marketplace-coin-back::before {
+    content: "";
+    position: absolute;
+    inset: 5px;
+    border: 1px dotted #707c88;
+    border-radius: 50%;
+    pointer-events: none;
+}
+.marketplace-coin-mint {
+    filter: drop-shadow(0 1px 0 #fff);
+}
+@media (prefers-reduced-motion: reduce) {
+    .marketplace-coin-rotor { transition: none; }
 }
 .marketplace-nav .nav-link{font-size:.78rem;font-weight:500}.marketplace-nav .btn.compact{padding:7px 11px;border-radius:10px;font-size:.76rem;font-weight:700}
 .marketplace-results{transition:opacity .16s ease}.marketplace-results.is-loading{opacity:.48;pointer-events:none}
