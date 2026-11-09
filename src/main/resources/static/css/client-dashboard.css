@@ -7,8 +7,10 @@
 .client-dashboard-nav {
     min-height: 58px;
     padding: 7px 28px;
-    background: #ffffff;
-    border-bottom: 1px solid #dfe3e8;
+    background: rgba(255, 255, 255, 0.50);
+    border-bottom: 1px solid rgba(229, 231, 235, 0.50);
+    -webkit-backdrop-filter: blur(16px) saturate(1.08);
+    backdrop-filter: blur(16px) saturate(1.08);
     box-shadow: none;
 }
 
@@ -320,6 +322,24 @@
     font-size: 0.61rem;
     font-weight: 700;
     letter-spacing: 0.02em;
+}
+
+.card-marketplace .client-action-icon {
+    border-color: #cbdcf0;
+    background: #edf4fc;
+    color: #3f6389;
+}
+
+.card-cart .client-action-icon {
+    border-color: #ead6bb;
+    background: #fbf2e6;
+    color: #84623c;
+}
+
+.card-tickets .client-action-icon {
+    border-color: #c9e0d6;
+    background: #eaf5ef;
+    color: #426f5d;
 }
 
 .client-action-card > div {

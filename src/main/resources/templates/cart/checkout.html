@@ -5,9 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Finalizar compra - Connectify</title>
     <link rel="stylesheet" th:href="@{/css/styles.css}">
-    <link rel="stylesheet" th:href="@{/css/cart.css(v='checkout-compact-1')}">
+    <link rel="stylesheet" th:href="@{/css/cart.css(v='billing-toggle-glass-2')}">
     <link rel="stylesheet" th:href="@{/css/checkout-izipay.css(v='wallets-1')}">
     <script th:if="${izipayWebReady}" th:src="${izipayWebScriptUrl}" defer></script>
+    <script th:src="@{/js/checkout-billing-toggle.js(v='1')}" defer></script>
     <script th:src="@{/js/checkout-izipay.js(v='wallets-1')}" defer></script>
 </head>
 <body class="checkout-body">
@@ -44,12 +45,28 @@
                     <label>DNI<input name="dni" type="text" th:value="${buyerDni}" inputmode="numeric" pattern="[0-9]{8}" minlength="8" maxlength="8" title="Ingresa los 8 dígitos de tu DNI" required></label>
                     <label>Teléfono<input name="phone" type="tel" th:value="${buyerPhone}" autocomplete="tel" minlength="7" maxlength="15" pattern="[0-9]{7,15}" required></label>
                     <label class="wide">Correo de tu cuenta<input type="email" th:value="${buyerEmail}" readonly aria-readonly="true"></label>
-                    <label class="wide">Dirección de facturación<input name="street" type="text" autocomplete="street-address" minlength="5" maxlength="40" required></label>
-                    <label>Ciudad<input name="city" type="text" autocomplete="address-level2" minlength="3" maxlength="25" required></label>
-                    <label>Departamento<input name="state" type="text" autocomplete="address-level1" minlength="3" maxlength="25" required></label>
-                    <label>Código postal<input name="postalCode" type="text" autocomplete="postal-code" inputmode="numeric" pattern="[0-9]{5,10}" minlength="5" maxlength="10" title="Ingresa tu código postal" required></label>
-                    <div class="checkout-country"><span>País de facturación</span><strong>Perú</strong></div>
                 </div>
+                <section class="checkout-billing-option" aria-labelledby="billing-option-title">
+                    <label class="checkout-billing-toggle" for="include-billing-address">
+                        <input id="include-billing-address" type="checkbox" required
+                               aria-controls="billing-address-fields" aria-expanded="false">
+                        <span class="billing-toggle-copy">
+                            <strong id="billing-option-title">Agregar dirección de facturación</strong>
+                            <small>Activa estos datos complementarios cuando vayas a realizar el pago.</small>
+                        </span>
+                        <span class="billing-toggle-state" aria-hidden="true">Añadir</span>
+                    </label>
+                    <fieldset id="billing-address-fields" class="checkout-billing-fields" hidden disabled>
+                        <legend class="sr-only">Dirección de facturación</legend>
+                        <div class="form-grid">
+                            <label class="wide">Dirección de facturación<input name="street" type="text" autocomplete="street-address" minlength="5" maxlength="40" required></label>
+                            <label>Ciudad<input name="city" type="text" autocomplete="address-level2" minlength="3" maxlength="25" required></label>
+                            <label>Departamento<input name="state" type="text" autocomplete="address-level1" minlength="3" maxlength="25" required></label>
+                            <label>Código postal<input name="postalCode" type="text" autocomplete="postal-code" inputmode="numeric" pattern="[0-9]{5,10}" minlength="5" maxlength="10" title="Ingresa tu código postal" required></label>
+                            <div class="checkout-country"><span>País de facturación</span><strong>Perú</strong></div>
+                        </div>
+                    </fieldset>
+                </section>
                 <section class="checkout-payment-methods" aria-labelledby="payment-method-title">
                     <div class="checkout-payment-heading">
                         <div><span class="payment-step">Medios de pago</span><strong id="payment-method-title">Elige cómo pagar</strong></div>

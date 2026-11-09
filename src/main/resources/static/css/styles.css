@@ -1135,9 +1135,16 @@ h3 {
 }
 
 .footer-logo {
+    display: grid;
+    flex: 0 0 42px;
+    place-items: center;
     width: 42px;
     height: 42px;
-    border-radius: 14px;
+    border: 1px solid rgba(255, 255, 255, 0.32);
+    border-radius: 50%;
+    background: #374151;
+    color: #f8fafc;
+    box-shadow: inset 0 0 0 1px rgba(15, 23, 42, 0.22);
 }
 
 .footer-brand-block p {

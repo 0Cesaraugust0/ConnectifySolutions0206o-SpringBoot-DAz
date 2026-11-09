@@ -238,8 +238,10 @@
 .checkout-nav {
     min-height: 58px;
     padding: 7px 28px;
-    border-bottom: 1px solid #dfe3e8;
-    background: rgba(255, 255, 255, 0.96);
+    border-bottom: 1px solid rgba(229, 231, 235, 0.50);
+    background: rgba(255, 255, 255, 0.50);
+    -webkit-backdrop-filter: blur(16px) saturate(1.08);
+    backdrop-filter: blur(16px) saturate(1.08);
     box-shadow: none;
 }
 
@@ -415,6 +417,79 @@
     font-size: 0.57rem;
     line-height: 1.4;
     font-weight: 450;
+}
+
+.checkout-billing-option {
+    display: grid;
+    gap: 10px;
+}
+
+.checkout-page .checkout-billing-toggle {
+    grid-template-columns: 16px minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 10px;
+    padding: 11px 12px;
+    border: 1px solid #d7dce3;
+    border-radius: 8px;
+    background: #f8f9fb;
+    cursor: pointer;
+}
+
+.checkout-page .checkout-billing-toggle input {
+    width: 16px;
+    min-height: 16px;
+    margin: 0;
+    padding: 0;
+    accent-color: #172033;
+}
+
+.billing-toggle-copy {
+    display: grid;
+    gap: 2px;
+}
+
+.billing-toggle-copy strong {
+    color: #172033;
+    font-size: 0.68rem;
+    font-weight: 700;
+}
+
+.checkout-page .billing-toggle-copy small {
+    color: #6b7482;
+    font-size: 0.59rem;
+    font-weight: 450;
+}
+
+.billing-toggle-state {
+    padding: 5px 8px;
+    border-radius: 999px;
+    background: #e9edf2;
+    color: #4d5665;
+    font-size: 0.56rem;
+    font-weight: 650;
+}
+
+.checkout-billing-toggle:has(input:checked) {
+    border-color: #aeb8c6;
+    background: #f3f6f8;
+}
+
+.checkout-billing-toggle:has(input:checked) .billing-toggle-state {
+    background: #172033;
+    color: #ffffff;
+}
+
+.checkout-billing-fields {
+    min-width: 0;
+    margin: 0;
+    padding: 13px;
+    border: 1px solid #e0e4e9;
+    border-radius: 8px;
+    background: #fcfcfd;
+}
+
+.checkout-billing-fields[hidden] {
+    display: none;
 }
 
 .checkout-page .legal-consent {
