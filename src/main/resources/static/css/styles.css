@@ -44,11 +44,13 @@ a {
 }
 
 .logo {
+    flex: 0 0 44px;
     width: 44px;
     height: 44px;
+    aspect-ratio: 1;
     display: grid;
     place-items: center;
-    border-radius: 999px;
+    border-radius: 50%;
     background: linear-gradient(135deg, #2563eb, #9333ea);
     color: white;
     font-size: 24px;
@@ -1137,9 +1139,11 @@ h3 {
 .footer-logo {
     display: grid;
     flex: 0 0 42px;
+    min-width: 42px;
     place-items: center;
     width: 42px;
     height: 42px;
+    aspect-ratio: 1;
     border: 1px solid rgba(255, 255, 255, 0.32);
     border-radius: 50%;
     background: #374151;

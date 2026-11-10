@@ -404,18 +404,28 @@
     .marketplace-compact .marketplace-browse-filters :is(.date-filter-strip a,.category-chip){flex:0 0 auto;scroll-snap-align:start;min-height:38px;padding:8px 13px;font-size:.78rem}
     .marketplace-compact .marketplace-browse-filters .date-filter-strip>span{display:none}
     .marketplace-compact .marketplace-browse-filters .date-filter-strip{
-        gap:4px;
+        justify-content:space-between;
+        gap:5px;
         padding-inline:0;
+        overflow-x:hidden;
     }
     .marketplace-compact .marketplace-browse-filters .date-filter-strip a{
         flex:0 1 auto;
         min-width:0;
         min-height:35px;
         padding:7px 8px;
-        font-size:.66rem;
+        font-size:.68rem;
         font-weight:700;
         letter-spacing:-.015em;
         white-space:nowrap;
+    }
+    .marketplace-compact .marketplace-browse-filters .professional-categories{
+        gap:6px;
+    }
+    .marketplace-compact .marketplace-browse-filters .professional-categories .category-chip{
+        min-height:34px;
+        padding:7px 11px;
+        font-size:.74rem;
     }
     .marketplace-compact .marketplace-browse-copy{padding:0 2px}
     .marketplace-compact .marketplace-browse-copy h2{font-size:23px}
@@ -426,7 +436,7 @@
     .marketplace-compact .marketplace-explore-types{display:block;width:100%}
     .marketplace-compact .marketplace-explore-types>.badge{margin-bottom:6px}
     .marketplace-compact .marketplace-music-types{display:flex;flex-wrap:nowrap;gap:6px;width:100%;padding:2px 0 8px;overflow:visible}
-    .marketplace-compact .marketplace-artist-chip{flex:1 1 0;min-width:0;min-height:39px;padding:8px 4px;font-size:.72rem;font-weight:650;letter-spacing:-.01em;white-space:nowrap}
+    .marketplace-compact .marketplace-artist-chip{flex:1 1 0;min-width:0;min-height:39px;padding:8px 4px;font-size:.80rem;font-weight:700;letter-spacing:-.015em;white-space:nowrap}
     .marketplace-compact .marketplace-artist-chip.artist-visits{gap:0}
     .marketplace-compact .marketplace-artist-chip.artist-visits svg{display:none}
     .marketplace-compact .event-grid{width:100%;grid-template-columns:1fr;gap:18px}

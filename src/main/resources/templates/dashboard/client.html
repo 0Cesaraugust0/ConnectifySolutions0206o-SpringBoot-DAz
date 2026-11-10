@@ -6,7 +6,7 @@
     <title>Mi cuenta Cliente - Connectify</title>
     <link rel="stylesheet" th:href="@{/css/styles.css}">
     <link rel="stylesheet" th:href="@{/css/ui.css}">
-    <link rel="stylesheet" th:href="@{/css/client-dashboard.css(v='client-pastel-5')}">
+    <link rel="stylesheet" th:href="@{/css/client-dashboard.css(v='client-mobile-menu-6')}">
 </head>
 <body class="client-dashboard-body">
 <header class="navbar dashboard-nav client-dashboard-nav">
@@ -14,17 +14,36 @@
         <span class="logo client-brand-mark">C</span>
         <div><strong>Connectify</strong><small>Cuenta Cliente</small></div>
     </a>
-    <nav class="top-actions" aria-label="Acciones de la cuenta Cliente">
+    <nav class="top-actions client-desktop-actions" aria-label="Acciones de la cuenta Cliente">
         <a class="btn secondary" th:href="@{/events}">Explorar eventos</a>
         <a class="btn secondary" th:href="@{/cart}">Mi carrito</a>
         <a class="btn primary" th:href="@{/dashboard/client/tickets}">Mis tickets QR</a>
         <a class="btn secondary" th:href="@{/communications}">Soporte</a>
         <form th:action="@{/logout}" method="post"><button class="btn secondary" type="submit">Cerrar sesión</button></form>
     </nav>
+    <nav class="client-mobile-actions" aria-label="Acciones móviles de la cuenta Cliente">
+        <a th:href="@{/events}">Explorar</a>
+        <a class="client-mobile-cart" th:href="@{/cart}" aria-label="Abrir carrito">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 5h2l1.6 9.1a2 2 0 0 0 2 1.7h7.5a2 2 0 0 0 1.9-1.4L20 8H6.1"/><circle cx="9.2" cy="19" r="1.2"/><circle cx="17" cy="19" r="1.2"/></svg>
+            <span class="client-visually-hidden">Carrito</span>
+        </a>
+        <details class="client-account-menu">
+            <summary aria-label="Abrir menú de la cuenta">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+                <span class="client-visually-hidden">Menú</span>
+            </summary>
+            <div class="client-account-menu-panel">
+                <a href="#clientProfile"><span>P</span>Perfil</a>
+                <a th:href="@{/dashboard/client/favorites}"><span>F</span>Favoritos</a>
+                <a th:href="@{/communications}"><span>S</span>Soporte</a>
+                <form th:action="@{/logout}" method="post"><button type="submit">Cerrar sesión</button></form>
+            </div>
+        </details>
+    </nav>
 </header>
 
 <main class="client-dashboard-page">
-    <section class="client-dashboard-hero">
+    <section id="clientProfile" class="client-dashboard-hero">
         <div class="client-hero-copy">
             <p class="client-eyebrow">Panel del cliente</p>
             <h1 th:text="${title}">Mi cuenta Cliente</h1>
