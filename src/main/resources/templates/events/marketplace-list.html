@@ -10,7 +10,7 @@
     <link rel="stylesheet" th:href="@{/css/styles.css(v='marketplace-cards-regular-1')}">
     <link rel="stylesheet" th:href="@{/css/marketplace-presentation.css}">
     <link rel="stylesheet" th:href="@{/css/marketplace-account.css(v='nav-55')}">
-    <link rel="stylesheet" th:href="@{/css/marketplace-compact.css(v='mobile-marketplace-5')}">
+    <link rel="stylesheet" th:href="@{/css/marketplace-compact.css(v='mobile-marketplace-17')}">
     <link rel="stylesheet" th:href="@{/css/hero-ceremonial-pennants.css(v='6')}">
     <link rel="stylesheet" th:href="@{/css/launch-welcome.css(v='2')}">
     <link rel="stylesheet" th:href="@{/css/marketplace-visits.css(v='1')}">
@@ -174,16 +174,16 @@
         <a data-marketplace-filter th:href="@{/events(category='Música',dateRange=${dateRange})}" class="category-chip" th:classappend="${musicSelected} ? ' active' : ''">Música</a>
         <a data-marketplace-filter th:href="@{/events(category='Tecnología',dateRange=${dateRange})}" class="category-chip" th:classappend="${category == 'Tecnología'} ? ' active' : ''">Tecnología</a>
         <a data-marketplace-filter th:href="@{/events(category='Gastronomía',dateRange=${dateRange})}" class="category-chip" th:classappend="${category == 'Gastronomía'} ? ' active' : ''">Gastronomía</a>
-        <a data-marketplace-filter th:href="@{/events(category='Deporte',dateRange=${dateRange})}" class="category-chip" th:classappend="${category == 'Deporte'} ? ' active' : ''">Deporte</a>
+        <a data-marketplace-filter th:href="@{/events(category='Deporte',dateRange=${dateRange})}" class="category-chip" th:classappend="${category == 'Deporte'} ? ' active' : ''">Deportes</a>
     </section>
 
     </div>
     <div class="marketplace-browse-copy">
-            <h2>Eventos disponibles</h2>
+            <div class="marketplace-browse-title-row"><h2>Eventos disponibles</h2><span class="marketplace-mobile-explore">Explorar</span></div>
             <p class="muted">Revisa eventos publicados, compara disponibilidad y compra tus entradas desde una cuenta Cliente.</p>
             <div class="professional-stats browse-stats" aria-label="Datos del marketplace">
                 <span><strong th:text="${events.size()}">0</strong> eventos publicados</span>
-                <span><strong>6</strong> formatos disponibles</span>
+                <span><strong>4</strong> formas de pago disponibles</span>
                 <span class="hero-commerce-note">Compra en línea 24/7</span>
             </div>
     </div>

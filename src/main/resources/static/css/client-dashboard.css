@@ -458,7 +458,9 @@
     }
 
     .client-dashboard-nav .brand small {
-        display: none;
+        display: block;
+        margin-top: 2px;
+        font-size: .5rem;
     }
 
     .client-dashboard-nav .client-brand-mark {
@@ -477,7 +479,7 @@
         flex: 0 1 auto;
         align-items: center;
         justify-content: flex-end;
-        gap: 4px;
+        gap: 7px;
         min-width: 0;
     }
 
@@ -485,28 +487,29 @@
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        min-height: 30px;
-        padding: 6px 9px;
+        min-height: 34px;
+        padding: 7px 11px;
         border: 1px solid rgba(214, 219, 228, .78);
         border-radius: 8px;
         background: rgba(255, 255, 255, .55);
         color: #3e4858;
-        font-size: .62rem;
+        font-size: .68rem;
         font-weight: 550;
         text-decoration: none;
         white-space: nowrap;
     }
 
     .client-mobile-actions > .client-mobile-cart {
-        flex: 0 0 32px;
-        width: 32px;
+        flex: 0 0 35px;
+        width: 35px;
+        height: 35px;
         padding: 0;
         border-radius: 50%;
     }
 
     .client-mobile-cart svg {
-        width: 17px;
-        height: 17px;
+        width: 18px;
+        height: 18px;
         fill: none;
         stroke: currentColor;
         stroke-width: 1.7;
@@ -516,13 +519,13 @@
 
     .client-account-menu {
         position: relative;
-        flex: 0 0 32px;
+        flex: 0 0 35px;
     }
 
     .client-account-menu summary {
         display: grid;
-        width: 32px;
-        height: 32px;
+        width: 35px;
+        height: 35px;
         padding: 0;
         place-items: center;
         border: 1px solid #d8dde5;
@@ -538,8 +541,8 @@
     }
 
     .client-account-menu summary svg {
-        width: 17px;
-        height: 17px;
+        width: 18px;
+        height: 18px;
         fill: none;
         stroke: currentColor;
         stroke-width: 1.7;
@@ -575,14 +578,13 @@
         width: 100%;
         min-height: 36px;
         align-items: center;
-        gap: 9px;
         padding: 8px 9px;
         border: 0;
         border-radius: 8px;
         background: transparent;
         color: #343e4e;
         font: inherit;
-        font-size: .68rem;
+        font-size: .72rem;
         font-weight: 550;
         text-align: left;
         text-decoration: none;
@@ -592,18 +594,6 @@
     .client-account-menu-panel a:hover,
     .client-account-menu-panel button:hover {
         background: #f1f3f6;
-    }
-
-    .client-account-menu-panel span {
-        display: grid;
-        width: 22px;
-        height: 22px;
-        place-items: center;
-        border-radius: 6px;
-        background: #edf0f4;
-        color: #5e6878;
-        font-size: .58rem;
-        font-weight: 750;
     }
 
     .client-account-menu-panel form {

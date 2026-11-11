@@ -30,6 +30,7 @@
 .marketplace-compact .marketplace-browse-copy .browse-stats span{min-height:25px;padding:4px 10px;background:#eef1f5;color:#4b5563;font-size:11px;font-weight:450;line-height:1.3}
 .marketplace-compact .marketplace-browse-copy .browse-stats strong{margin-right:4px;color:#253047;font-size:12px;font-weight:600;line-height:1}
 .marketplace-compact .marketplace-browse-copy .browse-stats .hero-commerce-note{background:#e8edf3;color:#4b5563}
+.marketplace-mobile-explore{display:none}
 .marketplace-compact .marketplace-explore-heading{align-items:center;margin:20px 0 20px;padding-bottom:8px;border-bottom:2px solid #111827;gap:16px}
 @media(min-width:901px){.marketplace-compact .marketplace-explore-heading{margin-top:-3px}}
 .marketplace-explore-heading .badge{margin:0;padding:3px 9px;font-size:11px}
@@ -101,7 +102,7 @@
 :is(.marketplace-compact,.marketplace-event-detail) .site-footer h2{font-size:11px;margin-bottom:8px}
 :is(.marketplace-compact,.marketplace-event-detail) .site-footer section:not(.footer-brand-block){gap:6px}
 :is(.marketplace-compact,.marketplace-event-detail) .footer-brand{gap:7px}
-:is(.marketplace-compact,.marketplace-event-detail) .footer-logo{display:grid;place-items:center;flex-shrink:0;width:26px;height:26px;border:1px solid #64748b;border-radius:50%;background:#374151;font-size:14px}
+:is(.marketplace-compact,.marketplace-event-detail) .footer-logo{display:grid;place-items:center;flex:0 0 26px;min-width:26px;width:26px;height:26px;aspect-ratio:1;border:1px solid #64748b;border-radius:50%;background:#374151;font-size:14px}
 :is(.marketplace-compact,.marketplace-event-detail) .footer-brand-block p{font-size:11px;margin-top:8px;max-width:300px}
 :is(.marketplace-compact,.marketplace-event-detail) .site-footer-bottom{width:min(1240px,calc(100% - 48px));padding:11px 0 17px;gap:11px;font-size:10px}
 @media(max-width:900px){.marketplace-browse-header{grid-template-columns:1fr;gap:18px}.marketplace-browse-copy{grid-column:1;grid-row:auto;padding:0}.marketplace-browse-copy h2{font-size:24px}.marketplace-compact .event-grid{grid-template-columns:repeat(2,minmax(0,310px))}:is(.marketplace-compact,.marketplace-event-detail) .site-footer-inner{grid-template-columns:repeat(2,minmax(0,1fr))}}
@@ -236,7 +237,7 @@
         padding:8px 12px;
         gap:10px;
     }
-    .marketplace-compact .marketplace-nav .brand{flex:1 1 auto;min-width:0;gap:8px}
+    .marketplace-compact .marketplace-nav .brand{flex:1 1 auto;min-width:0;gap:3mm}
     .marketplace-compact .marketplace-coin{width:40px;height:40px;flex-basis:40px}
     .marketplace-compact .marketplace-nav .brand-link{min-width:0}
     .marketplace-compact .marketplace-nav .brand-link strong{font-size:14px}
@@ -420,21 +421,65 @@
         white-space:nowrap;
     }
     .marketplace-compact .marketplace-browse-filters .professional-categories{
-        gap:6px;
+        gap:7px;
     }
     .marketplace-compact .marketplace-browse-filters .professional-categories .category-chip{
         min-height:34px;
-        padding:7px 11px;
-        font-size:.74rem;
+        padding:7px 2mm;
+        font-size:.76rem;
     }
-    .marketplace-compact .marketplace-browse-copy{padding:0 2px}
-    .marketplace-compact .marketplace-browse-copy h2{font-size:23px}
+    .marketplace-compact .marketplace-browse-copy{
+        margin-top:-3mm;
+        padding:0 2px 9px;
+    }
+    .marketplace-compact .marketplace-browse-title-row{
+        display:flex;
+        align-items:baseline;
+        gap:4mm;
+        margin-bottom:8px;
+        padding-bottom:6px;
+        border-bottom:2px solid #111827;
+    }
+    .marketplace-compact .marketplace-browse-copy h2{
+        margin:0;
+        padding:0;
+        border:0;
+        font-size:23px;
+    }
+    .marketplace-compact .marketplace-mobile-explore{
+        display:inline;
+        color:#315bd6;
+        font-size:11px;
+        font-weight:700;
+        line-height:1;
+    }
     .marketplace-compact .marketplace-browse-copy p{font-size:12px;line-height:1.5}
-    .marketplace-compact .browse-stats{gap:6px}
-    .marketplace-compact .browse-stats span{min-height:25px;padding:4px 8px;font-size:10px}
-    .marketplace-compact .marketplace-explore-heading{align-items:flex-start;margin-top:2px}
+    .marketplace-compact .marketplace-browse-copy .browse-stats{
+        display:flex;
+        flex-wrap:nowrap;
+        justify-content:center;
+        gap:5px;
+        width:100%;
+        margin-top:9px;
+        transform:none;
+    }
+    .marketplace-compact .marketplace-browse-copy .browse-stats span{
+        flex:0 1 auto;
+        min-width:0;
+        min-height:25px;
+        padding:4px 7px;
+        font-size:9px;
+        white-space:nowrap;
+    }
+    .marketplace-compact .marketplace-browse-copy .browse-stats strong{font-size:10px}
+    .marketplace-compact .marketplace-explore-heading{
+        align-items:flex-start;
+        margin-top:2px;
+        padding-bottom:0;
+        border-bottom:0;
+    }
     .marketplace-compact .marketplace-explore-types{display:block;width:100%}
-    .marketplace-compact .marketplace-explore-types>.badge{margin-bottom:6px}
+    .marketplace-compact .marketplace-explore-types>.badge{display:none}
     .marketplace-compact .marketplace-music-types{display:flex;flex-wrap:nowrap;gap:6px;width:100%;padding:2px 0 8px;overflow:visible}
     .marketplace-compact .marketplace-artist-chip{flex:1 1 0;min-width:0;min-height:39px;padding:8px 4px;font-size:.80rem;font-weight:700;letter-spacing:-.015em;white-space:nowrap}
     .marketplace-compact .marketplace-artist-chip.artist-visits{gap:0}

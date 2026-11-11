@@ -6,13 +6,13 @@
     <title>Mi cuenta Cliente - Connectify</title>
     <link rel="stylesheet" th:href="@{/css/styles.css}">
     <link rel="stylesheet" th:href="@{/css/ui.css}">
-    <link rel="stylesheet" th:href="@{/css/client-dashboard.css(v='client-mobile-menu-6')}">
+    <link rel="stylesheet" th:href="@{/css/client-dashboard.css(v='client-mobile-menu-7')}">
 </head>
 <body class="client-dashboard-body">
 <header class="navbar dashboard-nav client-dashboard-nav">
     <a class="brand brand-link" th:href="@{/dashboard/client}">
         <span class="logo client-brand-mark">C</span>
-        <div><strong>Connectify</strong><small>Cuenta Cliente</small></div>
+        <div><strong>Connectify</strong><small>Dashboard</small></div>
     </a>
     <nav class="top-actions client-desktop-actions" aria-label="Acciones de la cuenta Cliente">
         <a class="btn secondary" th:href="@{/events}">Explorar eventos</a>
@@ -33,9 +33,9 @@
                 <span class="client-visually-hidden">Menú</span>
             </summary>
             <div class="client-account-menu-panel">
-                <a href="#clientProfile"><span>P</span>Perfil</a>
-                <a th:href="@{/dashboard/client/favorites}"><span>F</span>Favoritos</a>
-                <a th:href="@{/communications}"><span>S</span>Soporte</a>
+                <a href="#clientProfile">Perfil</a>
+                <a th:href="@{/dashboard/client/favorites}">Favoritos</a>
+                <a th:href="@{/communications}">Soporte</a>
                 <form th:action="@{/logout}" method="post"><button type="submit">Cerrar sesión</button></form>
             </div>
         </details>

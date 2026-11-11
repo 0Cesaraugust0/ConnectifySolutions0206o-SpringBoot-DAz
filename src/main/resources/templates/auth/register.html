@@ -5,14 +5,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Crear cuenta - Connectify</title>
     <meta name="robots" content="noindex, nofollow">
-    <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <link rel="stylesheet" th:href="@{/css/styles.css(v='auth-circle-2')}">
     <link rel="stylesheet" th:href="@{/css/ui.css}">
-    <link rel="stylesheet" th:href="@{/css/auth-client.css(v='auth-mobile-nav-3')}">
+    <link rel="stylesheet" th:href="@{/css/auth-client.css(v='auth-mobile-menu-5')}">
+    <link rel="stylesheet" th:href="@{/css/marketplace-compact.css(v='mobile-marketplace-6')}">
 </head>
-<body>
+<body class="marketplace-compact">
 <header class="navbar dashboard-nav auth-navbar">
-    <a class="brand brand-link" th:href="@{/events}"><span class="logo brand-mark">C</span><div><strong>Connectify</strong><small>Registro público</small></div></a>
+    <a class="brand brand-link" th:href="@{/events}"><span class="logo brand-mark">C</span><div><strong>Connectify</strong><small>Registro</small></div></a>
     <nav class="top-actions register-nav-actions"><a class="btn secondary" th:href="@{/events}">Explorar eventos</a><a class="btn secondary" th:href="@{/help}">Ayuda</a><a class="btn secondary" th:href="@{/login}">Iniciar sesión</a></nav>
+    <nav class="auth-mobile-actions" aria-label="Acciones móviles de registro">
+        <a class="auth-mobile-marketplace" th:href="@{/events}">Marketplace</a>
+        <details class="auth-mobile-menu">
+            <summary aria-label="Abrir menú"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></summary>
+            <div class="auth-mobile-menu-panel">
+                <a th:href="@{/help}">Ayuda</a>
+                <a th:href="@{/login}">Iniciar sesión</a>
+            </div>
+        </details>
+    </nav>
 </header>
 
 <main class="auth-client-page register-page">
