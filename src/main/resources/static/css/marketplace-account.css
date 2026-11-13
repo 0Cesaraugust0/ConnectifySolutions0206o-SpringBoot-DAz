@@ -12,9 +12,9 @@
 }
 .marketplace-coin {
     display: grid;
-    flex: 0 0 44px;
-    width: 44px;
-    height: 44px;
+    flex: 0 0 calc(44px + 2mm);
+    width: calc(44px + 2mm);
+    height: calc(44px + 2mm);
     padding: 0;
     border: 0;
     border-radius: 50%;

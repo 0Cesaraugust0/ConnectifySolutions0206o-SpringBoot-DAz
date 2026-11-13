@@ -24,7 +24,7 @@ class SeoControllerTest {
                 .contains("Sitemap: https://www.showyouplay.com/sitemap.xml")
                 .contains("Allow: /events")
                 .contains("Disallow: /dashboard/")
-                .doesNotContain("Disallow: /events");
+                .doesNotContain("Disallow: /events", "Disallow: /login", "Disallow: /terms", "Disallow: /help");
     }
 
     @Test
@@ -41,8 +41,31 @@ class SeoControllerTest {
 
         assertThat(sitemap)
                 .contains("<loc>https://www.showyouplay.com/events</loc>")
+                .contains("<loc>https://www.showyouplay.com/events?category=M%C3%BAsica</loc>")
+                .contains("<loc>https://www.showyouplay.com/register</loc>")
                 .contains("<loc>https://www.showyouplay.com/events/21</loc>")
-                .contains("<lastmod>2026-11-04</lastmod>");
+                .contains("<lastmod>2026-11-04</lastmod>")
+                .doesNotContain("/login</loc>", "/help</loc>", "/terms</loc>", "/privacy</loc>", "/cookies</loc>");
+    }
+
+    @Test
+    void excludesDemoCatalogAndDraftsEvenWhenFeatured() {
+        EventRepository repository = mock(EventRepository.class);
+        Event demoId = new Event();
+        setEventId(demoId, 8L);
+        demoId.setStatus(EventStatus.PUBLISHED);
+        Event demoAccount = new Event();
+        setEventId(demoAccount, 24L);
+        demoAccount.setStatus(EventStatus.PUBLISHED);
+        demoAccount.setOrganizerEmail("org@connectify.com");
+        Event draft = new Event();
+        setEventId(draft, 50L);
+        draft.setStatus(EventStatus.DRAFT);
+        when(repository.findByStatusOrderByUpdatedAtDesc(EventStatus.PUBLISHED))
+                .thenReturn(List.of(demoId, demoAccount, draft));
+
+        assertThat(new SeoController(repository, "https://www.showyouplay.com").sitemap().getBody())
+                .doesNotContain("/events/8<", "/events/24<", "/events/50<");
     }
 
     private void setEventId(Event event, Long id) {

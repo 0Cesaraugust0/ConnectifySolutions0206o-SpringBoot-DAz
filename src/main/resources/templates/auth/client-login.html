@@ -6,7 +6,7 @@
     <title>Ingresar - Connectify</title>
     <link rel="stylesheet" th:href="@{/css/styles.css(v='auth-circle-2')}">
     <link rel="stylesheet" th:href="@{/css/ui.css}">
-    <link rel="stylesheet" th:href="@{/css/auth-client.css(v='auth-mobile-menu-5')}">
+    <link rel="stylesheet" th:href="@{/css/auth-client.css(v='login-notices-4')}">
     <link rel="stylesheet" th:href="@{/css/marketplace-compact.css(v='mobile-marketplace-6')}">
 </head>
 <body class="marketplace-compact">
@@ -42,8 +42,8 @@
             <p class="badge">Inicio de sesión</p>
             <h2>Bienvenido de nuevo</h2>
             <p class="muted small">Ingresa con el correo y contraseña de tu cuenta.</p>
-            <div th:if="${param.error}" class="alert error">Correo o contraseña incorrectos. Revisa tus datos e inténtalo nuevamente.</div>
-            <div th:if="${param.logout}" class="alert success">Sesión cerrada correctamente.</div>
+            <div th:if="${param.error}" class="alert error login-error-notice">Correo o contraseña incorrectos. Revisa tus datos e inténtalo nuevamente.</div>
+            <div th:if="${param.logout}" class="alert success logout-notice">Sesión cerrada correctamente.</div>
             <div th:if="${param.registered}" class="alert success">Tu cuenta Cliente fue creada. Ya puedes iniciar sesión.</div>
             <div th:if="${param.organizerRegistered}" class="alert success">Tu cuenta Organizador fue creada. Inicia sesión y completa tus datos de organizador si falta algo.</div>
             <div th:if="${param.setupSuccess}" class="alert success">La cuenta técnica inicial fue creada. Inicia sesión para continuar.</div>

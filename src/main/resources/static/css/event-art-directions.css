@@ -137,3 +137,193 @@
     .market-detail-page .art-direction[data-template='FORUM'] .market-story { display:block; }
     .market-detail-page .art-direction[data-template='FORUM'] :is(.market-meta,.market-highlight,.market-extra-blocks) { margin-top:22px; }
 }
+
+/* The organizer's saved colors take precedence over the template's palette. */
+.market-detail-page .market-layout.has-personal-primary {
+    border-color: color-mix(in srgb, var(--market-primary) 45%, #dce2eb);
+}
+
+.market-detail-page .market-layout.has-personal-primary .market-cover:not(:has(img)) {
+    background: linear-gradient(135deg, var(--market-primary), color-mix(in srgb, var(--market-primary) 45%, #111827));
+}
+
+.market-detail-page .market-layout.has-personal-primary:not(:is([data-template='ATELIER'], [data-template='FESTIVAL'], [data-template='FORUM'])) .market-cover::after {
+    background: linear-gradient(0deg, color-mix(in srgb, var(--market-primary) 42%, #0a1325), transparent 90%);
+}
+
+.market-detail-page .market-layout.has-personal-primary:is([data-template='ATELIER'], [data-template='FESTIVAL']) .market-cover {
+    background: color-mix(in srgb, var(--market-primary) 30%, var(--direction-paper));
+}
+
+.market-detail-page .market-layout.has-personal-primary[data-template='FORUM'] .market-cover {
+    background-color: color-mix(in srgb, var(--market-primary) 48%, #0b1b29);
+}
+
+.market-detail-page .market-layout.has-personal-primary .market-meta {
+    border-inline-start: 3px solid var(--market-primary);
+    padding-inline-start: 8px;
+}
+
+.market-detail-page .market-layout.has-personal-accent .market-cover {
+    border-bottom: 5px solid var(--market-accent);
+}
+
+.market-detail-page .market-layout.has-personal-accent .market-highlight {
+    border-inline-start: 3px solid var(--market-accent);
+    padding-inline-start: 14px;
+}
+
+.market-detail-page .market-layout.has-personal-accent .market-tickets .ticket-cart-form .btn.primary {
+    background: color-mix(in srgb, var(--market-accent) 52%, #101827);
+    color: #fff;
+}
+
+.market-detail-page .market-promotional-art {
+    grid-column: 1 / -1;
+    margin: 0 0 24px;
+    border: 1px solid #8490a53b;
+    border-radius: 10px;
+    background: #111827;
+    overflow: hidden;
+}
+
+.market-detail-page .market-promotional-art img {
+    display: block;
+    width: 100%;
+    max-height: 74vh;
+    object-fit: contain;
+}
+
+/* Clásico: portada dividida como una página editorial. */
+.market-detail-page .market-layout[data-template="CLASSIC"] {
+    --classic-paper: #f4ede1;
+    --classic-rule: #a87e4d;
+    background-color: #fffdfa;
+}
+
+.market-detail-page .market-layout[data-template="CLASSIC"].has-personal-primary {
+    --classic-paper: color-mix(in srgb, var(--market-primary) 13%, #f4ede1);
+}
+
+.market-detail-page .market-layout[data-template="CLASSIC"].has-personal-accent {
+    --classic-rule: var(--market-accent);
+}
+
+.market-detail-page .market-layout[data-template="CLASSIC"] .market-cover {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.08fr);
+    place-items: stretch;
+    gap: clamp(16px, 3vw, 36px);
+    height: auto !important;
+    padding: clamp(18px, 3.8vw, 44px);
+    background: var(--classic-paper);
+    border-bottom: 1px solid var(--classic-rule);
+}
+
+.market-detail-page .market-layout[data-template="CLASSIC"] .market-cover::after { display: none; }
+
+.market-detail-page .market-layout[data-template="CLASSIC"] .market-cover-title {
+    grid-area: 1 / 1;
+    position: relative;
+    inset: auto !important;
+    max-width: none;
+    align-self: center;
+    color: #202a34;
+}
+
+.market-detail-page .market-layout[data-template="CLASSIC"] .market-cover-title h1 {
+    margin: 18px 0 0;
+    font: 500 clamp(2rem, 4.5vw, 4.25rem)/1 Georgia, serif !important;
+    letter-spacing: -.045em;
+    overflow-wrap: anywhere;
+}
+
+.market-detail-page .market-layout[data-template="CLASSIC"] .market-cover-title p {
+    display: inline-block;
+    margin-top: 16px;
+    padding-top: 9px;
+    border-top: 1px solid var(--classic-rule);
+}
+
+.market-detail-page .market-layout[data-template="CLASSIC"] .template-badge {
+    background: transparent;
+    border-color: #77624d;
+    color: inherit;
+}
+
+.market-detail-page .market-layout[data-template="CLASSIC"] .market-cover-title .demo-event-ribbon {
+    position: static;
+    display: inline-block;
+}
+
+.market-detail-page .market-layout[data-template="CLASSIC"] .market-cover > :is(img, .market-cover-empty) {
+    grid-area: 1 / 2;
+    position: static;
+    width: 100%;
+    height: auto;
+    min-height: 0;
+    aspect-ratio: 4 / 3;
+    border: 4px solid #fffdfa;
+    outline: 1px solid var(--classic-rule);
+    object-fit: cover;
+}
+
+.market-detail-page .market-layout[data-template="CLASSIC"] .market-cover-empty {
+    display: grid;
+    place-items: center;
+    background: radial-gradient(ellipse at 65% 30%, #4c6277, #1a2735 75%);
+    font: 400 clamp(1.4rem, 4vw, 3.4rem)/1 Georgia, serif;
+}
+
+.market-detail-page .market-layout[data-template="CLASSIC"] .market-intro {
+    font-family: Georgia, serif;
+    line-height: 1.75;
+}
+
+.organizer-market-preview .organizer-preview-edit {
+    display: flex;
+    align-items: center;
+    margin-inline-end: 8px;
+    padding-inline-end: 16px;
+    border-inline-end: 1px solid #aeb9c9;
+}
+
+.market-tour-sessions .tour-card-open { margin: 4px 16px 14px; }
+.market-detail-page .market-layout .market-tour-sessions { counter-reset: tour; }
+.market-detail-page .market-layout .market-tour-sessions > details { counter-increment: tour; }
+.market-detail-page .market-layout .market-tour-sessions > details > summary::before {
+    content: counter(tour) ".";
+    flex-shrink: 0;
+    color: var(--market-primary, #334155);
+    font-variant-numeric: tabular-nums;
+}
+.market-detail-page .market-layout .market-tour-sessions > details > summary > span { flex: 1; }
+.tour-card-dialog {
+    width: min(470px, calc(100% - 28px));
+    overflow: auto;
+    max-height: 86vh;
+    padding: 0;
+    border: 1px solid #d9e1eb;
+    border-radius: 14px;
+    background: #fff;
+    color: #17233a;
+}
+.tour-card-dialog::backdrop { background: #16253c99; }
+.tour-card-dialog img { display: block; width: 100%; aspect-ratio: 2 / 1; object-fit: cover; }
+.tour-card-copy { padding: 18px; }
+.tour-card-copy h3 { margin: 0 0 9px; }
+.market-tour-sessions .tour-card-copy p { margin: 0 0 8px; padding: 0; }
+.market-tour-sessions .tour-card-copy a { margin: 8px 8px 0 0; }
+
+/* Cards Marketplace: formato compacto de la primera ficha pública. */
+.market-detail-page .market-layout[data-template="CARD_GRID"] .market-cover {
+    height: 205px;
+}
+
+.market-detail-page .market-layout[data-template="CARD_GRID"] .market-cover-title h1 {
+    font-size: clamp(1.6rem, 3vw, 2.2rem);
+}
+
+@container (max-width: 600px) {
+    .market-detail-page .market-layout[data-template="CLASSIC"] .market-cover { grid-template-columns: minmax(0, 1fr); }
+    .market-detail-page .market-layout[data-template="CLASSIC"] .market-cover > :is(img, .market-cover-empty) { grid-area: 2 / 1; aspect-ratio: 16 / 10; }
+}

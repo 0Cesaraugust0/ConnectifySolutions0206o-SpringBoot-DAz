@@ -7,7 +7,7 @@
     <link rel="stylesheet" th:href="@{/css/styles.css}">
     <link rel="stylesheet" th:href="@{/css/ui.css}">
     <link rel="stylesheet" th:href="@{/css/organizer.css(v='organizer-nav-shell-2')}">
-    <link rel="stylesheet" th:href="@{/css/organizer-ticket-types.css(v='compact-60-1')}">
+    <link rel="stylesheet" th:href="@{/css/organizer-ticket-types.css(v='professional-1')}">
 </head>
 <body class="organizer-ticket-types-page">
 <header class="navbar dashboard-nav">
@@ -24,9 +24,12 @@
 
 <main class="dashboard-page organizer-ticket-types-shell">
     <section class="organizer-hero">
-        <p class="badge">Gestión de tickets</p>
-        <h1 th:text="${event.title}">Evento</h1>
-        <p class="hero-text">Crea y modifica tipos de entrada con precio, cupo liberado y estado de venta.</p>
+        <div class="hero-copy">
+            <p class="badge">Inventario comercial</p>
+            <h1 th:text="${event.title}">Evento</h1>
+            <p class="hero-text">Configura precios, cupos y condiciones de venta para cada tipo de entrada.</p>
+        </div>
+        <div class="hero-status"><span>Estado del evento</span><strong th:text="${event.status}">PENDING_REVIEW</strong></div>
     </section>
 
     <div th:if="${param.created}" class="alert success">La nueva variante fue agregada correctamente.</div>
@@ -36,7 +39,10 @@
 
     <section class="checkout-layout">
         <form class="form-card ticket-create-card" th:action="@{/dashboard/organizer/events/{id}/ticket-types(id=${event.id})}" method="post">
-            <h2>Agregar tipo de entrada</h2>
+            <div class="section-heading">
+                <span class="section-number">01</span>
+                <div><h2>Agregar tipo de entrada</h2><p>Define una nueva opción comercial para este evento.</p></div>
+            </div>
             <div class="field-grid">
                 <label>Tipo predefinido
                     <select class="search-input" name="namePreset" required>
@@ -66,20 +72,21 @@
                     <textarea class="search-input" name="description" rows="4" placeholder="Beneficios, zona, condiciones o restricciones." required></textarea>
                 </label>
             </div>
-            <button class="btn primary full" type="submit">Agregar entrada</button>
+            <button class="btn primary full ticket-create-submit" type="submit"><span aria-hidden="true">＋</span> Agregar entrada</button>
         </form>
 
         <aside class="summary-card">
-            <h2>Métricas del evento</h2>
-            <div class="summary-row"><span>Estado</span><strong th:text="${event.status}">PENDING_REVIEW</strong></div>
-            <div class="summary-row"><span>Capacidad base</span><strong th:text="${event.capacity}">0</strong></div>
-            <div class="summary-row"><span>Vendidos base</span><strong th:text="${event.sold}">0</strong></div>
+            <div class="section-heading compact"><span class="section-number">02</span><div><h2>Resumen operativo</h2><p>Lectura rápida del inventario.</p></div></div>
+            <div class="summary-metrics">
+                <div class="summary-row"><span>Capacidad base</span><strong th:text="${event.capacity}">0</strong></div>
+                <div class="summary-row"><span>Vendidos</span><strong th:text="${event.sold}">0</strong></div>
+            </div>
             <p class="muted small">Los tipos activos se mostrarán en el marketplace para que el cliente elija General, VIP, Early Bird u otro tipo.</p>
         </aside>
     </section>
 
     <section class="table-card ticket-types-card">
-        <h2>Tipos creados</h2>
+        <div class="card-heading"><div><span class="section-kicker">Inventario vigente</span><h2>Tipos de entrada creados</h2></div><span class="item-count" th:text="${#lists.size(ticketTypes) + ' variantes'}">0 variantes</span></div>
         <table class="table-modern">
             <thead>
             <tr>
@@ -132,7 +139,7 @@
                         </label>
                         <div class="summary-row"><span>Vendidas</span><strong th:text="${type.quantitySold}">0</strong></div>
                         <div class="summary-row"><span>Disponibles</span><strong th:text="${type.remaining}">0</strong></div>
-                        <button class="btn primary compact" type="submit">Guardar cambios</button>
+                        <button class="btn primary compact ticket-save-button" type="submit">Guardar cambios</button>
                     </form>
                 </td>
             </tr>
@@ -141,7 +148,7 @@
     </section>
 
     <section class="table-card ticket-audit-card">
-        <h2>Trazabilidad</h2>
+        <div class="card-heading"><div><span class="section-kicker">Historial</span><h2>Trazabilidad</h2></div></div>
         <table class="table-modern">
             <thead>
             <tr>

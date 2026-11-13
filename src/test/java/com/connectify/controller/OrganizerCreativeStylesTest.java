@@ -40,6 +40,7 @@ import static org.springframework.security.test.web.servlet.request.SecurityMock
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 
 @WebMvcTest(controllers = OrganizerDashboardController.class, properties = {
         "spring.config.location=optional:classpath:/admin-preview-mvc.properties",
@@ -133,6 +134,30 @@ class OrganizerCreativeStylesTest {
                         .with(user("org@connectify.com").roles("ORGANIZER")))
                 .andExpect(status().isOk()).andReturn().getResponse().getContentAsString(java.nio.charset.StandardCharsets.UTF_8);
         assertThat(edit).containsPattern("<option(?=[^>]*value=\"8\")(?=[^>]*selected)[^>]*>Artistas Cover</option>");
+    }
+
+    @Test
+    void sendingForReviewSavesTheCompleteEventBeforeChangingItsStatus() throws Exception {
+        Category music = category(1L, "Música");
+        demo.setStatus(EventStatus.DRAFT);
+        when(categories.findById(1L)).thenReturn(Optional.of(music));
+
+        mvc.perform(post("/dashboard/organizer/events/24/edit-all")
+                        .with(user("org@connectify.com").roles("ORGANIZER")).with(csrf())
+                        .param("title", "Evento listo para revisión")
+                        .param("description", "Contenido completo guardado antes de solicitar la revisión.")
+                        .param("categoryId", "1").param("eventDate", "2027-02-09T20:00")
+                        .param("location", "Multiespacio Costa 21").param("city", "Lima")
+                        .param("price", "149.00").param("capacity", "500")
+                        .param("designTemplate", "IMMERSIVE")
+                        .param("workflowAction", "submit_review"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/dashboard/organizer/events/24/edit?submitted=true"));
+
+        verify(events).save(demo);
+        assertThat(demo.getTitle()).isEqualTo("Evento listo para revisión");
+        assertThat(demo.getLocation()).isEqualTo("Multiespacio Costa 21");
+        assertThat(demo.getStatus()).isEqualTo(EventStatus.PENDING_REVIEW);
     }
 
     private static Category category(long id, String name) {

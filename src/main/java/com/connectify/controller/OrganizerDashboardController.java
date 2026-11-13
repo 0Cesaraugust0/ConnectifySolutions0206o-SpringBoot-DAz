@@ -19,6 +19,7 @@ import com.connectify.repository.EventRepository;
 import com.connectify.repository.TicketTypeRepository;
 import com.connectify.repository.UserAccountRepository;
 import com.connectify.service.InternalMessageService;
+import com.connectify.service.TourDates;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -80,8 +81,9 @@ public class OrganizerDashboardController {
     }
 
     @GetMapping("/new")
-    public String newEvent(Model model) {
+    public String newEvent(Model model, Authentication authentication) {
         model.addAttribute("categories", categoryRepository.findAll());
+        addTourOptions(model, authentication, null, null);
         return "dashboard/organizer/event-form";
     }
 
@@ -111,7 +113,9 @@ public class OrganizerDashboardController {
         Map<EventDesignTemplate, String> directionExamples = Map.of(
                 EventDesignTemplate.ATELIER, "ORIGEN",
                 EventDesignTemplate.FESTIVAL, "PULSO",
-                EventDesignTemplate.FORUM, "NEXUM");
+                EventDesignTemplate.FORUM, "NEXUM",
+                EventDesignTemplate.TICKET_PANEL, "FINAL COPA INTERBARRIOS",
+                EventDesignTemplate.STAGE_MEDIA, "FERIA TAC INNOVACI");
         directionExamples.forEach((style, title) -> examples.stream()
                 .filter(event -> event.getTitle() != null && event.getTitle().toUpperCase(Locale.ROOT).contains(title))
                 .findFirst().ifPresent(event -> styleEventIds.put(style.name(), event.getId())));
@@ -213,7 +217,9 @@ public class OrganizerDashboardController {
         model.addAttribute("event", event);
         model.addAttribute("categories", categoryRepository.findAll());
         model.addAttribute("ticketTypes", ticketTypeRepository.findByEventIdOrderByPriceAsc(id));
-        model.addAttribute("presentation", presentationSettingsRepository.findByEventId(id).orElse(null));
+        EventPresentationSettings presentation = presentationSettingsRepository.findByEventId(id).orElse(null);
+        model.addAttribute("presentation", presentation);
+        addTourOptions(model, authentication, id, presentation);
         model.addAttribute("editMode", true);
         return "dashboard/organizer/event-form";
     }
@@ -504,6 +510,9 @@ public class OrganizerDashboardController {
     }
 
     private void addMarketplacePreviewModel(Event event, EventPresentationSettings presentation, Model model) {
+        var tour = TourDates.route(event, presentation, true, eventRepository, presentationSettingsRepository);
+        model.addAttribute("tourDates", tour.nextDates());
+        model.addAttribute("tourOrigin", tour.origin());
         model.addAttribute("event", event);
         model.addAttribute("ticketTypes", ticketTypeRepository.findByEventIdOrderByPriceAsc(event.getId()));
         model.addAttribute("presentation", presentation);
@@ -516,6 +525,13 @@ public class OrganizerDashboardController {
         model.addAttribute("youtubeEmbedUrl", embedYoutube(presentation == null ? null : presentation.getYoutubeUrl()));
         model.addAttribute("spotifyEmbedUrl", embedSpotify(presentation == null ? null : presentation.getSpotifyUrl()));
         model.addAttribute("presentationStyle", styleFor(presentation));
+    }
+
+    private void addTourOptions(Model model, Authentication authentication, Long currentId, EventPresentationSettings presentation) {
+        model.addAttribute("tourCandidates", eventRepository.findByOrganizerEmailIgnoreCaseOrderByUpdatedAtDesc(currentEmail(authentication))
+                .stream().filter(candidate -> !candidate.getId().equals(currentId)).sorted(TourDates.CHRONOLOGICAL).toList());
+        model.addAttribute("selectedTourIds", TourDates.ids(presentation));
+        model.addAttribute("maxTourDates", TourDates.MAX_LINKS);
     }
 
     private String firstText(String preferred, String fallback) {

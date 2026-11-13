@@ -7,9 +7,9 @@
     <link rel="stylesheet" th:href="@{/css/styles.css}">
     <link rel="stylesheet" th:href="@{/css/ui.css}">
     <link rel="stylesheet" th:href="@{/css/organizer.css(v='organizer-nav-shell-2')}">
-    <link rel="stylesheet" th:href="@{/css/organizer-presentation-modal.css(v='templates-2')}">
-    <link rel="stylesheet" th:href="@{/css/organizer-visual-editor.css(v='visual-editor-1')}">
-    <link rel="stylesheet" th:href="@{/css/event-art-directions.css(v='1')}">
+    <link rel="stylesheet" th:href="@{/css/organizer-presentation-modal.css(v='templates-6')}">
+    <link rel="stylesheet" th:href="@{/css/organizer-visual-editor.css(v='visual-editor-20')}">
+    <link rel="stylesheet" th:href="@{/css/organizer-template-preview.css(v='4')}">
     <style>
         .create-shell{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:24px;align-items:start}.create-card{background:#fff;border:1px solid #e8eaf2;border-radius:24px;padding:26px;box-shadow:0 18px 45px rgba(15,23,42,.06)}.stepper{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:18px 0 22px}.step{padding:10px;border-radius:12px;background:#f5f6fb;color:#68708a;font-size:.83rem;font-weight:800}.step b{display:inline-grid;place-items:center;width:22px;height:22px;border-radius:50%;background:#e7eaff;color:#4f46e5;margin-right:6px}.step.active{background:#efedff;color:#3328b7}.step.active b{background:#5146e5;color:#fff}.create-section{padding:22px 0;border-top:1px solid #edf0f6}.create-section:first-of-type{border-top:0;padding-top:0}.create-section h2{margin:0 0 4px}.section-note{margin:0 0 18px;color:#667085;font-size:.92rem}.ticket-toolbar{display:flex;justify-content:space-between;gap:12px;align-items:center;margin:12px 0}.ticket-toolbar small{color:#68708a}.ticket-rows{display:grid;gap:12px}.ticket-row{border:1px solid #e5e8f2;border-radius:16px;padding:16px;background:#fbfcff;position:relative}.ticket-row-grid{display:grid;grid-template-columns:1.15fr .75fr .75fr;gap:12px}.ticket-row .wide{grid-column:1/-1}.remove-ticket{position:absolute;right:12px;top:12px;border:0;background:#fff1f2;color:#be123c;border-radius:8px;padding:7px 9px;font-weight:800;cursor:pointer}.design-request{border:1px solid #dedbff;background:#faf9ff;border-radius:16px;padding:16px;margin-top:14px}.design-request label{font-weight:800}.brief-wrap{display:none;margin-top:12px}.brief-wrap.open{display:block}.summary-side{position:sticky;top:18px}.summary-side h2{margin-top:0}.summary-side .summary-row{padding:13px 0}.price-preview{font-size:1.4rem;font-weight:900;color:#312e81}.save-bar{display:flex;gap:10px;justify-content:flex-end;align-items:center;padding-top:20px}.save-bar .btn{min-width:220px}.edit-save-bar{flex-wrap:wrap}.edit-save-bar .btn{min-width:150px;text-align:center}@media(max-width:980px){.create-shell{grid-template-columns:1fr}.summary-side{position:static}.stepper{grid-template-columns:1fr 1fr}}@media(max-width:620px){.ticket-row-grid,.field-grid{grid-template-columns:1fr}.stepper{grid-template-columns:1fr}.save-bar{align-items:stretch;flex-direction:column}.save-bar .btn{width:100%}}
         .advanced-presentation{margin-top:16px;border:1px solid #e3e7f3;border-radius:18px;background:#fbfcff;overflow:hidden}.advanced-presentation summary{display:flex;justify-content:space-between;gap:12px;align-items:center;padding:15px 16px;cursor:pointer;font-weight:900;color:#27335d;list-style:none}.advanced-presentation summary::-webkit-details-marker{display:none}.advanced-presentation summary span{color:#6b7280;font-size:.82rem;font-weight:700}.advanced-presentation-body{display:grid;gap:16px;padding:0 16px 16px}.mini-toggle-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.mini-toggle-grid label{display:flex;gap:8px;align-items:flex-start;padding:10px;border:1px solid #e6e9f2;border-radius:12px;background:#fff;font-weight:800;color:#34405f}.mini-toggle-grid span{display:block;color:#6b7280;font-size:.78rem;font-weight:700}.advanced-presentation textarea{min-height:86px}
@@ -30,7 +30,6 @@
         <p class="hero-text" th:text="${editMode == true ? 'Edita información, presentación y entradas en una sola pantalla. Guarda un borrador, revisa su apariencia y envíalo cuando esté listo.' : 'Construye la información, define todas las variantes de entrada y prepara su presentación para Marketplace antes de enviarla a revisión.'}">Construye la información del evento.</p>
     </section>
 
-    <div th:if="${param.saved}" class="alert success">Cambios guardados como borrador. Puedes seguir editando antes de enviarlos a revisión.</div>
     <div th:if="${param.submitted}" class="alert success">Cambios guardados y enviados a revisión administrativa.</div>
 
     <section class="stepper" aria-label="Flujo de creación">
@@ -62,44 +61,61 @@
             </section>
 
             <section class="create-section">
-                <div class="create-section-heading"><h2>2. Presentación en Marketplace</h2><p class="section-note">Selecciona una plantilla inicial y mírala en una vista paralela. El Diseñador podrá tomar esa base y elevarla cuando le solicites apoyo.</p></div>
+                <div class="create-section-heading event-template-heading">
+                    <h2>2. Plantillas</h2>
+                    <p class="section-note">Define la primera presentación de tu evento.</p>
+                </div>
                 <div class="field-grid">
-                    <label>URL de imagen principal<input id="eventImageUrl" class="search-input" name="imageUrl" type="text" th:value="${editMode == true ? event.imageUrl : ''}" placeholder="https://.../portada-evento.jpg"></label>
-                    <label>Subir JPG/PNG<input id="eventImageFile" class="search-input" name="imageFile" type="file" accept="image/jpeg,image/png,image/webp"><small>La imagen se conserva al guardar el evento.</small></label>
+                    <label>Imagen de presentación del Hero<input id="eventImageUrl" class="search-input" name="imageUrl" type="text" th:value="${editMode == true ? event.imageUrl : ''}" placeholder="https://.../portada-evento.jpg"><small>Usa una imagen horizontal que ayude a reconocer el evento de un vistazo. Puedes afinarla en Contenido visual avanzado.</small></label>
+                    <label>Subir portada<input id="eventImageFile" class="search-input" name="imageFile" type="file" accept="image/jpeg,image/png,image/webp"><small>Máximo 5 MB.</small></label>
+                    <label>Arte publicitario debajo del Hero<input class="search-input" name="promotionalImageUrl" type="text" th:value="${presentation != null ? presentation.promotionalImageUrl : ''}" placeholder="https://.../afiche-evento.jpg"><small>Opcional. Puedes usar un afiche diseñado para el evento.</small></label>
+                    <label>Subir arte publicitario<input class="search-input" name="promotionalImageFile" type="file" accept="image/jpeg,image/png,image/webp"><small>Máximo 5 MB.</small></label>
                 </div>
 
-                <div class="organizer-presentation-picker">
-                    <div class="organizer-presentation-copy">
-                        <span class="organizer-template-state" id="templateState">✦ Clásico</span>
-                        <strong>Define la primera presentación de tu evento</strong>
-                        <small>La selección se guarda con la propuesta. Todavía no publica ni permite compras.</small>
-                    </div>
-                    <button id="openPresentationModal" class="btn primary compact" type="button">Plantillas y vista previa</button>
-                </div>
+                <button id="openPresentationModal" class="organizer-presentation-picker" type="button">
+                    <span class="organizer-presentation-copy"><strong>Seleccionar plantillas</strong></span>
+                    <span class="organizer-presentation-selection"><span class="organizer-template-state" id="templateState">Clásico</span><span class="organizer-presentation-chevron" aria-hidden="true"></span></span>
+                </button>
 
                 <details class="advanced-presentation">
-                    <summary>Contenido visual avanzado <span>Paleta, composición, imágenes y bloques del evento</span></summary>
+                    <summary><span class="advanced-title">Contenido visual avanzado <span class="field-info" tabindex="0" data-tip="Aquí defines cómo se verá la ficha pública; no modifica precios ni cupos.">i</span></span><span>Paleta, composición, imágenes y bloques del evento</span></summary>
                     <div class="advanced-presentation-body">
+                        <section class="visual-field-map" aria-labelledby="visualMapTitle">
+                            <div class="visual-map-copy">
+                                <span class="visual-map-kicker">Mapa de presentación</span>
+                                <strong id="visualMapTitle">Dónde aparecerá cada recurso</strong>
+                                <small>Usa esta maqueta como guía. Los bloques activados y con contenido se integrarán en la ficha pública.</small>
+                                <div class="visual-map-legend"><span><i>1</i> Portada y fondo</span><span><i>2</i> Marca y destacado</span><span><i>3</i> Contenido</span><span><i>4</i> Compra</span></div>
+                            </div>
+                            <div class="visual-wireframe" aria-label="Maqueta de la ficha pública del evento">
+                                <div class="wire-cover"><b>1</b><span>Portada / fondo</span><em>Encuadre</em></div>
+                                <div class="wire-brand"><b>2</b><span>Logo · marca · texto destacado</span></div>
+                                <div class="wire-body">
+                                    <div class="wire-main-content"><div class="wire-content-title"><b>3</b><span>Contenido del evento</span></div><i></i><i></i><div class="wire-module-row"><span>Agenda</span><span>Beneficios</span><span>Galería</span></div><div class="wire-media-line">▶ Video &nbsp; · &nbsp; ♫ Playlist</div></div>
+                                    <aside><b>4</b><span>Entradas</span><strong>S/ 00.00</strong><small>Tipo · cupos</small><button type="button" tabindex="-1">Comprar</button></aside>
+                                </div>
+                                <div class="wire-footer-modules"><span>Escenario / zonas</span><span>Auspiciadores</span><span>Fechas / ciudades</span></div>
+                            </div>
+                        </section>
                         <div class="visual-editor-heading"><strong>Dirección de arte</strong><small>Define la identidad y la jerarquía de la ficha, además de su plantilla.</small></div>
                         <div class="field-grid visual-palette-grid">
-                            <label>Color principal<input id="presentationPrimary" class="search-input visual-color" name="primaryColor" type="color" th:value="${presentation != null && presentation.primaryColor != null ? presentation.primaryColor : '#4f46e5'}"></label>
-                            <label>Color de acento<input id="presentationAccent" class="search-input visual-color" name="accentColor" type="color" th:value="${presentation != null && presentation.accentColor != null ? presentation.accentColor : '#8b5cf6'}"></label>
-                            <label>Encuadre de portada<select id="presentationCoverFocus" class="search-input" name="coverFocus"><option value="TOP" th:selected="${presentation != null && presentation.coverFocus == 'TOP'}">Parte superior</option><option value="CENTER" th:selected="${presentation == null || presentation.coverFocus == 'CENTER'}">Centro</option><option value="BOTTOM" th:selected="${presentation != null && presentation.coverFocus == 'BOTTOM'}">Parte inferior</option></select></label>
-                            <label>Prioridad del contenido<select id="presentationContentFocus" class="search-input" name="contentFocus"><option value="BALANCED" th:selected="${presentation == null || presentation.contentFocus == 'BALANCED'}">Equilibrio visual</option><option value="INFORMATION" th:selected="${presentation != null && presentation.contentFocus == 'INFORMATION'}">Historia e información</option><option value="SALES" th:selected="${presentation != null && presentation.contentFocus == 'SALES'}">Entradas y compra</option></select></label>
-                            <label class="wide">Disposición de la ficha de compra<select id="presentationInfoPosition" class="search-input" name="infoPosition"><option value="STANDARD" th:selected="${presentation == null || presentation.infoPosition == 'STANDARD'}">Integrada en el contenido</option><option value="SIDEBAR" th:selected="${presentation != null && presentation.infoPosition == 'SIDEBAR'}">Panel lateral</option><option value="FLOATING" th:selected="${presentation != null && presentation.infoPosition == 'FLOATING'}">Panel lateral flotante</option></select></label>
+                            <label>Color principal <span class="field-info" tabindex="0" data-tip="Color dominante de títulos, fondos y superficies principales.">i</span><input id="presentationPrimary" class="search-input visual-color" name="primaryColor" type="color" th:value="${presentation != null && presentation.primaryColor != null ? presentation.primaryColor : '#4f46e5'}"></label>
+                            <label>Color de acento <span class="field-info" tabindex="0" data-tip="Color de contraste para botones, etiquetas y llamados importantes.">i</span><input id="presentationAccent" class="search-input visual-color" name="accentColor" type="color" th:value="${presentation != null && presentation.accentColor != null ? presentation.accentColor : '#8b5cf6'}"></label>
+                            <label>Encuadre de portada <span class="field-info" tabindex="0" data-tip="Indica qué zona de la imagen debe conservarse visible cuando se recorte.">i</span><select id="presentationCoverFocus" class="search-input" name="coverFocus"><option value="TOP" th:selected="${presentation != null && presentation.coverFocus == 'TOP'}">Parte superior</option><option value="CENTER" th:selected="${presentation == null || presentation.coverFocus == 'CENTER'}">Centro</option><option value="BOTTOM" th:selected="${presentation != null && presentation.coverFocus == 'BOTTOM'}">Parte inferior</option></select></label>
+                            <label>Prioridad del contenido <span class="field-info" tabindex="0" data-tip="Define si la ficha destaca la historia, la venta o mantiene un equilibrio.">i</span><select id="presentationContentFocus" class="search-input" name="contentFocus"><option value="BALANCED" th:selected="${presentation == null || presentation.contentFocus == 'BALANCED'}">Equilibrio visual</option><option value="INFORMATION" th:selected="${presentation != null && presentation.contentFocus == 'INFORMATION'}">Historia e información</option><option value="SALES" th:selected="${presentation != null && presentation.contentFocus == 'SALES'}">Entradas y compra</option></select></label>
+                            <label class="wide">Disposición de la ficha de compra <span class="field-info" tabindex="0" data-tip="Ubica las entradas dentro del contenido, en una columna lateral o flotante.">i</span><select id="presentationInfoPosition" class="search-input" name="infoPosition"><option value="STANDARD" th:selected="${presentation == null || presentation.infoPosition == 'STANDARD'}">Integrada en el contenido</option><option value="SIDEBAR" th:selected="${presentation != null && presentation.infoPosition == 'SIDEBAR'}">Panel lateral</option><option value="FLOATING" th:selected="${presentation != null && presentation.infoPosition == 'FLOATING'}">Panel lateral flotante</option></select></label>
                         </div>
                         <div class="field-grid">
-                            <label>Portada de la ficha interna<input id="presentationCoverImage" class="search-input" name="coverImageUrl" type="text" th:value="${presentation != null ? presentation.coverImageUrl : ''}" placeholder="https://.../arte-de-portada.jpg"><small>Si queda vacía, se usa la imagen principal del evento.</small></label>
-                            <label>Miniatura del catálogo<input class="search-input" name="thumbnailImageUrl" type="text" th:value="${presentation != null ? presentation.thumbnailImageUrl : ''}" placeholder="https://.../miniatura.jpg"><small>Permite usar un encuadre distinto en las cards.</small></label>
-                            <label>URL de fondo para landing<input class="search-input" name="backgroundImageUrl" type="text" th:value="${presentation != null ? presentation.backgroundImageUrl : ''}" placeholder="https://.../fondo-campana.jpg"></label>
-                            <label>Marca visible del organizador<input class="search-input" name="organizerBrandName" type="text" th:value="${presentation != null ? presentation.organizerBrandName : ''}" placeholder="Ej. Producciones Andinas"></label>
-                            <label>Logo del organizador<input class="search-input" name="organizerLogoUrl" type="text" th:value="${presentation != null ? presentation.organizerLogoUrl : ''}" placeholder="https://.../logo.png"></label>
-                            <label class="wide">Texto destacado<input id="presentationHighlight" class="search-input" name="highlightText" type="text" maxlength="500" th:value="${presentation != null ? presentation.highlightText : ''}" placeholder="Ej. Preventa exclusiva, experiencia inmersiva o recorrido nacional."></label>
+                            <label>Portada de la ficha interna <span class="field-info" tabindex="0" data-tip="Imagen horizontal principal que recibe al visitante en el detalle del evento.">i</span><input id="presentationCoverImage" class="search-input" name="coverImageUrl" type="text" th:value="${presentation != null ? presentation.coverImageUrl : ''}" placeholder="https://.../arte-de-portada.jpg"><small>Si queda vacía, se usa la imagen principal del evento.</small></label>
+                            <label>Miniatura del catálogo <span class="field-info" tabindex="0" data-tip="Imagen recortada para la tarjeta del evento en el listado del Marketplace.">i</span><input class="search-input" name="thumbnailImageUrl" type="text" th:value="${presentation != null ? presentation.thumbnailImageUrl : ''}" placeholder="https://.../miniatura.jpg"><small>Permite usar un encuadre distinto en las cards.</small></label>
+                            <label>URL de fondo para landing <span class="field-info" tabindex="0" data-tip="Arte ambiental situado detrás del contenido en las plantillas compatibles.">i</span><input class="search-input" name="backgroundImageUrl" type="text" th:value="${presentation != null ? presentation.backgroundImageUrl : ''}" placeholder="https://.../fondo-campana.jpg"></label>
+                            <label>Marca visible del organizador <span class="field-info" tabindex="0" data-tip="Nombre público del productor, institución o empresa responsable.">i</span><input class="search-input" name="organizerBrandName" type="text" th:value="${presentation != null ? presentation.organizerBrandName : ''}" placeholder="Ej. Producciones Andinas"></label>
+                            <label>Logo del organizador <span class="field-info" tabindex="0" data-tip="Usa preferentemente un PNG o WebP nítido con fondo transparente.">i</span><input class="search-input" name="organizerLogoUrl" type="text" th:value="${presentation != null ? presentation.organizerLogoUrl : ''}" placeholder="https://.../logo.png"></label>
+                            <label class="wide">Texto destacado <span class="field-info" tabindex="0" data-tip="Frase breve de campaña: preventa, invitado especial o beneficio principal.">i</span><input id="presentationHighlight" class="search-input" name="highlightText" type="text" maxlength="500" th:value="${presentation != null ? presentation.highlightText : ''}" placeholder="Ej. Preventa exclusiva, experiencia inmersiva o recorrido nacional."></label>
                         </div>
                         <div class="visual-editor-heading"><strong>Bloques de la experiencia</strong><small>Activa los bloques que aporten contenido a este evento.</small></div>
-                        <input type="hidden" name="_showGallery" value="on"><input type="hidden" name="_showOrganizer" value="on"><input type="hidden" name="_showAgenda" value="on"><input type="hidden" name="_showBenefits" value="on">
+                        <input type="hidden" name="_showOrganizer" value="on"><input type="hidden" name="_showAgenda" value="on"><input type="hidden" name="_showBenefits" value="on">
                         <div class="mini-toggle-grid">
-                            <label><input name="showGallery" value="true" type="checkbox" th:checked="${presentation == null || presentation.showGallery}"> Galería visual <span>Imágenes vinculadas al evento.</span></label>
                             <label><input name="showOrganizer" value="true" type="checkbox" th:checked="${presentation == null || presentation.showOrganizer}"> Identidad del organizador <span>Marca, nombre y logo.</span></label>
                             <label><input id="presentationShowAgenda" name="showAgenda" value="true" type="checkbox" th:checked="${presentation != null && presentation.showAgenda}"> Agenda <span>Horarios y programación.</span></label>
                             <label><input id="presentationShowBenefits" name="showBenefits" value="true" type="checkbox" th:checked="${presentation != null && presentation.showBenefits}"> Experiencias y beneficios <span>Qué incluye la visita.</span></label>
@@ -109,30 +125,56 @@
                             <label><input name="showSessions" value="true" type="checkbox" th:checked="${presentation != null && presentation.showSessions}"> Fechas y ciudades <span>Programa informativo de la gira.</span></label>
                         </div>
                         <div class="field-grid">
-                            <label class="wide">Agenda y horarios<textarea id="presentationAgenda" class="search-input" name="agendaText" rows="4" th:text="${presentation != null ? presentation.agendaText : ''}" placeholder="18:00 | Apertura de puertas&#10;19:00 | Primera presentación&#10;21:00 | Show principal"></textarea></label>
-                            <label class="wide">Beneficios y experiencias<textarea id="presentationBenefits" class="search-input" name="benefitsText" rows="4" th:text="${presentation != null ? presentation.benefitsText : ''}" placeholder="Dos escenarios y artistas en vivo&#10;Zona gastronómica&#10;Espacios de descanso y accesibilidad"></textarea></label>
-                            <label class="wide">Auspiciadores<textarea class="search-input" name="sponsorsText" rows="3" th:text="${presentation != null ? presentation.sponsorsText : ''}" placeholder="Marca A&#10;Marca B&#10;Institucion C"></textarea></label>
-                            <label class="wide">URLs de logos de auspiciadores<textarea class="search-input" name="sponsorLogosText" rows="3" th:text="${presentation != null ? presentation.sponsorLogosText : ''}" placeholder="https://.../logo-bbva.png&#10;https://.../logo-radio.png"></textarea></label>
-                            <label>YouTube<input class="search-input" name="youtubeUrl" type="text" th:value="${presentation != null ? presentation.youtubeUrl : ''}" placeholder="https://www.youtube.com/watch?v=..."></label>
-                            <label>Playlist Spotify<input class="search-input" name="spotifyUrl" type="text" th:value="${presentation != null ? presentation.spotifyUrl : ''}" placeholder="https://open.spotify.com/playlist/..."></label>
-                            <label>Imagen del escenario<input id="presentationStageImage" class="search-input" name="stageImageUrl" type="text" th:value="${presentation != null ? presentation.stageImageUrl : ''}" placeholder="https://.../mapa-escenario.png"></label>
-                            <label>Subir escenario PNG/JPG<input id="presentationStageFile" class="search-input" name="stageImageFile" type="file" accept="image/jpeg,image/png,image/webp"></label>
-                            <label class="wide">Detalle del escenario<textarea class="search-input" name="stageText" rows="3" th:text="${presentation != null ? presentation.stageText : ''}" placeholder="Escenario principal, Platinum, VIP, General, accesos..."></textarea></label>
-                            <label class="wide">Sesiones, fechas o ciudades<textarea class="search-input" name="sessionText" rows="4" th:text="${presentation != null ? presentation.sessionText : ''}" placeholder="Lima | 25 julio | Parque de la Exposicion&#10;Cusco | 28 julio | Explanada principal&#10;Tacna | 30 julio | Parque Peru"></textarea><small>Información de programación; los cupos se administran en los tipos de entrada.</small></label>
+                            <label class="wide">Agenda y horarios <span class="field-info" tabindex="0" data-tip="Escribe una actividad por línea, idealmente con hora y nombre.">i</span><textarea id="presentationAgenda" class="search-input" name="agendaText" rows="4" th:text="${presentation != null ? presentation.agendaText : ''}" placeholder="18:00 | Apertura de puertas&#10;19:00 | Primera presentación&#10;21:00 | Show principal"></textarea></label>
+                            <label class="wide">Beneficios y experiencias <span class="field-info" tabindex="0" data-tip="Detalla lo que vivirá o recibirá el asistente, una ventaja por línea.">i</span><textarea id="presentationBenefits" class="search-input" name="benefitsText" rows="4" th:text="${presentation != null ? presentation.benefitsText : ''}" placeholder="Dos escenarios y artistas en vivo&#10;Zona gastronómica&#10;Espacios de descanso y accesibilidad"></textarea></label>
+                            <label class="wide">Auspiciadores <span class="field-info" tabindex="0" data-tip="Coloca el nombre de cada marca o institución en una línea distinta.">i</span><textarea class="search-input" name="sponsorsText" rows="3" th:text="${presentation != null ? presentation.sponsorsText : ''}" placeholder="Marca A&#10;Marca B&#10;Institucion C"></textarea></label>
+                            <label class="wide">URLs de logos de auspiciadores <span class="field-info" tabindex="0" data-tip="Agrega una URL de imagen por línea y en el mismo orden de los auspiciadores.">i</span><textarea class="search-input" name="sponsorLogosText" rows="3" th:text="${presentation != null ? presentation.sponsorLogosText : ''}" placeholder="https://.../logo-bbva.png&#10;https://.../logo-radio.png"></textarea></label>
+                            <label>YouTube <span class="field-info" tabindex="0" data-tip="Enlace público del tráiler, invitación o video oficial del evento.">i</span><input class="search-input" name="youtubeUrl" type="text" th:value="${presentation != null ? presentation.youtubeUrl : ''}" placeholder="https://www.youtube.com/watch?v=..."></label>
+                            <label>Playlist Spotify <span class="field-info" tabindex="0" data-tip="Enlace público de una playlist o contenido musical relacionado.">i</span><input class="search-input" name="spotifyUrl" type="text" th:value="${presentation != null ? presentation.spotifyUrl : ''}" placeholder="https://open.spotify.com/playlist/..."></label>
+                            <label>Imagen del escenario <span class="field-info" tabindex="0" data-tip="Mapa legible de zonas, accesos, mesas o distribución del recinto.">i</span><input id="presentationStageImage" class="search-input" name="stageImageUrl" type="text" th:value="${presentation != null ? presentation.stageImageUrl : ''}" placeholder="https://.../mapa-escenario.png"></label>
+                            <label>Subir escenario PNG/JPG <span class="field-info" tabindex="0" data-tip="Carga el plano desde tu equipo; se recomienda una imagen horizontal nítida.">i</span><input id="presentationStageFile" class="search-input" name="stageImageFile" type="file" accept="image/jpeg,image/png,image/webp"></label>
+                            <label class="wide">Detalle del escenario <span class="field-info" tabindex="0" data-tip="Explica zonas, accesos, restricciones y referencias del plano.">i</span><textarea class="search-input" name="stageText" rows="3" th:text="${presentation != null ? presentation.stageText : ''}" placeholder="Escenario principal, Platinum, VIP, General, accesos..."></textarea></label>
+                            <label class="wide">Funciones en el mismo local<textarea class="search-input" name="sessionText" rows="4" th:text="${presentation != null ? presentation.sessionText : ''}"></textarea></label>
                         </div>
-                        <div class="visual-saved-preview" th:if="${editMode == true}"><a class="btn secondary compact" th:href="@{/dashboard/organizer/events/{id}/preview(id=${event.id})}" target="_blank" rel="noopener">Ver presentación guardada</a><small>Muestra la ficha completa con todos sus bloques. Guarda primero los cambios de este formulario.</small></div>
+                        <section class="tour-editor">
+                            <h3>Fechas en otras ciudades</h3>
+                            <p>Crea un evento por ciudad y luego selecciona aquí los que pertenecen a esta gira.</p>
+                            <button id="openTourPicker" class="btn secondary compact" type="button" aria-haspopup="dialog">Enlazar eventos</button>
+                            <span id="tourSelectionCount" aria-live="polite"></span>
+                            <input type="hidden" name="tourSelectionPresent" value="true">
+                            <dialog id="tourPicker" class="tour-picker" aria-labelledby="tourPickerTitle" th:attr="data-max=${maxTourDates}">
+                                <h3 id="tourPickerTitle">Selecciona las fechas de la gira</h3>
+                                <p>Hasta cinco eventos. Se ordenan automáticamente por fecha.</p>
+                                <div class="tour-picker-list">
+                                    <label th:each="candidate : ${tourCandidates}" class="tour-option" th:attr="data-city=${candidate.city}">
+                                        <input type="checkbox" name="linkedEventIds" th:value="${candidate.id}" th:checked="${selectedTourIds.contains(candidate.id)}">
+                                        <span>
+                                            <strong th:text="${candidate.title}">Evento</strong>
+                                            <small th:text="${candidate.city + ' · ' + (candidate.eventDate != null ? #temporals.format(candidate.eventDate, 'dd/MM/yyyy HH:mm') : 'Fecha por definir') + ' · EVT-' + candidate.id}">Fecha</small>
+                                        </span>
+                                    </label>
+                                </div>
+                                <p id="tourPickerEmpty" hidden>No tienes otros eventos creados en una ciudad distinta.</p>
+                                <button id="closeTourPicker" class="btn primary compact" type="button">Listo</button>
+                            </dialog>
+                        </section>
+                        <div class="visual-saved-preview tour-saved-preview" th:if="${editMode == true}"><a th:href="@{/dashboard/organizer/events/{id}/preview(id=${event.id},scope='event')}" target="_blank" rel="noopener">Vista preliminar</a><small>Muestra los cambios guardados de este evento.</small></div>
                     </div>
                 </details>
 
-                <div class="design-request">
-                    <label><input id="requestDesigner" name="requestDesigner" value="true" type="checkbox" th:checked="${editMode == true && event.designEnabled}"> Solicitar apoyo del Diseñador sobre esta plantilla</label>
-                    <p class="muted small">El Diseñador partirá de tu selección, podrá ajustar colores, texto destacado, bloques visibles y la versión móvil sin cambiar los datos comerciales del evento.</p>
-                    <div id="designBriefWrap" class="brief-wrap"><label>Brief visual<textarea class="search-input" name="designBrief" rows="3" placeholder="Ej. Estilo energético, tonos morados, portada con foco en artistas o productos."></textarea></label></div>
-                </div>
             </section>
 
-            <section class="create-section">
-                <div class="ticket-toolbar create-section-heading"><div><h2>3. Tipos y variantes de entrada</h2><p class="section-note">Agrega General, VIP, Early Bird, Corporativo u otras variantes con sus propios precios y cupos.</p></div><button id="addTicket" class="btn secondary compact" type="button">+ Agregar variante</button></div>
+            <details id="ticketVariantsPanel" class="create-section ticket-variants-panel" open>
+                <summary class="ticket-toolbar create-section-heading">
+                    <div>
+                        <h2>3. Tipos y variantes de entrada</h2>
+                        <p class="section-note">Define el precio y cupo de cada variante.</p>
+                    </div>
+                    <div class="ticket-summary-controls">
+                        <button id="addTicket" class="btn secondary compact" type="button">+ Agregar variante</button>
+                        <span class="ticket-panel-chevron" aria-hidden="true"></span>
+                    </div>
+                </summary>
                 <div id="ticketRows" class="ticket-rows">
                     <article class="ticket-row" th:if="${editMode != true}">
                         <button class="remove-ticket" type="button" title="Quitar entrada">×</button>
@@ -180,19 +222,25 @@
                         </div>
                     </article>
                 </div>
-            </section>
+            </details>
 
-            <section class="create-section">
-                <div class="create-section-heading">
-                    <h2 th:text="${editMode == true ? '4. Guardar y revisar' : '4. Enviar propuesta'}">4. Enviar propuesta</h2>
-                    <p class="section-note" th:if="${editMode != true}">El evento se guardará como <strong>PENDIENTE DE REVISIÓN</strong>. No será visible en Marketplace ni permitirá compras hasta que Administración lo publique.</p>
-                    <p class="section-note" th:if="${editMode == true}"><strong>Guardar</strong> conserva el trabajo como borrador. <strong>Ver en Marketplace</strong> abre la vista previa del organizador. <strong>Enviar a revisión</strong> entrega la versión completa a Administración.</p>
+            <section id="reviewSubmitPanel" class="create-section review-submit-section">
+                <div class="review-plain-heading"><h2 th:text="${editMode == true ? '4. Guardar y Revisar' : '4. Enviar propuesta'}">4. Enviar propuesta</h2><span aria-hidden="true"></span></div>
+                <div class="review-submit-body">
+                <div class="design-request review-design-request">
+                    <div class="review-design-content">
+                        <label><input id="requestDesigner" name="requestDesigner" value="true" type="checkbox" th:checked="${editMode == true && event.designEnabled}"> Solicitar apoyo del Diseñador respecto de esta plantilla <span class="field-info" tabindex="0" data-tip="Incluye una solicitud visual para que el Diseñador trabaje sobre esta plantilla sin modificar precios, cupos ni información comercial.">i</span></label>
+                        <p class="muted small">Añade la solicitud antes de guardar o enviar. El Diseñador trabajará sobre la plantilla seleccionada sin cambiar precios, cupos ni información comercial.</p>
+                        <div id="designBriefWrap" class="brief-wrap"><label>Indicaciones para el Diseñador<textarea class="search-input" name="designBrief" rows="3" placeholder="Ej. Estilo energético, tonos morados, portada con foco en artistas o productos."></textarea></label></div>
+                    </div>
                 </div>
-                <div class="save-bar" th:if="${editMode != true}"><span class="muted small">Después podrás volver a editar todos los elementos desde Mis eventos.</span><button class="btn primary" type="submit">Crear evento y enviar a revisión</button></div>
-                <div class="save-bar edit-save-bar" th:if="${editMode == true}">
+                <p id="eventSavedNotice" th:if="${param.saved}" class="alert success" role="status">Cambios guardados como borrador.</p>
+                <div class="save-bar edit-save-bar">
                     <button class="btn secondary" type="submit" name="workflowAction" value="save">Guardar</button>
-                    <a class="btn secondary" th:href="@{/dashboard/organizer/events/{id}/preview(id=${event.id})}" target="_blank" rel="noopener">Ver en Marketplace</a>
-                    <button class="btn primary" type="submit" name="workflowAction" value="submit_review">Enviar a revisión</button>
+                    <button th:if="${editMode != true}" class="btn secondary" type="submit" name="workflowAction" value="preview" title="Guarda un borrador y abre su vista previa">Ver vista previa</button>
+                    <a th:if="${editMode == true}" class="btn secondary" th:href="@{/dashboard/organizer/events/{id}/preview(id=${event.id})}" target="_blank" rel="noopener" title="Abre el diseño guardado del evento">Ver vista previa</a>
+                    <button class="btn primary" type="submit" name="workflowAction" value="submit_review" title="Guarda todos los cambios y luego envía el evento a revisión">Enviar a revisión</button>
+                </div>
                 </div>
             </section>
         </form>
@@ -217,41 +265,69 @@
     <div id="presentationModal" class="presentation-modal-backdrop" aria-hidden="true">
         <section class="presentation-modal" role="dialog" aria-modal="true" aria-labelledby="presentationTitle">
             <div class="presentation-modal-head">
-                <div><h2 id="presentationTitle">Plantillas y vista previa</h2><p>Elige una presentación inicial para Marketplace. Esta vista es interna y no crea compras.</p></div>
+                <div><h2 id="presentationTitle">Dirección visual del evento</h2><p>Selecciona una composición profesional y comprueba cómo ordena la historia, la imagen y la venta.</p></div>
                 <button class="presentation-modal-close" type="button" data-close-presentation>✕ Cerrar</button>
             </div>
             <div class="presentation-modal-body">
-                <aside class="template-library">
-                    <p class="template-library-title">Nuevas direcciones visuales</p>
-                    <button class="template-option" type="button" data-template="ATELIER"><div class="template-option-top"><span class="template-option-icon">Aa</span><strong>Atelier · Revista cultural</strong></div><small>Portada dividida, fotografía enmarcada y titulares serif.</small></button>
-                    <button class="template-option" type="button" data-template="FESTIVAL"><div class="template-option-top"><span class="template-option-icon">↗</span><strong>Pulso · Afiche musical</strong></div><small>Cartel de alto contraste, imagen recortada y programa numerado.</small></button>
-                    <button class="template-option" type="button" data-template="FORUM"><div class="template-option-top"><span class="template-option-icon">⊞</span><strong>Foro · Agenda de ideas</strong></div><small>Retícula geométrica, datos organizados y programa por bloques.</small></button>
-                    <p class="template-library-title">Colección original</p>
-                    <button class="template-option active" type="button" data-template="CLASSIC"><div class="template-option-top"><span class="template-option-icon">◫</span><strong>Clásico</strong></div><small>Presentación limpia, equilibrada y fácil de leer.</small></button>
-                    <button class="template-option" type="button" data-template="CARD_GRID"><div class="template-option-top"><span class="template-option-icon">▦</span><strong>Cards Marketplace</strong></div><small>Catálogo compacto con datos y entradas visibles.</small></button>
-                    <button class="template-option" type="button" data-template="PROMO_DETAIL"><div class="template-option-top"><span class="template-option-icon">✦</span><strong>Detalle promocional</strong></div><small>Hero dominante para campañas, festivales o lanzamientos.</small></button>
-                    <button class="template-option" type="button" data-template="POSTER_LANDING"><div class="template-option-top"><span class="template-option-icon">▣</span><strong>Landing publicitaria</strong></div><small>Portada completa tipo campaña, ideal para shows, circo o lanzamiento.</small></button>
-                    <button class="template-option" type="button" data-template="TICKET_PANEL"><div class="template-option-top"><span class="template-option-icon">▥</span><strong>Venta con panel lateral</strong></div><small>Imagen fuerte y entradas siempre visibles para alta demanda.</small></button>
-                    <button class="template-option" type="button" data-template="STAGE_MEDIA"><div class="template-option-top"><span class="template-option-icon">▴</span><strong>Escenario + media</strong></div><small>Escenario, auspiciadores, video y playlist para ferias o festivales.</small></button>
-                    <button class="template-option" type="button" data-template="TOUR_SESSIONS"><div class="template-option-top"><span class="template-option-icon">＋</span><strong>Gira por sesiones</strong></div><small>Fechas o ciudades desplegables con acceso rápido a compra.</small></button>
-                    <button class="template-option" type="button" data-template="IMMERSIVE"><div class="template-option-top"><span class="template-option-icon">◉</span><strong>Inmersivo premium</strong></div><small>Composición visual intensa para experiencias destacadas.</small></button>
+                <aside class="template-library" aria-label="Familias de plantillas">
+                    <details class="template-family">
+                        <summary>Editorial <span class="template-family-count">3</span></summary>
+                        <div class="template-family-options">
+                            <button class="template-option" type="button" data-template="CLASSIC"><div class="template-option-top"><span class="template-option-icon">◫</span><strong>Clásico</strong></div><small>Portada editorial con título serif y fotografía enmarcada.</small></button>
+                            <button class="template-option" type="button" data-template="ATELIER"><div class="template-option-top"><span class="template-option-icon">Aa</span><strong>Atelier · Revista cultural</strong></div><small>Portada dividida, fotografía enmarcada y titulares serif.</small></button>
+                            <button class="template-option" type="button" data-template="IMMERSIVE"><div class="template-option-top"><span class="template-option-icon">◉</span><strong>Inmersivo premium</strong></div><small>Composición visual intensa para experiencias destacadas.</small></button>
+                        </div>
+                    </details>
+                    <details class="template-family">
+                        <summary>Promoción y espectáculo <span class="template-family-count">3</span></summary>
+                        <div class="template-family-options">
+                            <button class="template-option" type="button" data-template="PROMO_DETAIL"><div class="template-option-top"><span class="template-option-icon">✦</span><strong>Detalle promocional</strong></div><small>Hero dominante para campañas, festivales o lanzamientos.</small></button>
+                            <button class="template-option" type="button" data-template="POSTER_LANDING"><div class="template-option-top"><span class="template-option-icon">▣</span><strong>Landing publicitaria</strong></div><small>Portada completa tipo campaña, ideal para shows, circo o lanzamiento.</small></button>
+                            <button class="template-option" type="button" data-template="FESTIVAL"><div class="template-option-top"><span class="template-option-icon">↗</span><strong>Pulso · Afiche musical</strong></div><small>Cartel de alto contraste, imagen recortada y programa numerado.</small></button>
+                        </div>
+                    </details>
+                    <details class="template-family">
+                        <summary>Entradas y venta <span class="template-family-count">2</span></summary>
+                        <div class="template-family-options">
+                            <button class="template-option" type="button" data-template="CARD_GRID"><div class="template-option-top"><span class="template-option-icon">▦</span><strong>Cards Marketplace</strong></div><small>Edición compacta original: portada baja, descripción y entradas en dos columnas.</small></button>
+                            <button class="template-option" type="button" data-template="TICKET_PANEL"><div class="template-option-top"><span class="template-option-icon">▥</span><strong>Venta con panel lateral</strong></div><small>Imagen fuerte y entradas siempre visibles para alta demanda.</small></button>
+                        </div>
+                    </details>
+                    <details class="template-family">
+                        <summary>Programa y sedes <span class="template-family-count">3</span></summary>
+                        <div class="template-family-options">
+                            <button class="template-option" type="button" data-template="TOUR_SESSIONS"><div class="template-option-top"><span class="template-option-icon">＋</span><strong>Gira por sesiones</strong></div><small>Fechas o ciudades desplegables con acceso rápido a compra.</small></button>
+                            <button class="template-option" type="button" data-template="STAGE_MEDIA"><div class="template-option-top"><span class="template-option-icon">▴</span><strong>Escenario + media</strong></div><small>Escenario, auspiciadores, video y playlist para ferias o festivales.</small></button>
+                            <button class="template-option" type="button" data-template="FORUM"><div class="template-option-top"><span class="template-option-icon">⊞</span><strong>Foro · Agenda de ideas</strong></div><small>Retícula geométrica, datos organizados y programa por bloques.</small></button>
+                        </div>
+                    </details>
                 </aside>
                 <section class="template-preview-zone">
-                    <div class="template-preview-toolbar"><div><strong id="templatePreviewMode">Vista de detalle</strong><span> · Simulación de Marketplace</span></div><button id="toggleTemplateMobile" class="btn secondary compact" type="button">Modo móvil</button></div>
-                    <article id="templatePreview" class="template-preview art-direction" data-template="CLASSIC">
-                        <div class="template-preview-cover">
-                            <img id="templatePreviewImage" alt="Portada seleccionada" hidden>
-                            <div id="templatePreviewFallback" class="template-preview-fallback">✦</div>
-                            <div class="template-preview-title"><span id="templatePreviewLabel">Clásico</span><h3 id="templatePreviewTitle">Tu evento aparecerá aquí</h3><p id="templatePreviewCategory">Categoría del evento</p></div>
-                        </div>
-                        <div class="template-preview-body">
-                            <div>
-                                <div class="template-preview-meta"><span id="templatePreviewDate">Fecha por definir</span><span id="templatePreviewCity">Ciudad</span></div>
-                                <p id="templatePreviewDescription" class="template-preview-description">Completa la información principal para ver una presentación más cercana al resultado final.</p>
-                                <div class="template-preview-highlight">Elige una plantilla y luego solicita apoyo del Diseñador cuando necesites ajustes visuales avanzados.</div>
+                    <div class="template-preview-toolbar">
+                        <div><strong id="templatePreviewMode">Vista de escritorio</strong><span> · Simulación de Marketplace</span></div>
+                        <button id="toggleTemplateMobile" class="btn secondary compact" type="button" aria-pressed="false">Modo móvil</button>
+                    </div>
+                    <article id="templatePreview" class="template-sample" data-template="CLASSIC">
+                        <div class="sample-cover">
+                            <div class="sample-art">
+                                <img id="templatePreviewImage" alt="" hidden>
+                                <div id="templatePreviewFallback" class="sample-art-example"><span>Imagen de muestra</span></div>
                             </div>
-                            <div class="template-preview-tickets"><div class="template-preview-ticket"><b>Entrada general</b><small id="templatePreviewPrice">Desde S/ —</small></div><div class="template-preview-ticket"><b>Capacidad</b><small id="templatePreviewCapacity">Cupos por definir</small></div></div>
+                            <div class="sample-title">
+                                <p id="templatePreviewCategory" class="sample-category">Categoría del evento</p>
+                                <h3 id="templatePreviewTitle">Tu evento aparecerá aquí</h3>
+                                <div class="sample-meta"><span id="templatePreviewDate">Fecha por definir</span><span id="templatePreviewCity">Ciudad</span></div>
+                            </div>
                         </div>
+                        <section class="sample-story">
+                            <h4>Sobre el evento</h4>
+                            <p id="templatePreviewDescription">Aquí aparecerá la descripción de tu evento.</p>
+                        </section>
+                        <section class="sample-tickets">
+                            <h4>Entradas</h4>
+                            <strong id="templatePreviewPrice">Precio por definir</strong>
+                            <span id="templatePreviewCapacity">Cupos por definir</span>
+                        </section>
                     </article>
                 </section>
             </div>
@@ -262,6 +338,7 @@
 <script>
     const ticketRows = document.getElementById('ticketRows');
     const addTicket = document.getElementById('addTicket');
+    const ticketVariantsPanel = document.getElementById('ticketVariantsPanel');
     const requestDesigner = document.getElementById('requestDesigner');
     const designBriefWrap = document.getElementById('designBriefWrap');
     const ticketCount = document.getElementById('ticketCount');
@@ -304,7 +381,7 @@
         syncTemplatePreview();
     }
 
-    addTicket.addEventListener('click', () => { ticketRows.appendChild(ticketRow('VIP', '', '', 'Acceso preferente con beneficios adicionales.')); syncTickets(); });
+    addTicket.addEventListener('click', event => { event.preventDefault(); event.stopPropagation(); ticketVariantsPanel.open = true; ticketRows.appendChild(ticketRow('VIP', '', '', 'Acceso preferente con beneficios adicionales.')); syncTickets(); });
     ticketRows.addEventListener('click', event => { if (event.target.classList.contains('remove-ticket') && ticketRows.querySelectorAll('.ticket-row').length > 1) { event.target.closest('.ticket-row').remove(); syncTickets(); } });
     ticketRows.addEventListener('input', syncTickets);
     requestDesigner.addEventListener('change', () => { designBriefWrap.classList.toggle('open', requestDesigner.checked); designerState.textContent = requestDesigner.checked ? 'Solicitud incluida' : 'No solicitado'; });
@@ -314,7 +391,6 @@
     const designTemplateInput = document.getElementById('designTemplate');
     const templateModal = document.getElementById('presentationModal');
     const templatePreview = document.getElementById('templatePreview');
-    const templatePreviewLabel = document.getElementById('templatePreviewLabel');
     const templatePreviewTitle = document.getElementById('templatePreviewTitle');
     const templatePreviewCategory = document.getElementById('templatePreviewCategory');
     const templatePreviewDate = document.getElementById('templatePreviewDate');
@@ -331,32 +407,49 @@
 
     function inputValue(id, fallback) { const node = document.getElementById(id); return node && node.value && node.value.trim() ? node.value.trim() : fallback; }
     function selectedCategory() { const select = document.getElementById('eventCategory'); return select && select.selectedOptions.length && select.value ? select.selectedOptions[0].text : 'Categoría del evento'; }
+    let previewFile = null;
+    let previewFileUrl = '';
+
     function updateImagePreview() {
-        const imageFile = document.getElementById('eventImageFile');
-        const imageUrl = inputValue('eventImageUrl', '');
-        if (imageFile && imageFile.files && imageFile.files[0]) {
-            templatePreviewImage.src = URL.createObjectURL(imageFile.files[0]);
-            templatePreviewImage.hidden = false;
-            templatePreviewFallback.hidden = true;
-        } else if (imageUrl) {
-            templatePreviewImage.src = imageUrl;
-            templatePreviewImage.hidden = false;
-            templatePreviewFallback.hidden = true;
-        } else {
-            templatePreviewImage.removeAttribute('src');
-            templatePreviewImage.hidden = true;
-            templatePreviewFallback.hidden = false;
+        const imageFile = document.getElementById('eventImageFile').files[0] || null;
+        if (imageFile !== previewFile) {
+            if (previewFileUrl) URL.revokeObjectURL(previewFileUrl);
+            previewFile = imageFile;
+            previewFileUrl = imageFile ? URL.createObjectURL(imageFile) : '';
         }
+        const imageUrl = inputValue('presentationCoverImage', previewFileUrl || inputValue('eventImageUrl', ''));
+        if (imageUrl === (templatePreviewImage.getAttribute('src') || '')) return;
+
+        templatePreviewImage.hidden = true;
+        templatePreviewFallback.hidden = false;
+        if (imageUrl) templatePreviewImage.setAttribute('src', imageUrl);
+        else templatePreviewImage.removeAttribute('src');
     }
+
+    templatePreviewImage.addEventListener('load', () => {
+        templatePreviewImage.hidden = false;
+        templatePreviewFallback.hidden = true;
+    });
+    templatePreviewImage.addEventListener('error', () => {
+        templatePreviewImage.hidden = true;
+        templatePreviewFallback.hidden = false;
+    });
+
     function syncTemplatePreview() {
         templatePreview.dataset.template = workingTemplate;
-        templatePreviewLabel.textContent = templateNames[workingTemplate];
+        templatePreview.dataset.focus = inputValue('presentationCoverFocus', 'CENTER');
+        const primary = inputValue('presentationPrimary', '#4f46e5');
+        const accent = inputValue('presentationAccent', '#8b5cf6');
+        templatePreview.style.setProperty('--sample-primary', primary);
+        templatePreview.style.setProperty('--sample-accent', accent);
+        templatePreview.classList.toggle('has-personal-primary', primary !== '#4f46e5');
+        templatePreview.classList.toggle('has-personal-accent', accent !== '#8b5cf6');
         templatePreviewTitle.textContent = inputValue('eventTitle', 'Tu evento aparecerá aquí');
         templatePreviewCategory.textContent = selectedCategory();
         templatePreviewDate.textContent = inputValue('eventDate', 'Fecha por definir').replace('T', ' · ');
         templatePreviewCity.textContent = inputValue('eventCity', 'Ciudad');
-        templatePreviewDescription.textContent = inputValue('eventDescription', 'Completa la información principal para ver una presentación más cercana al resultado final.');
-        templatePreviewPrice.textContent = inputValue('basePrice', '') ? `Desde S/ ${inputValue('basePrice', '')}` : 'Desde S/ —';
+        templatePreviewDescription.textContent = inputValue('eventDescription', 'Aquí aparecerá la descripción de tu evento.');
+        templatePreviewPrice.textContent = inputValue('basePrice', '') ? `Desde S/ ${inputValue('basePrice', '')}` : 'Precio por definir';
         templatePreviewCapacity.textContent = inputValue('eventCapacity', '') ? `${inputValue('eventCapacity', '')} cupos` : 'Cupos por definir';
         eventTitleSummary.textContent = inputValue('eventTitle', 'Sin título todavía');
         eventCategorySummary.textContent = selectedCategory() === 'Categoría del evento' ? 'Sin seleccionar' : selectedCategory();
@@ -366,8 +459,18 @@
         templateSelectedFoot.textContent = templateNames[workingTemplate];
         document.querySelectorAll('.template-option').forEach(option => option.classList.toggle('active', option.dataset.template === workingTemplate));
     }
-    function setAppliedTemplate() { const label = templateNames[designTemplateInput.value] || 'Clásico'; templateState.textContent = `✦ ${label}`; templateSummary.textContent = label; }
-    function openPresentationModal() { workingTemplate = designTemplateInput.value || 'CLASSIC'; syncTemplatePreview(); templateModal.classList.add('active'); templateModal.setAttribute('aria-hidden', 'false'); }
+    function setAppliedTemplate() { const label = templateNames[designTemplateInput.value] || 'Clásico'; templateState.textContent = label; templateSummary.textContent = label; }
+    function openPresentationModal() {
+        workingTemplate = designTemplateInput.value || 'CLASSIC';
+        syncTemplatePreview();
+        const activeOption = templateModal.querySelector('.template-option.active');
+        templateModal.querySelectorAll('.template-family').forEach(family => {
+            family.open = family.contains(activeOption);
+        });
+        templateModal.classList.add('active');
+        templateModal.setAttribute('aria-hidden', 'false');
+        requestAnimationFrame(() => activeOption?.scrollIntoView({ block: 'nearest', inline: 'nearest' }));
+    }
     function closePresentationModal() { templateModal.classList.remove('active'); templateModal.setAttribute('aria-hidden', 'true'); }
 
     document.getElementById('openPresentationModal').addEventListener('click', openPresentationModal);
@@ -375,12 +478,49 @@
     templateModal.addEventListener('click', event => { if (event.target === templateModal) closePresentationModal(); });
     document.querySelectorAll('.template-option').forEach(option => option.addEventListener('click', () => { workingTemplate = option.dataset.template; syncTemplatePreview(); }));
     document.getElementById('applyTemplate').addEventListener('click', () => { designTemplateInput.value = workingTemplate; setAppliedTemplate(); closePresentationModal(); });
-    document.getElementById('toggleTemplateMobile').addEventListener('click', event => { templatePreview.classList.toggle('mobile'); event.currentTarget.textContent = templatePreview.classList.contains('mobile') ? 'Modo escritorio' : 'Modo móvil'; document.getElementById('templatePreviewMode').textContent = templatePreview.classList.contains('mobile') ? 'Vista móvil' : 'Vista de detalle'; });
-    ['eventTitle','eventDescription','eventCategory','eventDate','eventCity','eventImageUrl','eventImageFile','eventCapacity','basePrice'].forEach(id => { const node = document.getElementById(id); if (node) node.addEventListener('input', syncTemplatePreview); if (node) node.addEventListener('change', syncTemplatePreview); });
+    document.getElementById('toggleTemplateMobile').addEventListener('click', event => {
+        const mobile = templatePreview.classList.toggle('mobile');
+        event.currentTarget.setAttribute('aria-pressed', String(mobile));
+        event.currentTarget.textContent = mobile ? 'Modo escritorio' : 'Modo móvil';
+        document.getElementById('templatePreviewMode').textContent = mobile ? 'Vista móvil' : 'Vista de escritorio';
+    });
+    ['eventTitle', 'eventDescription', 'eventCategory', 'eventDate', 'eventCity', 'eventImageUrl',
+        'eventImageFile', 'presentationCoverImage', 'presentationCoverFocus', 'presentationPrimary',
+        'presentationAccent', 'eventCapacity', 'basePrice'
+    ].forEach(id => {
+        const field = document.getElementById(id);
+        field.addEventListener('input', syncTemplatePreview);
+        field.addEventListener('change', syncTemplatePreview);
+    });
     document.addEventListener('keydown', event => { if (event.key === 'Escape') closePresentationModal(); });
+    const eventForm = document.getElementById('eventCreateForm');
+    const maxImageBytes = 5 * 1024 * 1024;
+    eventForm.querySelectorAll('input[type="file"]').forEach(field => {
+        field.addEventListener('change', () => {
+            const image = field.files[0];
+            const oversized = image && image.size > maxImageBytes;
+            field.setCustomValidity(oversized ? 'Esta imagen supera los 5 MB. Elige una más ligera o quita el archivo.' : '');
+            if (oversized) field.reportValidity();
+        });
+    });
+    eventForm.addEventListener('invalid', event => {
+        let panel = event.target.closest('details');
+        while (panel) {
+            panel.open = true;
+            panel = panel.parentElement.closest('details');
+        }
+    }, true);
     setAppliedTemplate();
     syncTickets();
+    const savedNotice = document.getElementById('eventSavedNotice');
+    if (savedNotice) {
+        window.addEventListener('pageshow', () => {
+            requestAnimationFrame(() => {
+                savedNotice.scrollIntoView({ block: 'center', behavior: 'instant' });
+            });
+        }, { once: true });
+    }
 </script>
-<script th:src="@{/js/organizer-sessions.js(v='1')}" defer></script>
+<script th:src="@{/js/organizer-sessions.js(v='5')}" defer></script>
 </body>
 </html>

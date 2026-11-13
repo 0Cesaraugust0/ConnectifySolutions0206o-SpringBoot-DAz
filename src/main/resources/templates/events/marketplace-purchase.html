@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title th:text="${event.title} + ' | Show You Play'">Evento | Show You Play</title>
     <meta name="description" th:content="${event.description != null and !#strings.isEmpty(event.description) ? #strings.abbreviate(event.description, 155) : 'Consulta la fecha, ubicación, entradas disponibles y detalles de este evento en Show You Play.'}" content="Consulta la fecha, ubicación, entradas disponibles y detalles del evento en Show You Play.">
-    <meta name="robots" content="index, follow, max-image-preview:large">
+    <meta name="robots" th:content="${demonstrationEvent == true or adminPreview == true or organizerPreview == true ? 'noindex, follow' : 'index, follow, max-image-preview:large'}" content="index, follow, max-image-preview:large">
     <link rel="canonical" th:href="${'https://www.showyouplay.com/events/' + event.id}" href="https://www.showyouplay.com/events">
     <link rel="stylesheet" th:href="@{/css/styles.css}">
     <link rel="stylesheet" th:href="@{/css/ui.css}">
@@ -14,10 +14,10 @@
     <link rel="stylesheet" th:href="@{/css/marketplace-purchase.css(v='demo-ribbon-1')}">
     <link rel="stylesheet" th:href="@{/css/marketplace-compact.css(v='mobile-marketplace-6')}">
     <link rel="stylesheet" th:href="@{/css/marketplace-showcase.css(v='showcase-2')}">
-    <link rel="stylesheet" th:href="@{/css/event-art-directions.css(v='1')}">
+    <link rel="stylesheet" th:href="@{/css/event-art-directions.css(v='8')}">
     <link th:if="${adminPreview == true}" rel="stylesheet" th:href="@{/css/admin-event-preview.css(v='review-70-1')}">
     <script th:src="@{/js/stage-map-modal.js(v='stage-modal-1')}" defer></script>
-    <script th:if="${organizerPreview == true}" th:src="@{/js/showcase/template-preview.js(v='showcase-2')}" defer></script>
+    <script th:if="${organizerPreview == true}" th:src="@{/js/showcase/template-preview.js(v='showcase-3')}" defer></script>
 </head>
 <body class="marketplace-event-detail" th:classappend="${adminPreview == true ? 'admin-event-preview' : ''}">
 <header th:if="${adminPreview == true}" class="navbar marketplace-nav admin-preview-nav">
@@ -50,29 +50,35 @@
 <section class="organizer-market-preview" th:if="${organizerPreview == true}">
     <div>
         <span class="organizer-preview-label" th:text="${creativeStylesPreview == true ? 'Sala de estilos creativos' : 'Vista privada del Organizador'}">Vista privada del Organizador</span>
-        <strong th:text="${creativeStylesPreview == true ? 'Ejemplo demostrativo de solo lectura.' : 'Esta es la presentación real del evento en Marketplace.'}">Esta es la presentación real del evento en Marketplace.</strong>
+        <strong th:text="${creativeStylesPreview == true ? 'Ejemplo demostrativo de solo lectura.' : 'Diseño guardado del evento'}">Diseño guardado del evento</strong>
         <small th:text="${creativeStylesPreview == true ? 'Compara diseños sin editar ni comprar entradas.' : event.status != null && event.status.name() == 'PUBLISHED' ? 'El evento está publicado.' : 'Todavía no es visible para clientes.'}">Vista previa</small>
     </div>
     <nav>
+        <div class="organizer-preview-edit" th:if="${creativeStylesPreview != true}">
+            <a th:href="@{/dashboard/organizer/events/{id}/edit(id=${event.id})}">Seguir editando</a>
+        </div>
         <a th:if="${creativeStylesPreview == true}" th:href="@{/dashboard/organizer/events/creative-styles}">Volver a la sala</a>
         <a th:if="${creativeStylesPreview != true}" th:href="@{/dashboard/organizer/events}">Mis eventos</a>
-        <a th:if="${creativeStylesPreview != true}" th:href="@{/dashboard/organizer/events/{id}(id=${event.id})}">Administrar</a>
-        <a th:if="${creativeStylesPreview != true && !locked}" th:href="@{/dashboard/organizer/events/{id}/edit(id=${event.id})}">Editar datos</a>
         <a th:if="${creativeStylesPreview != true}" th:href="@{/dashboard/organizer/events/{id}/ticket-types(id=${event.id})}">Gestionar entradas</a>
+        <button th:if="${creativeStylesPreview != true}" type="button" class="comparison-mobile" data-preview-mobile aria-pressed="false">Vista móvil</button>
     </nav>
 </section>
 
-<section class="presentation-comparison" th:if="${organizerPreview == true}" aria-label="Comparar presentaciones">
-    <div class="comparison-heading"><div><span>Explora el diseño</span><h2>Un evento, distintas identidades</h2><p th:text="${creativeStylesPreview == true ? 'Cambia de presentación para comparar el mismo contenido. Este ejemplo no modifica tu cuenta.' : 'Cambia de presentación para comparar el mismo contenido. Para conservar una elección, selecciónala en Editar.'}">Cambia de presentación para comparar el mismo contenido.</p></div><button type="button" class="comparison-mobile" data-preview-mobile aria-pressed="false">Vista móvil</button></div>
+<section class="presentation-comparison" th:if="${creativeStylesPreview == true}" aria-label="Comparar presentaciones">
+    <div class="comparison-heading"><div><span>Explora el diseño</span><h2>Un evento, distintas identidades</h2><p>Cambia de presentación para comparar el mismo contenido.</p></div><button type="button" class="comparison-mobile" data-preview-mobile aria-pressed="false">Vista móvil</button></div>
     <nav class="comparison-options" aria-label="Plantillas disponibles">
-        <a th:if="${creativeStylesPreview != true}" th:each="design : ${previewTemplates}" th:href="@{/dashboard/organizer/events/{id}/preview(id=${event.id},template=${design.name()})}" th:attr="data-preview-template=${design.name()},data-preview-label=${design.label},aria-current=${previewTemplate == design ? 'true' : 'false'}" th:text="${design.label}">Clásico</a>
-        <a th:if="${creativeStylesPreview == true}" th:each="design : ${previewTemplates}" th:href="@{/dashboard/organizer/events/creative-styles/{id}(id=${event.id},template=${design.name()})}" th:attr="data-preview-template=${design.name()},data-preview-label=${design.label},aria-current=${previewTemplate == design ? 'true' : 'false'}" th:text="${design.label}">Clásico</a>
+        <a th:each="design : ${previewTemplates}" th:href="@{/dashboard/organizer/events/creative-styles/{id}(id=${event.id},template=${design.name()})}" th:attr="data-preview-template=${design.name()},data-preview-label=${design.label},aria-current=${previewTemplate == design ? 'true' : 'false'}" th:text="${design.label}">Clásico</a>
     </nav>
     <p class="comparison-status" aria-live="polite">Comparando: <strong data-preview-current th:text="${previewTemplate.label}">Clásico</strong></p>
 </section>
 
-<main class="dashboard-page market-stage market-detail-page" th:classappend="${adminPreview == true ? 'admin-preview-page' : ''}" th:with="effectiveTemplate=${organizerPreview == true && previewTemplate != null ? previewTemplate : event.designTemplate},demoEvent=${(event.id != null && event.id >= 1 && event.id <= 12) || (event.organizerEmail != null && (#strings.toLowerCase(event.organizerEmail) == 'org@connectify.com' || #strings.endsWith(#strings.toLowerCase(event.organizerEmail), '@connectify.local'))) || (event.description != null && #strings.contains(event.description, 'Propuesta ficticia de demostración'))}">
-    <section class="market-layout art-direction" th:classappend="${backgroundImageUrl != null && !backgroundImageUrl.isBlank()} ? ' has-background' : ''" th:attr="data-template=${effectiveTemplate != null ? effectiveTemplate.name() : 'CLASSIC'},data-focus=${presentation != null ? presentation.contentFocus : 'BALANCED'},data-info-position=${presentation != null ? presentation.infoPosition : 'STANDARD'}" th:style="${presentationStyle}">
+<main class="dashboard-page market-stage market-detail-page" th:classappend="${adminPreview == true ? 'admin-preview-page' : ''}" th:with="effectiveTemplate=${creativeStylesPreview == true && previewTemplate != null ? previewTemplate : event.designTemplate},demoEvent=${(event.id != null && event.id >= 1 && event.id <= 12) || (event.organizerEmail != null && (#strings.toLowerCase(event.organizerEmail) == 'org@connectify.com' || #strings.endsWith(#strings.toLowerCase(event.organizerEmail), '@connectify.local'))) || (event.description != null && #strings.contains(event.description, 'Propuesta ficticia de demostración'))}">
+    <section class="market-layout art-direction"
+             th:classappend="${(backgroundImageUrl != null && !backgroundImageUrl.isBlank() ? ' has-background' : '')
+                 + (presentation != null && presentation.primaryColor != null && !presentation.primaryColor.equalsIgnoreCase('#4f46e5') ? ' has-personal-primary' : '')
+                 + (presentation != null && presentation.accentColor != null && !presentation.accentColor.equalsIgnoreCase('#8b5cf6') ? ' has-personal-accent' : '')}"
+             th:attr="data-template=${effectiveTemplate != null ? effectiveTemplate.name() : 'CLASSIC'},data-focus=${presentation != null ? presentation.contentFocus : 'BALANCED'},data-info-position=${presentation != null ? presentation.infoPosition : 'STANDARD'}"
+             th:style="${presentationStyle}">
         <div class="market-cover">
             <img th:if="${coverImageUrl != null && !coverImageUrl.isBlank()}" th:src="${coverImageUrl}" alt="Portada del evento">
             <div class="market-cover-empty" th:unless="${coverImageUrl != null && !coverImageUrl.isBlank()}">Connectify</div>
@@ -86,6 +92,10 @@
 
         <div class="market-content">
             <div class="market-story">
+                <figure class="market-promotional-art"
+                        th:if="${presentation != null && presentation.promotionalImageUrl != null && !presentation.promotionalImageUrl.isBlank() && presentation.promotionalImageUrl != coverImageUrl}">
+                    <img th:src="${presentation.promotionalImageUrl}" th:alt="${'Afiche de ' + event.title}" loading="lazy">
+                </figure>
                 <p class="market-intro" th:text="${event.description}">Descripción del evento.</p>
                 <p class="market-highlight" th:if="${presentation != null && presentation.highlightText != null && !presentation.highlightText.isBlank()}" th:text="${presentation.highlightText}">Texto destacado</p>
                 <div class="market-meta">
@@ -114,13 +124,6 @@
                 </section>
 
                 <div class="market-extra-blocks" th:if="${presentation != null}">
-                    <section class="market-gallery-section" th:if="${presentation.showGallery && ((coverImageUrl != null && !coverImageUrl.isBlank()) || (thumbnailImageUrl != null && !thumbnailImageUrl.isBlank()))}">
-                        <h2 class="market-section-title">La experiencia en imágenes</h2>
-                        <div class="market-gallery">
-                            <figure th:if="${coverImageUrl != null && !coverImageUrl.isBlank()}"><img th:src="${coverImageUrl}" th:alt="${'Arte principal de ' + event.title}" loading="lazy"><figcaption>Imagen de la experiencia</figcaption></figure>
-                            <figure th:if="${thumbnailImageUrl != null && !thumbnailImageUrl.isBlank() && thumbnailImageUrl != coverImageUrl}"><img th:src="${thumbnailImageUrl}" th:alt="${'Detalle visual de ' + event.title}" loading="lazy"><figcaption>Una mirada al evento</figcaption></figure>
-                        </div>
-                    </section>
                     <section class="market-media-strip" th:if="${presentation.showMedia}">
                         <article class="market-media-embed youtube" th:if="${youtubeEmbedUrl != null && !youtubeEmbedUrl.isBlank()}"><iframe th:src="${youtubeEmbedUrl}" title="Video del evento" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy"></iframe></article>
                         <a th:if="${adminPreview != true && (youtubeEmbedUrl == null || youtubeEmbedUrl.isBlank()) && presentation.youtubeUrl != null && !presentation.youtubeUrl.isBlank()}" th:href="${presentation.youtubeUrl}" target="_blank" rel="noopener">Ver video</a>
@@ -129,12 +132,51 @@
                     </section>
                     <section class="market-tour-sessions" th:if="${presentation.showSessions && presentation.sessionText != null && !presentation.sessionText.isBlank()}">
                         <h2>Sesiones disponibles</h2>
-                        <details th:each="eventSession : ${presentation.sessionText.split('\r?\n')}" th:if="${eventSession != null && !eventSession.isBlank()}">
-                            <summary><span th:text="${eventSession}">Lima · 25 julio</span><b>+</b></summary>
-                            <p th:text="${adminPreview == true ? 'Sesión incluida en la propuesta del evento.' : demoEvent ? 'Sesión referencial de este evento demostrativo.' : 'Elige esta fecha y continúa con la compra desde las entradas disponibles.'}">Elige esta fecha y continúa con la compra desde las entradas disponibles.</p>
-                            <a th:if="${adminPreview != true && organizerPreview != true && !demoEvent}" href="#ticketTypes">Comprar entrada</a>
+                        <details th:each="eventSession : ${presentation.sessionText.split('\r?\n')}" th:if="${eventSession != null && !eventSession.isBlank()}"
+                                 th:with="parts=${eventSession.split('[|]', -1)}">
+                            <summary>
+                                <span th:if="${parts.length == 4}" th:text="${parts[0].trim() + ' – ' + parts[1].trim().replace('T', ' ') + ' – ' + parts[2].trim()}">Ciudad – Fecha – Local</span>
+                                <span th:unless="${parts.length == 4}" th:text="${eventSession}">Lima – 25 julio – Recinto</span>
+                                <b aria-hidden="true">+</b>
+                            </summary>
+                            <p th:text="${demoEvent ? 'Sesión referencial de este evento demostrativo: ' + event.title + '.' : 'Función del mismo evento. Consulta las entradas de esta ficha.'}">Función del mismo evento.</p>
+                            <a th:if="${adminPreview != true && organizerPreview != true && !demoEvent && ticketTypes != null && !ticketTypes.isEmpty()}" href="#ticketTypes">Ver entradas del evento</a>
                         </details>
                     </section>
+                </div>
+                <section class="market-tour-sessions"
+                         th:if="${tourOrigin != null && !(organizerPreview == true && param.scope != null && param.scope[0] == 'event') && ((tourDates != null && !tourDates.isEmpty()) || (demoEvent && tourOrigin.id != event.id))}">
+                        <h2 th:if="${!tourDates.isEmpty()}">Fechas en otras ciudades</h2>
+                        <div class="muted small" th:if="${demoEvent && tourOrigin.id != event.id}">
+                            <span>Sesión referencial de este evento demostrativo: </span>
+                            <a th:if="${organizerPreview == true && creativeStylesPreview != true}"
+                               th:href="@{/dashboard/organizer/events/{id}/preview(id=${tourOrigin.id})}"
+                               th:text="${tourOrigin.title + ' (EVT-' + tourOrigin.id + ')'}">Evento de origen</a>
+                            <a th:if="${(organizerPreview != true || creativeStylesPreview == true) && tourOrigin.status.name() == 'PUBLISHED'}"
+                               th:href="@{/events/{id}(id=${tourOrigin.id})}"
+                               th:text="${tourOrigin.title + ' (EVT-' + tourOrigin.id + ')'}">Evento de origen</a>
+                            <span th:if="${creativeStylesPreview == true && tourOrigin.status.name() != 'PUBLISHED'}"
+                                  th:text="${tourOrigin.title + ' (EVT-' + tourOrigin.id + ')'}">Evento de origen</span>
+                        </div>
+                        <details th:each="tourDate : ${tourDates}"
+                                 th:with="cardId=${'tour-card-' + tourDate.id}, tourLabel=${tourDate.city + ' · ' + (tourDate.eventDate != null ? #temporals.format(tourDate.eventDate, 'dd/MM/yyyy HH:mm') : 'Fecha por definir') + ' · EVT-' + tourDate.id}">
+                            <summary><span th:text="${tourLabel}">Fecha de gira</span><b aria-hidden="true">+</b></summary>
+                            <p th:text="${tourDate.location}">Recinto</p>
+                            <button class="btn secondary compact tour-card-open" type="button" th:attr="data-tour-card=${cardId}" aria-haspopup="dialog">Ver tarjeta de esta fecha</button>
+                            <dialog class="tour-card-dialog" th:id="${cardId}" th:attr="aria-labelledby=${cardId + '-title'}">
+                                <img th:if="${tourDate.imageUrl != null && !tourDate.imageUrl.isBlank()}" th:src="${tourDate.imageUrl}" alt="" loading="lazy">
+                                <div class="tour-card-copy">
+                                    <h3 th:id="${cardId + '-title'}" th:text="${tourDate.title}">Evento</h3>
+                                    <p th:text="${tourLabel}">Fecha</p>
+                                    <p th:text="${tourDate.location}">Recinto</p>
+                                    <a th:if="${organizerPreview == true && creativeStylesPreview != true}" th:href="@{/dashboard/organizer/events/{id}/preview(id=${tourDate.id})}">Ver detalles</a>
+                                    <a th:if="${(organizerPreview != true || creativeStylesPreview == true) && tourDate.status.name() == 'PUBLISHED'}" th:href="@{/events/{id}(id=${tourDate.id})}">Ver detalles</a>
+                                    <button class="btn secondary compact" type="button" data-close-tour-card>Cerrar</button>
+                                </div>
+                            </dialog>
+                        </details>
+                </section>
+                <div class="market-extra-blocks" th:if="${presentation != null && (presentation.showAgenda || presentation.showBenefits || presentation.showSponsors)}">
                     <section class="market-extra-block market-agenda" th:if="${presentation.showAgenda && presentation.agendaText != null && !presentation.agendaText.isBlank()}"><h2 class="market-section-title">Programa del evento</h2><ol><li th:each="item : ${presentation.agendaText.split('\r?\n')}" th:if="${!item.isBlank()}" th:text="${item}">Agenda</li></ol></section>
                     <section class="market-extra-block market-benefits" th:if="${presentation.showBenefits && presentation.benefitsText != null && !presentation.benefitsText.isBlank()}"><h2 class="market-section-title">Tu experiencia incluye</h2><ul><li th:each="item : ${presentation.benefitsText.split('\r?\n')}" th:if="${!item.isBlank()}" th:text="${item}">Beneficios</li></ul></section>
                     <section class="market-extra-block sponsor-block" th:if="${presentation.showSponsors && ((presentation.sponsorsText != null && !presentation.sponsorsText.isBlank()) || (presentation.sponsorLogosText != null && !presentation.sponsorLogosText.isBlank()))}">
@@ -210,6 +252,12 @@
     </article>
 </dialog>
 <script>
+    document.querySelectorAll('[data-tour-card]').forEach(button => {
+        const card = document.getElementById(button.dataset.tourCard);
+        button.addEventListener('click', () => card.showModal());
+        card.querySelector('[data-close-tour-card]').addEventListener('click', () => card.close());
+    });
+
     document.querySelectorAll('.quantity-stepper').forEach(function (stepper) {
         var input = stepper.querySelector('input');
         var plus = stepper.querySelector('.quantity-plus');

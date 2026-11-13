@@ -3,6 +3,11 @@
     const comparison = document.querySelector('.presentation-comparison');
     const page = document.querySelector('.market-detail-page');
     const layout = page?.querySelector('.market-layout');
+    document.querySelector('[data-preview-mobile]')?.addEventListener('click', event => {
+        const mobile = page.classList.toggle('preview-mobile');
+        event.currentTarget.setAttribute('aria-pressed', String(mobile));
+        event.currentTarget.textContent = mobile ? 'Vista escritorio' : 'Vista móvil';
+    });
     if (!comparison || !layout) return;
     const options = [...comparison.querySelectorAll('[data-preview-template]')];
     function selectTemplate(option, updateUrl) {
@@ -23,9 +28,4 @@
         event.preventDefault();
         selectTemplate(option, true);
     }));
-    comparison.querySelector('[data-preview-mobile]').addEventListener('click', event => {
-        const mobile = page.classList.toggle('preview-mobile');
-        event.currentTarget.setAttribute('aria-pressed', String(mobile));
-        event.currentTarget.textContent = mobile ? 'Vista escritorio' : 'Vista móvil';
-    });
 })();

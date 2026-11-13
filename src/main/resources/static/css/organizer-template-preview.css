@@ -1,0 +1,421 @@
+.template-sample {
+    --paper: #f6f4ee;
+    --ink: #1b2837;
+    --accent: #875827;
+    --example: url("../images/marketplace-hero.png");
+    --type: inherit;
+    display: grid;
+    grid-template-columns: minmax(0, 1.65fr) minmax(0, 1fr);
+    grid-template-areas: "cover cover" "story tickets";
+    overflow: hidden;
+    background: var(--paper);
+    color: var(--ink);
+    border: 1px solid #25354935;
+    border-radius: 10px;
+    box-shadow: 0 16px 36px #192b4826;
+    margin-inline: auto;
+}
+
+.template-sample .sample-cover {
+    grid-area: cover;
+    display: grid;
+    align-items: end;
+    isolation: isolate;
+    min-width: 0;
+}
+
+.template-sample .sample-art {
+    grid-area: 1 / 1;
+    position: relative;
+    align-self: stretch;
+    min-height: 270px;
+    background-color: #152139;
+}
+
+.template-sample .sample-art img,
+.template-sample .sample-art-example {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.template-sample .sample-art img {
+    object-fit: cover;
+    object-position: center;
+}
+
+.template-sample[data-focus="TOP"] .sample-art img { object-position: center top; }
+.template-sample[data-focus="BOTTOM"] .sample-art img { object-position: center bottom; }
+.template-sample .sample-art [hidden] { display: none; }
+
+.template-sample .sample-art-example {
+    background: var(--example) center / cover no-repeat;
+}
+
+.sample-art-example span {
+    position: absolute;
+    z-index: 2;
+    inset: 9px 9px auto auto;
+    padding: 4px 7px;
+    background: #111b2cde;
+    color: #fff;
+    font-size: .63rem;
+}
+
+.template-sample .sample-art::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(0deg, #101827f5, #10182775 52%, transparent 88%);
+    pointer-events: none;
+}
+
+.template-sample .sample-title {
+    grid-area: 1 / 1;
+    z-index: 1;
+    min-width: 0;
+    padding: 26px clamp(18px, 3vw, 38px);
+    color: #fff;
+    overflow-wrap: anywhere;
+}
+
+.template-sample .sample-category,
+.template-sample h4 {
+    margin: 0;
+    font-size: .72rem;
+    font-weight: 700;
+    letter-spacing: .09em;
+    text-transform: uppercase;
+}
+
+.template-sample .sample-title h3 {
+    margin: 8px 0 15px;
+    color: inherit;
+    font-family: var(--type);
+    font-size: clamp(1.85rem, 3.4vw, 3.6rem);
+    line-height: .98;
+    letter-spacing: -.045em;
+    text-wrap: balance;
+}
+
+.template-sample .sample-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 14px;
+    font-size: .78rem;
+}
+
+.template-sample .sample-story,
+.template-sample .sample-tickets {
+    min-width: 0;
+    padding: 21px clamp(15px, 2.5vw, 31px);
+    overflow-wrap: anywhere;
+}
+
+.template-sample .sample-story { grid-area: story; }
+.template-sample .sample-tickets {
+    grid-area: tickets;
+    display: grid;
+    align-content: start;
+    gap: 8px;
+    border-inline-start: 1px solid currentColor;
+}
+
+.template-sample h4 { color: var(--accent); }
+.template-sample .sample-story p {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 5;
+    overflow: hidden;
+    margin: 9px 0 0;
+    font-size: .82rem;
+    line-height: 1.55;
+    white-space: pre-line;
+}
+
+.template-sample .sample-tickets strong {
+    font-size: clamp(1rem, 1.8vw, 1.45rem);
+    line-height: 1.15;
+}
+
+.template-sample .sample-tickets span { font-size: .78rem; }
+
+/* Each composition arranges the same event data differently. */
+.template-sample[data-template="ATELIER"] {
+    --paper: #f2ebdd;
+    --ink: #27372d;
+    --accent: #625143;
+    --type: Baskervville, Georgia, serif;
+    --example: url("../images/showcase/origen-cover.png");
+}
+
+.template-sample[data-template="FORUM"] {
+    --paper: #e4f0ee;
+    --ink: #102b38;
+    --accent: #245b65;
+    --example: url("../images/showcase/nexum-cover.png");
+}
+
+.template-sample[data-template="FESTIVAL"] {
+    --paper: #deee68;
+    --ink: #1b2417;
+    --accent: #3b5023;
+    --example: url("../images/showcase/pulso-lima-cover.png");
+}
+
+.template-sample[data-template="CARD_GRID"] {
+    --example: url("../images/showcase/creative-8-cover.png");
+    --paper: #e8edf5;
+    --accent: #324c70;
+}
+
+.template-sample[data-template="CARD_GRID"] .sample-tickets {
+    margin: 12px;
+    border: 1px solid #ccd6e4;
+    border-radius: 6px;
+    background: #fff;
+}
+
+.template-sample[data-template="PROMO_DETAIL"] {
+    --example: url("../images/showcase/creative-10-cover.png");
+    --paper: #f9e9df;
+    --accent: #8a432c;
+}
+
+.template-sample[data-template="PROMO_DETAIL"] .sample-title { text-align: center; }
+.template-sample[data-template="PROMO_DETAIL"] .sample-meta { justify-content: center; }
+
+.template-sample[data-template="POSTER_LANDING"] {
+    --example: url("../images/showcase/pulso-lima-cover.png");
+    --paper: #2c1118;
+    --ink: #fff2e9;
+    --accent: #ffcbb4;
+}
+
+.template-sample[data-template="POSTER_LANDING"] .sample-title h3 {
+    text-transform: uppercase;
+    font-weight: 900;
+}
+
+.template-sample[data-template="TICKET_PANEL"] {
+    --example: url("../images/showcase/creative-9-cover.png");
+    --paper: #f6eee1;
+}
+
+.template-sample[data-template="TICKET_PANEL"] .sample-tickets {
+    background: #202e43;
+    color: #fff;
+    border: 0;
+    --accent: #f4cf8d;
+}
+
+.template-sample[data-template="STAGE_MEDIA"] {
+    --example: url("../images/showcase/creative-22-cover.png");
+    --paper: #162d33;
+    --ink: #fff4e6;
+    --accent: #ffc584;
+}
+
+.template-sample[data-template="STAGE_MEDIA"] .sample-art { border-bottom: 5px solid var(--accent); }
+
+.template-sample[data-template="TOUR_SESSIONS"] {
+    --example: url("../images/showcase/creative-12-cover.png");
+    --paper: #f5eae4;
+    --accent: #873e3c;
+}
+
+.template-sample[data-template="TOUR_SESSIONS"] .sample-meta > span {
+    border: 1px solid #ffffff77;
+    padding: 4px 8px;
+}
+
+.template-sample[data-template="IMMERSIVE"] {
+    --example: url("../images/showcase/creative-10-cover.png");
+    --paper: #201737;
+    --ink: #f4eeff;
+    --accent: #ddc0ff;
+}
+
+.template-sample[data-template="IMMERSIVE"] .sample-art::after {
+    background: linear-gradient(0deg, #201737, #20173730 82%);
+}
+
+@media (min-width: 761px) {
+    .template-sample:not(.mobile):is([data-template="ATELIER"], [data-template="FORUM"], [data-template="FESTIVAL"]) .sample-cover {
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+        align-items: center;
+        padding: 16px;
+    }
+
+    .template-sample:not(.mobile):is([data-template="ATELIER"], [data-template="FORUM"], [data-template="FESTIVAL"]) .sample-art {
+        grid-area: 1 / 2;
+        overflow: hidden;
+    }
+
+    .template-sample:not(.mobile):is([data-template="ATELIER"], [data-template="FORUM"], [data-template="FESTIVAL"]) .sample-title {
+        padding: 20px 14px;
+        color: var(--ink);
+    }
+
+    .template-sample:not(.mobile):is([data-template="ATELIER"], [data-template="FORUM"], [data-template="FESTIVAL"]) .sample-art::after {
+        display: none;
+    }
+
+    .template-sample:not(.mobile)[data-template="ATELIER"] .sample-art {
+        border-radius: 48% 48% 0 0;
+        box-shadow: 0 0 0 4px var(--paper), 0 0 0 5px #9a8d75;
+    }
+
+    .template-sample:not(.mobile)[data-template="ATELIER"] .sample-art-example span {
+        inset: auto 9px 9px auto;
+    }
+
+    .template-sample:not(.mobile)[data-template="FESTIVAL"] .sample-art {
+        clip-path: polygon(14% 0, 100% 0, 100% 100%, 0 100%);
+    }
+
+    .template-sample:not(.mobile)[data-template="FESTIVAL"] .sample-title h3 {
+        text-transform: uppercase;
+        font-weight: 900;
+    }
+
+    .template-sample:not(.mobile)[data-template="FORUM"] .sample-cover {
+        background: repeating-linear-gradient(90deg, transparent 0 31px, #30606c16 31px 32px);
+    }
+
+    .template-sample:not(.mobile)[data-template="FORUM"] .sample-art { border: 4px solid var(--ink); }
+    .template-sample:not(.mobile)[data-template="TICKET_PANEL"] {
+        grid-template-columns: minmax(0, 1.85fr) minmax(0, 1fr);
+        grid-template-areas: "cover tickets" "story tickets";
+    }
+
+    .template-sample:not(.mobile)[data-template="TICKET_PANEL"] .sample-tickets { align-content: center; }
+    .template-sample:not(.mobile)[data-template="CARD_GRID"] {
+        grid-template-areas: "cover story" "cover tickets";
+        gap: 0 12px;
+        padding: 12px;
+    }
+
+    .template-sample:not(.mobile)[data-template="CARD_GRID"] .sample-art {
+        min-height: 230px;
+        overflow: hidden;
+        border-radius: 6px;
+    }
+
+    .template-sample:not(.mobile)[data-template="CARD_GRID"] .sample-tickets { margin: 0; }
+
+    .template-sample:not(.mobile)[data-template="PROMO_DETAIL"] .sample-title {
+        grid-area: 2 / 1;
+        color: var(--ink);
+        border-bottom: 1px solid #8a432c40;
+    }
+
+    .template-sample:not(.mobile)[data-template="PROMO_DETAIL"] .sample-art { min-height: 200px; }
+    .template-sample:not(.mobile)[data-template="PROMO_DETAIL"] .sample-art::after { display: none; }
+    .template-sample:not(.mobile)[data-template="TOUR_SESSIONS"] .sample-meta { flex-direction: column; align-items: flex-start; }
+    .template-sample:not(.mobile)[data-template="POSTER_LANDING"] .sample-art,
+    .template-sample:not(.mobile)[data-template="IMMERSIVE"] .sample-art { min-height: 325px; }
+}
+
+.template-sample.mobile {
+    max-width: 365px;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas: "cover" "story" "tickets";
+}
+
+.template-sample.mobile .sample-tickets { border-inline-start: 0; border-top: 1px solid currentColor; }
+.template-sample.mobile .sample-title h3 { font-size: 1.85rem; }
+
+@media (max-width: 760px) {
+    .template-sample {
+        grid-template-columns: minmax(0, 1fr);
+        grid-template-areas: "cover" "story" "tickets";
+    }
+
+    .template-sample .sample-art { min-height: 225px; }
+    .template-sample .sample-tickets { border-inline-start: 0; border-top: 1px solid currentColor; }
+}
+
+.template-sample.has-personal-primary .sample-art::after {
+    background: linear-gradient(0deg, color-mix(in srgb, var(--sample-primary) 42%, #101827), transparent 90%);
+}
+
+.template-sample.has-personal-primary .sample-story {
+    background-color: color-mix(in srgb, var(--sample-primary) 13%, var(--paper));
+}
+
+.template-sample.has-personal-accent .sample-cover {
+    border-bottom: 4px solid var(--sample-accent);
+}
+
+.template-sample[data-template="CLASSIC"] {
+    --paper: #f4ede1;
+    --ink: #202a34;
+    --type: Georgia, serif;
+}
+
+.template-sample[data-template="CLASSIC"] .sample-cover {
+    align-items: center;
+    padding: 20px;
+    gap: 14px;
+    border-bottom: 1px solid #a87e4d;
+}
+
+.template-sample[data-template="CLASSIC"] .sample-title {
+    grid-area: 1 / 1;
+    padding: 0;
+    color: var(--ink);
+}
+
+.template-sample[data-template="CLASSIC"] .sample-art {
+    grid-area: 2 / 1;
+    min-height: 155px;
+    border: 4px solid #fffdfa;
+    outline: 1px solid #a87e4d;
+}
+
+.template-sample[data-template="CLASSIC"] .sample-art::after { display: none; }
+.template-sample[data-template="CLASSIC"] .sample-meta { padding-top: 8px; border-top: 1px solid #a87e4d; }
+.template-sample[data-template="CLASSIC"] .sample-story p { font-family: Georgia, serif; }
+
+.template-sample[data-template="CARD_GRID"] .sample-art {
+    min-height: 165px;
+}
+
+.template-sample[data-template="CARD_GRID"] .sample-title h3 {
+    font-size: clamp(1.45rem, 2.65vw, 2.25rem);
+}
+
+.template-sample.has-personal-primary[data-template="CLASSIC"] .sample-cover {
+    background: color-mix(in srgb, var(--sample-primary) 13%, var(--paper));
+}
+
+.template-sample.has-personal-accent[data-template="CLASSIC"] .sample-cover { border-color: var(--sample-accent); }
+
+@media (min-width: 761px) {
+    .template-sample:not(.mobile)[data-template="CLASSIC"] .sample-cover {
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1.08fr);
+    }
+
+    .template-sample:not(.mobile)[data-template="CLASSIC"] .sample-art {
+        grid-area: 1 / 2;
+        min-height: 220px;
+    }
+
+    .template-sample:not(.mobile)[data-template="CARD_GRID"] {
+        grid-template-columns: minmax(0, 1.15fr) minmax(0, .85fr);
+        grid-template-areas: "cover cover" "story tickets";
+        gap: 0 14px;
+        padding: 0;
+    }
+
+    .template-sample:not(.mobile)[data-template="CARD_GRID"] .sample-art { min-height: 165px; }
+    .template-sample:not(.mobile)[data-template="CARD_GRID"] .sample-tickets { margin: 12px; }
+}
+
+@media (min-width: 761px) {
+    .template-sample.has-personal-primary:not(.mobile):is([data-template="ATELIER"], [data-template="FESTIVAL"], [data-template="FORUM"], [data-template="PROMO_DETAIL"]) .sample-cover {
+        background-color: color-mix(in srgb, var(--sample-primary) 25%, var(--paper));
+    }
+}

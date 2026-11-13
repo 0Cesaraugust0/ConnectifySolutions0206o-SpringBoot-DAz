@@ -3,6 +3,7 @@ package com.connectify.controller;
 import com.connectify.entity.Event;
 import com.connectify.entity.EventStatus;
 import com.connectify.repository.EventRepository;
+import com.connectify.service.DemonstrationEventPolicy;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +18,7 @@ public class SeoController {
 
     private static final DateTimeFormatter SITEMAP_DATE = DateTimeFormatter.ISO_LOCAL_DATE;
     private static final List<String> PUBLIC_PAGES = List.of(
-            "/events", "/help", "/terms", "/privacy", "/cookies"
+            "/events", "/events?category=M%C3%BAsica", "/register"
     );
 
     private final EventRepository eventRepository;
@@ -34,10 +35,7 @@ public class SeoController {
         String body = """
                 User-agent: *
                 Allow: /events
-                Allow: /help
-                Allow: /terms
-                Allow: /privacy
-                Allow: /cookies
+                Allow: /register
                 Disallow: /dashboard/
                 Disallow: /admin/
                 Disallow: /communications/
@@ -63,6 +61,9 @@ public class SeoController {
 
         PUBLIC_PAGES.forEach(path -> appendUrl(xml, baseUrl + path, null));
         eventRepository.findByStatusOrderByUpdatedAtDesc(EventStatus.PUBLISHED)
+                .stream()
+                .filter(event -> event.getStatus() == EventStatus.PUBLISHED)
+                .filter(event -> !DemonstrationEventPolicy.isDemonstration(event))
                 .forEach(event -> appendUrl(xml, baseUrl + "/events/" + event.getId(), event));
         xml.append("</urlset>\n");
 

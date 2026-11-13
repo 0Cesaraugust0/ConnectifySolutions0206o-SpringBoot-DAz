@@ -17,6 +17,7 @@ public class EventDetailViewModel {
 
     public void addAttributes(Event event, EventPresentationSettings presentation, Model model) {
         model.addAttribute("event", event);
+        model.addAttribute("demonstrationEvent", DemonstrationEventPolicy.isDemonstration(event));
         model.addAttribute("ticketTypes", ticketTypeRepository.findByEventIdAndActiveTrueOrderByPriceAsc(event.getId()));
         model.addAttribute("presentation", presentation);
         model.addAttribute("coverImageUrl", firstText(presentation == null ? null : presentation.getCoverImageUrl(), event.getImageUrl()));

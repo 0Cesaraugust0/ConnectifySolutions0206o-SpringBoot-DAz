@@ -238,7 +238,7 @@
         gap:10px;
     }
     .marketplace-compact .marketplace-nav .brand{flex:1 1 auto;min-width:0;gap:3mm}
-    .marketplace-compact .marketplace-coin{width:40px;height:40px;flex-basis:40px}
+    .marketplace-compact .marketplace-coin{width:calc(40px + 1mm);height:calc(40px + 1mm);flex-basis:calc(40px + 1mm)}
     .marketplace-compact .marketplace-nav .brand-link{min-width:0}
     .marketplace-compact .marketplace-nav .brand-link strong{font-size:14px}
     .marketplace-compact .marketplace-nav>.peru-intro-trigger{display:none}

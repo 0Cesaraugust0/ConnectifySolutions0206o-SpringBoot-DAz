@@ -20,9 +20,11 @@ import com.connectify.repository.TicketTypeRepository;
 import com.connectify.repository.UserAccountRepository;
 import com.connectify.service.ImageStorageService;
 import com.connectify.service.InternalMessageService;
+import com.connectify.service.TourDates;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -66,6 +68,7 @@ public class OrganizerEventCreationController {
     }
 
     @PostMapping("/create-with-tickets")
+    @Transactional
     public String createWithTickets(@RequestParam String title,
                                     @RequestParam String description,
                                     @RequestParam Long categoryId,
@@ -100,6 +103,7 @@ public class OrganizerEventCreationController {
                                     @RequestParam(required = false) List<String> ticketDescription,
                                     @RequestParam(required = false, defaultValue = "false") boolean requestDesigner,
                                     @RequestParam(required = false) String designBrief,
+                                    @RequestParam(defaultValue = "submit_review") String workflowAction,
                                     @ModelAttribute PresentationOptions visualOptions,
                                     Authentication authentication) {
         Category category = categoryRepository.findById(categoryId)
@@ -122,7 +126,9 @@ public class OrganizerEventCreationController {
         event.setFeatured(false);
         event.setDesignTemplate(designTemplate);
         event.setDesignEnabled(requestDesigner);
-        event.setStatus(EventStatus.PENDING_REVIEW);
+        boolean showPreview = "preview".equalsIgnoreCase(workflowAction);
+        boolean submitForReview = !showPreview && !"save".equalsIgnoreCase(workflowAction);
+        event.setStatus(submitForReview ? EventStatus.PENDING_REVIEW : EventStatus.DRAFT);
         event.setCreatedAt(LocalDateTime.now());
         event.setUpdatedAt(LocalDateTime.now());
 
@@ -131,7 +137,8 @@ public class OrganizerEventCreationController {
                 highlightText, floatingSalesCard, showSponsors, sponsorsText, sponsorLogosText, showMedia,
                 youtubeUrl, spotifyUrl, showStageMap, stageImageUrl, stageImageFile, stageText, showSessions, sessionText, visualOptions);
         createRecord(saved, EventAdminRecordType.CREATED,
-                "Evento creado por organizador y enviado a revisión administrativa.\n"
+                (submitForReview ? "Evento creado por organizador y enviado a revisión administrativa.\n"
+                        : "Evento creado por organizador como borrador.\n")
                         + "Plantilla inicial de Marketplace: " + designTemplate.getLabel() + ".");
 
         TicketSummary ticketSummary = createTicketTypes(saved, ticketName, ticketPrice, ticketQuantity, ticketDescription);
@@ -159,10 +166,13 @@ public class OrganizerEventCreationController {
                             + designTemplate.getLabel() + ".");
         }
 
-        return "redirect:/dashboard/organizer/events/" + saved.getId() + "?created=true";
+        String editUrl = "redirect:/dashboard/organizer/events/" + saved.getId();
+        if (showPreview) return editUrl + "/preview";
+        return editUrl + "/edit?" + (submitForReview ? "submitted=true" : "saved=true");
     }
 
     @PostMapping("/{id}/edit-all")
+    @Transactional
     public String updateCompleteEvent(@org.springframework.web.bind.annotation.PathVariable Long id,
                                       @RequestParam String title,
                                       @RequestParam String description,
@@ -432,10 +442,22 @@ public class OrganizerEventCreationController {
         presentation.setStageText(optionalText(stageText));
         presentation.setShowSessions(showSessions);
         presentation.setSessionText(optionalText(sessionText));
+        if (visualOptions.isTourSelectionPresent()) {
+            List<Long> selected = visualOptions.getLinkedEventIds() == null ? List.of()
+                    : visualOptions.getLinkedEventIds().stream().distinct().limit(TourDates.MAX_LINKS).toList();
+            String linkedIds = TourDates.visible(event, eventRepository.findAllById(selected), true).stream()
+                    .map(linked -> linked.getId().toString())
+                    .collect(java.util.stream.Collectors.joining(","));
+            presentation.setTourEventIds(linkedIds);
+        }
         if (visualOptions.getPrimaryColor() != null) presentation.setPrimaryColor(safeColor(visualOptions.getPrimaryColor(), presentation.getPrimaryColor()));
         if (visualOptions.getAccentColor() != null) presentation.setAccentColor(safeColor(visualOptions.getAccentColor(), presentation.getAccentColor()));
         if (visualOptions.getCoverImageUrl() != null) presentation.setCoverImageUrl(safeUrl(visualOptions.getCoverImageUrl()));
         if (visualOptions.getThumbnailImageUrl() != null) presentation.setThumbnailImageUrl(safeUrl(visualOptions.getThumbnailImageUrl()));
+        String uploadedArtwork = imageStorageService.store(visualOptions.getPromotionalImageFile(), "presentations");
+        if (uploadedArtwork != null || visualOptions.getPromotionalImageUrl() != null) {
+            presentation.setPromotionalImageUrl(firstText(uploadedArtwork, safeUrl(visualOptions.getPromotionalImageUrl())));
+        }
         if (visualOptions.getCoverFocus() != null) presentation.setCoverFocus(safeChoice(visualOptions.getCoverFocus(), List.of("TOP", "CENTER", "BOTTOM"), presentation.getCoverFocus()));
         if (visualOptions.getContentFocus() != null) presentation.setContentFocus(safeChoice(visualOptions.getContentFocus(), List.of("BALANCED", "SALES", "INFORMATION"), presentation.getContentFocus()));
         if (visualOptions.getShowGallery() != null) presentation.setShowGallery(visualOptions.getShowGallery());
@@ -460,6 +482,20 @@ public class OrganizerEventCreationController {
         private String primaryColor, accentColor, coverImageUrl, thumbnailImageUrl, coverFocus, contentFocus, infoPosition;
         private Boolean showGallery, showOrganizer, showAgenda, showBenefits;
         private String agendaText, benefitsText;
+        private String promotionalImageUrl;
+        private MultipartFile promotionalImageFile;
+        private boolean tourSelectionPresent;
+        private List<Long> linkedEventIds;
+
+        public boolean isTourSelectionPresent() { return tourSelectionPresent; }
+        public void setTourSelectionPresent(boolean value) { tourSelectionPresent = value; }
+        public List<Long> getLinkedEventIds() { return linkedEventIds; }
+        public void setLinkedEventIds(List<Long> value) { linkedEventIds = value; }
+
+        public String getPromotionalImageUrl() { return promotionalImageUrl; }
+        public void setPromotionalImageUrl(String value) { promotionalImageUrl = value; }
+        public MultipartFile getPromotionalImageFile() { return promotionalImageFile; }
+        public void setPromotionalImageFile(MultipartFile value) { promotionalImageFile = value; }
         public String getPrimaryColor() { return primaryColor; }
         public void setPrimaryColor(String value) { primaryColor = value; }
         public String getAccentColor() { return accentColor; }

@@ -14,9 +14,10 @@ import java.util.List;
 public class PrivateAreaNoIndexFilter extends OncePerRequestFilter {
 
     private static final List<String> NO_INDEX_PATHS = List.of(
-            "/login", "/register", "/dashboard", "/admin", "/communications",
+            "/login", "/dashboard", "/admin", "/communications",
             "/cart", "/payments", "/tickets", "/setup", "/prototype"
     );
+    private static final List<String> SUPPORT_PAGES = List.of("/help", "/terms", "/privacy", "/cookies");
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,
@@ -25,6 +26,8 @@ public class PrivateAreaNoIndexFilter extends OncePerRequestFilter {
         String path = request.getRequestURI();
         if (NO_INDEX_PATHS.stream().anyMatch(prefix -> path.equals(prefix) || path.startsWith(prefix + "/"))) {
             response.setHeader("X-Robots-Tag", "noindex, nofollow");
+        } else if (SUPPORT_PAGES.contains(path)) {
+            response.setHeader("X-Robots-Tag", "noindex, follow");
         }
         filterChain.doFilter(request, response);
     }

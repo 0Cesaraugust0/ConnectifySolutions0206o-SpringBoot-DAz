@@ -39,6 +39,9 @@ public class EventPresentationSettings {
     private String thumbnailImageUrl;
 
     @Column(columnDefinition = "TEXT")
+    private String promotionalImageUrl;
+
+    @Column(columnDefinition = "TEXT")
     private String backgroundImageUrl;
 
     @Column(columnDefinition = "TEXT")
@@ -99,6 +102,9 @@ public class EventPresentationSettings {
     @Column(columnDefinition = "TEXT")
     private String sessionText;
 
+    @Column(length = 120)
+    private String tourEventIds;
+
     private LocalDateTime updatedAt = LocalDateTime.now();
 
     public Long getId() { return id; }
@@ -114,6 +120,8 @@ public class EventPresentationSettings {
     public void setCoverImageUrl(String coverImageUrl) { this.coverImageUrl = coverImageUrl; touch(); }
     public String getThumbnailImageUrl() { return thumbnailImageUrl; }
     public void setThumbnailImageUrl(String thumbnailImageUrl) { this.thumbnailImageUrl = thumbnailImageUrl; touch(); }
+    public String getPromotionalImageUrl() { return promotionalImageUrl; }
+    public void setPromotionalImageUrl(String promotionalImageUrl) { this.promotionalImageUrl = promotionalImageUrl; touch(); }
     public String getBackgroundImageUrl() { return backgroundImageUrl; }
     public void setBackgroundImageUrl(String backgroundImageUrl) { this.backgroundImageUrl = backgroundImageUrl; touch(); }
     public String getStageImageUrl() { return stageImageUrl; }
@@ -160,6 +168,8 @@ public class EventPresentationSettings {
     public void setShowSessions(boolean showSessions) { this.showSessions = showSessions; touch(); }
     public String getSessionText() { return sessionText; }
     public void setSessionText(String sessionText) { this.sessionText = sessionText; touch(); }
+    public String getTourEventIds() { return tourEventIds; }
+    public void setTourEventIds(String tourEventIds) { this.tourEventIds = tourEventIds; touch(); }
     public LocalDateTime getUpdatedAt() { return updatedAt; }
     public void setUpdatedAt(LocalDateTime updatedAt) { this.updatedAt = updatedAt; }
 

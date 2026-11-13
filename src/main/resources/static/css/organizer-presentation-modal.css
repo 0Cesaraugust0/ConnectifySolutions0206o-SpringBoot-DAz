@@ -7,3 +7,70 @@
 .template-preview[data-template='STAGE_MEDIA']{background:#fff8f0;border-color:#f0d6b7}.template-preview[data-template='STAGE_MEDIA'] .template-preview-cover{height:320px;background:linear-gradient(135deg,#0b2530,#df5b12)}.template-preview[data-template='STAGE_MEDIA'] .template-preview-highlight{background:#fff0df;border-left-color:#df5b12}
 .template-preview[data-template='TOUR_SESSIONS'] .template-preview-cover{height:340px;background:linear-gradient(135deg,#4b0f0f,#f7efe9)}.template-preview[data-template='TOUR_SESSIONS'] .template-preview-title{text-align:center}.template-preview[data-template='TOUR_SESSIONS'] .template-preview-body{text-align:center}.template-preview[data-template='TOUR_SESSIONS'] .template-preview-meta,.template-preview[data-template='TOUR_SESSIONS'] .template-preview-tickets{text-align:left}
 @media(max-width:760px){.template-preview[data-template='TICKET_PANEL']{display:block}.template-preview[data-template='TICKET_PANEL'] .template-preview-cover{height:280px;min-height:0}.template-preview[data-template='POSTER_LANDING'] .template-preview-cover{height:320px}.template-preview[data-template='POSTER_LANDING'] .template-preview-title{top:auto;bottom:18px}}
+
+/* Biblioteca visual profesional */
+.presentation-modal{width:min(1240px,96vw);border:1px solid #b9c1cc;border-radius:16px;background:#f7f8fa;box-shadow:0 34px 110px #08111f73}
+.presentation-modal-head{padding:20px 24px;background:linear-gradient(110deg,#142238,#223955);border-bottom-color:#324963}.presentation-modal-head h2{color:#fff;font-size:19px;font-weight:600;letter-spacing:-.02em}.presentation-modal-head p{color:#bdc9d9;font-size:11px}.presentation-modal-close{border:1px solid #ffffff24;border-radius:7px;background:#ffffff0d;color:#e8eef6;font-size:10px;font-weight:550}
+.presentation-modal-body{grid-template-columns:400px minmax(0,1fr);max-height:70vh}.template-library{padding:16px;background:#eef1f4;border-right-color:#d5dce5}.template-library-title{margin:5px 0 9px;padding:0 2px;color:#67758a;font-size:9px;font-weight:750;letter-spacing:.12em}
+.template-option{display:grid;grid-template-columns:82px minmax(0,1fr);grid-template-rows:auto auto;column-gap:11px;align-items:center;min-height:88px;padding:8px;margin-bottom:8px;border-color:#d5dce5;border-radius:10px;background:#fff;box-shadow:0 3px 10px #17243a0b}.template-option::before{content:"";grid-column:1;grid-row:1/3;width:82px;height:70px;border:1px solid #ffffff55;border-radius:7px;background:#26364b;box-shadow:inset 0 0 0 1px #0f172a18,0 4px 10px #17243a1c}.template-option-top{grid-column:2;gap:7px}.template-option>small{grid-column:2;margin:4px 0 0;color:#718096;font-size:9px;line-height:1.35}.template-option-icon{width:24px;height:24px;border-radius:6px;background:#edf1f5;color:#425a75;font-size:9px}.template-option strong{color:#26364b;font-size:11px;font-weight:650}.template-option:hover{border-color:#8fa0b5;box-shadow:0 7px 18px #17243a18;transform:translateY(-1px)}.template-option.active{border-color:#b5904d;background:#fffdf8;box-shadow:0 0 0 2px #c8a65f2e,0 8px 20px #17243a17}.template-option.active .template-option-icon{background:#17283e;color:#e4c77f}
+.template-option[data-template='ATELIER']::before{background:linear-gradient(90deg,#e9e2d2 0 42%,transparent 42%),linear-gradient(155deg,#3f513d 0 52%,#c8bd9f 52% 55%,#f3eee2 55%)}
+.template-option[data-template='FESTIVAL']::before{background:linear-gradient(73deg,transparent 0 48%,#d8ef62 49% 57%,transparent 58%),linear-gradient(145deg,#111914 0 55%,#43634b 55%)}
+.template-option[data-template='FORUM']::before{background:linear-gradient(90deg,transparent 48%,#9ccbd8 48% 52%,transparent 52%),linear-gradient(#143445 46%,#edf5f6 46% 52%,#d8edf1 52%)}
+.template-option[data-template='CLASSIC']::before{background:linear-gradient(#17263d 0 42%,#f8fafc 42% 62%,#dfe6ee 62% 66%,#fff 66%)}
+.template-option[data-template='CARD_GRID']::before{background:linear-gradient(90deg,#fff 47%,#d7dee7 47% 53%,#fff 53%),linear-gradient(#315475 0 35%,#edf1f5 35% 50%,#fff 50%)}
+.template-option[data-template='PROMO_DETAIL']::before{background:radial-gradient(circle at 72% 25%,#f2a85c 0 8%,transparent 9%),linear-gradient(135deg,#352558,#7b4f8d 58%,#e29a58)}
+.template-option[data-template='POSTER_LANDING']::before{background:linear-gradient(72deg,transparent 0 58%,#d54c40 59% 65%,transparent 66%),linear-gradient(145deg,#16090b,#5a171c)}
+.template-option[data-template='TICKET_PANEL']::before{background:linear-gradient(90deg,#233c55 0 62%,#f5efe4 62% 100%)}
+.template-option[data-template='STAGE_MEDIA']::before{background:linear-gradient(160deg,#0b2530 0 56%,#df5b12 57% 70%,#fff0df 71%)}
+.template-option[data-template='TOUR_SESSIONS']::before{background:linear-gradient(90deg,transparent 46%,#f2dfcc 46% 49%,transparent 49%),linear-gradient(145deg,#4b0f0f,#a64d43 58%,#f7efe9 59%)}
+.template-option[data-template='IMMERSIVE']::before{background:radial-gradient(circle at 72% 28%,#b47bff 0 6%,transparent 7%),radial-gradient(circle at 35% 70%,#5bd7e8 0 5%,transparent 6%),linear-gradient(145deg,#11102d,#3e2465 58%,#151236)}
+.template-preview-zone{padding:20px 24px;background:linear-gradient(145deg,#dfe4ea,#f3f5f7)}.template-preview-toolbar{padding:9px 11px;border:1px solid #d1d8e1;border-radius:8px;background:#ffffffb8;box-shadow:0 4px 12px #17243a0b}.template-preview-toolbar strong{font-size:11px;font-weight:650}.template-preview-toolbar span{font-size:9px}.template-preview{border-radius:11px;border-color:#aeb9c6;box-shadow:0 22px 44px #17243a2b}.presentation-modal-foot{padding:14px 24px;border-top-color:#d7dde5;background:#f8f9fb}.presentation-selection-note{font-size:10px}.presentation-selection-note strong{color:#8b672e}
+.template-preview-fallback{font-size:0}.template-preview-fallback::before{font:600 17px/1.1 Georgia,serif;letter-spacing:.08em}.template-preview[data-template='CLASSIC'] .template-preview-fallback::before{content:'EVENTO'}.template-preview[data-template='CARD_GRID'] .template-preview-fallback::before{content:'CATÁLOGO'}.template-preview[data-template='PROMO_DETAIL'] .template-preview-fallback::before{content:'EXPERIENCIA'}.template-preview[data-template='POSTER_LANDING'] .template-preview-fallback::before{content:'CAMPAÑA'}.template-preview[data-template='TICKET_PANEL'] .template-preview-fallback::before{content:'ACCESO'}.template-preview[data-template='STAGE_MEDIA'] .template-preview-fallback::before{content:'ESCENARIO'}.template-preview[data-template='TOUR_SESSIONS'] .template-preview-fallback::before{content:'GIRA'}.template-preview[data-template='IMMERSIVE'] .template-preview-fallback::before{content:'INMERSIVO'}.template-preview[data-template='ATELIER'] .template-preview-fallback::before{content:'ATELIER'}.template-preview[data-template='FESTIVAL'] .template-preview-fallback::before{content:'PULSO'}.template-preview[data-template='FORUM'] .template-preview-fallback::before{content:'FORO'}
+@media(max-width:760px){.presentation-modal-body{grid-template-columns:1fr}.template-library{display:grid;grid-template-columns:1fr 1fr;gap:8px;max-height:290px}.template-library-title{grid-column:1/-1}.template-option{grid-template-columns:58px 1fr;min-height:72px;margin:0}.template-option::before{width:58px;height:54px}.template-option>small{display:none}.template-preview-zone{padding:12px}}
+
+/* Selector compacto del apartado 2 */
+button.organizer-presentation-picker{display:flex;width:100%;justify-content:space-between;align-items:center;gap:16px;padding:15px 17px;border:1px solid #d7ddea;border-radius:13px;background:linear-gradient(135deg,#fbfcff,#f4f7fb);margin-top:14px;font:inherit;text-align:left;cursor:pointer;transition:border-color .18s,box-shadow .18s,background .18s}
+button.organizer-presentation-picker:hover,button.organizer-presentation-picker:focus-visible{border-color:#9eacc0;background:#f8fafc;box-shadow:0 8px 22px rgba(28,49,76,.08);outline:none}
+button.organizer-presentation-picker .organizer-presentation-copy{display:grid;gap:4px}
+button.organizer-presentation-picker .organizer-presentation-copy strong{color:#26364d;font-size:.88rem}
+.organizer-presentation-selection{display:flex;align-items:center;gap:13px;margin-left:auto}
+button.organizer-presentation-picker .organizer-template-state{display:inline-flex;width:auto;padding:0;border-radius:0;background:transparent;color:#345777;font-size:.78rem;font-weight:800}
+.organizer-presentation-chevron{display:block;width:9px;height:9px;margin-top:-4px;border-right:2px solid #425c78;border-bottom:2px solid #425c78;transform:rotate(45deg)}
+@media(max-width:760px){button.organizer-presentation-picker{flex-direction:row;align-items:center;padding:14px 15px}.organizer-presentation-selection{gap:10px}}
+
+/* Acciones sobrias del selector de plantillas */
+.presentation-modal-actions{align-items:center;gap:8px}
+.presentation-modal-actions .btn{min-width:112px;padding:8px 13px!important;border-radius:7px!important;box-shadow:none!important;font-size:10px!important;font-weight:650!important;letter-spacing:0!important;text-transform:none!important;transition:background .15s,border-color .15s,color .15s!important}
+.presentation-modal-actions .btn.secondary{border:1px solid #cfd6df!important;background:#fff!important;color:#596678!important}
+.presentation-modal-actions .btn.secondary:hover{border-color:#aeb9c6!important;background:#f5f7f9!important;color:#334155!important;transform:none!important}
+.presentation-modal-actions .btn.primary{border:1px solid #263b55!important;background:#263b55!important;color:#fff!important}
+.presentation-modal-actions .btn.primary:hover{border-color:#1c2f47!important;background:#1c2f47!important;transform:none!important}
+
+.template-family + .template-family { margin-top: 8px; }
+
+.template-family > summary {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px;
+    border: 1px solid #d3dae4;
+    border-radius: 7px;
+    background: #fff;
+    color: #26364b;
+    font-size: .76rem;
+    font-weight: 650;
+    list-style: none;
+    cursor: pointer;
+}
+
+.template-family > summary::-webkit-details-marker { display: none; }
+.template-family[open] > summary { background: #e6edf4; }
+.template-family-count { margin-inline-start: auto; color: #54657b; }
+.template-family > summary::after { content: '▸'; }
+.template-family[open] > summary::after { transform: rotate(90deg); }
+.template-family-options { display: grid; gap: 8px; padding-top: 8px; }
+.template-family-options .template-option { min-width: 0; margin: 0; }
+
+@media (max-width: 760px) {
+    .template-library:has(.template-family) { display: block; }
+}

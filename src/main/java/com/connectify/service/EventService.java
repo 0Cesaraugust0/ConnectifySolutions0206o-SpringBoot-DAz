@@ -3,7 +3,9 @@ package com.connectify.service;
 import com.connectify.entity.Event;
 import com.connectify.entity.Category;
 import com.connectify.entity.EventStatus;
+import com.connectify.entity.EventPresentationSettings;
 import com.connectify.repository.EventRepository;
+import com.connectify.repository.EventPresentationSettingsRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -44,6 +46,11 @@ public class EventService {
 
     public Optional<Event> findById(Long id) {
         return eventRepository.findById(id);
+    }
+
+    public TourDates.Route publishedTourRoute(Event event, EventPresentationSettings presentation,
+                                             EventPresentationSettingsRepository settings) {
+        return TourDates.route(event, presentation, false, eventRepository, settings);
     }
 
     public Event save(Event event) {

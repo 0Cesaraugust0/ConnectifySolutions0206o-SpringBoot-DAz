@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 import java.util.Map;
@@ -73,6 +74,17 @@ public class EventController {
         model.addAttribute("category", category);
         model.addAttribute("musicSelected", Category.isMusicName(category));
         model.addAttribute("dateRange", dateRange);
+        boolean musicLanding = category != null && "Música".equalsIgnoreCase(category.trim());
+        boolean filtered = StringUtils.hasText(q) || StringUtils.hasText(city)
+                || StringUtils.hasText(dateRange) || (StringUtils.hasText(category) && !musicLanding);
+        model.addAttribute("seoRobots", filtered ? "noindex, follow" : "index, follow, max-image-preview:large");
+        model.addAttribute("seoCanonical", "https://www.showyouplay.com/events"
+                + (musicLanding ? "?category=M%C3%BAsica" : ""));
+        model.addAttribute("seoTitle", musicLanding ? "Conciertos y eventos de música en Perú | Show You Play"
+                : "Eventos en Perú y entradas en línea | Show You Play");
+        model.addAttribute("seoDescription", musicLanding
+                ? "Explora conciertos, artistas cover y presentaciones musicales en Perú. Consulta fechas, lugares y entradas de los eventos publicados en Show You Play."
+                : "Descubre conciertos, ferias, actividades culturales y otros eventos en Perú. Compara opciones y compra tus entradas en línea en Show You Play.");
         return "events/marketplace-list";
     }
 
@@ -86,6 +98,9 @@ public class EventController {
 
         EventPresentationSettings presentation = presentationSettingsRepository.findByEventId(id).orElse(null);
         eventDetailViewModel.addAttributes(event, presentation, model);
+        var tour = eventService.publishedTourRoute(event, presentation, presentationSettingsRepository);
+        model.addAttribute("tourDates", tour.nextDates());
+        model.addAttribute("tourOrigin", tour.origin());
         UserAccount client = addAccountNavigation(model, authentication);
         model.addAttribute("favoriteSelected", client != null && favoriteRepository.existsByClient_IdAndEvent_Id(client.getId(), id));
         return "events/marketplace-purchase";
