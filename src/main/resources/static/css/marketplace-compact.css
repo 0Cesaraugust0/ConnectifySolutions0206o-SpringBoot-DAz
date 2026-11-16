@@ -490,3 +490,9 @@
     .marketplace-compact .event-card-link{min-height:0}
     .marketplace-compact .event-description{-webkit-line-clamp:3}
 }
+
+@media (min-width: 961px) {
+    .marketplace-compact .marketplace-nav > .brand > .brand-link {
+        translate: -2mm 0;
+    }
+}

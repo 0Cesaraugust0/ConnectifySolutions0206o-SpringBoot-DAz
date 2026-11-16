@@ -381,6 +381,20 @@
     gap: 8px;
 }
 
+.login-nav-pair {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+}
+
+.login-nav-pair .btn {
+    justify-content: center;
+    white-space: nowrap;
+}
+
+.login-navbar .login-marketplace-back { gap: 5px; }
+.login-marketplace-back > span { font-size: 1.15em; line-height: 1; }
+
 .login-nav-actions .btn {
     padding: 7px 11px;
     border-radius: 10px;
