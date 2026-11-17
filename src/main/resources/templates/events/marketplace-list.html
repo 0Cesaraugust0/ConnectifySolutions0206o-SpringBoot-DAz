@@ -10,7 +10,7 @@
     <link rel="stylesheet" th:href="@{/css/styles.css(v='marketplace-cards-regular-1')}">
     <link rel="stylesheet" th:href="@{/css/marketplace-presentation.css}">
     <link rel="stylesheet" th:href="@{/css/marketplace-account.css(v='nav-56')}">
-    <link rel="stylesheet" th:href="@{/css/marketplace-compact.css(v='mobile-marketplace-20')}">
+    <link rel="stylesheet" th:href="@{/css/marketplace-compact.css(v='mobile-marketplace-33')}">
     <link rel="stylesheet" th:href="@{/css/hero-ceremonial-pennants.css(v='6')}">
     <link rel="stylesheet" th:href="@{/css/launch-welcome.css(v='2')}">
     <link rel="stylesheet" th:href="@{/css/marketplace-visits.css(v='1')}">
@@ -161,7 +161,7 @@
     <div class="marketplace-browse-header">
     <div class="marketplace-browse-filters">
     <section class="date-filter-strip">
-        <span>Fecha</span>
+        <span class="browse-row-label">Fechas</span>
         <a data-marketplace-filter th:href="@{/events(q=${q},city=${city},category=${category})}" th:classappend="${dateRange == null || dateRange.isBlank()} ? ' active' : ''">Todas</a>
         <a data-marketplace-filter th:href="@{/events(q=${q},city=${city},category=${category},dateRange='today')}" th:classappend="${dateRange == 'today'} ? ' active' : ''">Hoy</a>
         <a data-marketplace-filter th:href="@{/events(q=${q},city=${city},category=${category},dateRange='week')}" th:classappend="${dateRange == 'week'} ? ' active' : ''">Esta semana</a>
@@ -175,6 +175,7 @@
         <a data-marketplace-filter th:href="@{/events(category='Tecnología',dateRange=${dateRange})}" class="category-chip" th:classappend="${category == 'Tecnología'} ? ' active' : ''">Tecnología</a>
         <a data-marketplace-filter th:href="@{/events(category='Gastronomía',dateRange=${dateRange})}" class="category-chip" th:classappend="${category == 'Gastronomía'} ? ' active' : ''">Gastronomía</a>
         <a data-marketplace-filter th:href="@{/events(category='Deporte',dateRange=${dateRange})}" class="category-chip" th:classappend="${category == 'Deporte'} ? ' active' : ''">Deportes</a>
+        <span class="browse-row-label">Categorías</span>
     </section>
 
     </div>
