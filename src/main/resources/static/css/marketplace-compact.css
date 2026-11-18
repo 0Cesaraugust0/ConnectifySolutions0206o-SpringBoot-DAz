@@ -481,7 +481,7 @@
     .marketplace-compact .marketplace-browse-filters :is(.date-filter-strip,.professional-categories){
         display:flex;
         flex-wrap:nowrap;
-        gap:8px;
+        gap: clamp(3px, calc(8vw - 26px), 7px);
         width:100%;
         max-width:100%;
         margin:0 0 8px;
@@ -492,25 +492,26 @@
     }
     .marketplace-compact .marketplace-browse-filters :is(.date-filter-strip,.professional-categories)::-webkit-scrollbar{display:none}
     .marketplace-compact .marketplace-browse-filters :is(.date-filter-strip a,.category-chip){flex:0 0 auto;scroll-snap-align:start;min-height:38px;padding:8px 13px;font-size:.78rem}
-    .marketplace-compact .marketplace-browse-filters .date-filter-strip>span{display:none}
-    .marketplace-compact .marketplace-browse-filters .date-filter-strip{
-        justify-content:space-between;
-        gap:5px;
-        padding-inline:0;
-        overflow-x:hidden;
+    .marketplace-compact .marketplace-browse-filters .date-filter-strip {
+        scroll-snap-type: none;
     }
-    .marketplace-compact .marketplace-browse-filters .date-filter-strip a{
-        flex:0 1 auto;
-        min-width:0;
-        min-height:35px;
-        padding:7px 8px;
-        font-size:.68rem;
-        font-weight:700;
-        letter-spacing:-.015em;
-        white-space:nowrap;
+
+    .marketplace-compact .marketplace-browse-filters .date-filter-strip a {
+        flex: 1 0 auto;
+        justify-content: center;
+        min-inline-size: 32px;
+        min-height: 35px;
+        padding: 7px clamp(3px, calc(6vw - 19px), 7px);
+        font-size: .68rem;
+        font-weight: 700;
+        letter-spacing: -.015em;
+        white-space: nowrap;
     }
-    .marketplace-compact .marketplace-browse-filters .professional-categories{
-        gap:7px;
+
+    .marketplace-compact .marketplace-browse-filters .date-filter-strip > .browse-row-label {
+        font-size: .625rem;
+        letter-spacing: .04em;
+        white-space: nowrap;
     }
     .marketplace-compact .marketplace-browse-filters .professional-categories .category-chip{
         min-height:34px;
